@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "827649503377",
+    "project_id": "tnt-app-android",
+    "storage_bucket": "tnt-app-android.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:827649503377:android:4c9ab6ceb0e28f194e0f30",
+        "android_client_info": {
+          "package_name": "unpsjb.ing.tnt.vendedores"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "827649503377-4hnm3vv0m0ltb68bv91n7l57bcn90mbc.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9FuHNweaaqczE3Ncbnwv-3vDS6vGrm7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "827649503377-4hnm3vv0m0ltb68bv91n7l57bcn90mbc.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
