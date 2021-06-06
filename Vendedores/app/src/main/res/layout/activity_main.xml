@@ -16,9 +16,4 @@
         tools:layout_editor_absoluteX="108dp"
         tools:layout_editor_absoluteY="288dp" />
 
-    <fragment
-        android:name="src\main\java\unpsjb\ing\tnt\vendedores\ui\login\LoginFragment.kt"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-    />
 </androidx.constraintlayout.widget.ConstraintLayout>
