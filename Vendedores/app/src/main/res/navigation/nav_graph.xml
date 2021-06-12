@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/loginFragment3">
+
+    <fragment
+        android:id="@+id/menuFragment"
+        android:name="unpsjb.ing.tnt.vendedores.MenuFragment"
+        android:label="fragment_menu"
+        tools:layout="@layout/fragment_menu" >
+        <action
+            android:id="@+id/action_menuFragment_to_altaTiendaFragment"
+            app:destination="@id/altaTiendaFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_altaProductosFragment2"
+            app:destination="@id/altaProductosFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_listadoPedidosFragment"
+            app:destination="@id/listadoPedidosFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/altaTiendaFragment"
+        android:name="unpsjb.ing.tnt.vendedores.AltaTiendaFragment"
+        android:label="fragment_alta_tienda"
+        tools:layout="@layout/fragment_alta_tienda" >
+        <action
+            android:id="@+id/action_altaTiendaFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment3"
+        android:name="unpsjb.ing.tnt.vendedores.LoginFragment"
+        android:label="fragment_login"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginFragment3_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/altaProductosFragment"
+        android:name="unpsjb.ing.tnt.vendedores.AltaProductosFragment"
+        android:label="fragment_alta_productos"
+        tools:layout="@layout/fragment_alta_productos" >
+        <action
+            android:id="@+id/action_altaProductosFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/listadoPedidosFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ListadoPedidosFragment"
+        android:label="fragment_listado_pedidos"
+        tools:layout="@layout/fragment_listado_pedidos" >
+        <action
+            android:id="@+id/action_listadoPedidosFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
+</navigation>
