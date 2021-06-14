@@ -46,6 +46,9 @@
         <action
             android:id="@+id/action_altaProductosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_altaProductosFragment_to_placeholder"
+            app:destination="@id/placeholder" />
     </fragment>
     <fragment
         android:id="@+id/listadoPedidosFragment"
@@ -55,5 +58,11 @@
         <action
             android:id="@+id/action_listadoPedidosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
+    </fragment>
+    <fragment android:id="@+id/placeholder" >
+        <action
+            android:id="@+id/action_placeholder_pop"
+            app:popUpTo="@id/placeholder"
+            app:popUpToInclusive="true" />
     </fragment>
 </navigation>
