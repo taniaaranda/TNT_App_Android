@@ -68,12 +68,11 @@ class AltaTiendaFragment : Fragment() {
 
         val btn_aceptar = view.findViewById<Button>(R.id.btn_aceptar)
         val txt_nombre = view.findViewById<EditText>(R.id.txt_nombre)
-        val txt_rubro = view.findViewById<EditText>(R.id.atxt_rubro)
         val txt_ubicacion = view.findViewById<EditText>(R.id.txt_ubicacion)
         btn_aceptar.setOnClickListener{
             if (txt_nombre.text.isNotEmpty()){
                 db.collection("tiendas").document(txt_nombre.text.toString()).set(
-                        hashMapOf("rubro" to txt_rubro.text.toString(),
+                        hashMapOf("rubro" to atxt_rubro.text.toString(),
                                 "ubicacion" to txt_ubicacion.text.toString()
 
 
