@@ -36,6 +36,12 @@
             android:gravity="right|center_horizontal"
             android:text="Pedidos"
             app:backgroundTint="#494646" />
+
+        <Button
+            android:id="@+id/Productos"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Button" />
     </LinearLayout>
 
 </RelativeLayout>
