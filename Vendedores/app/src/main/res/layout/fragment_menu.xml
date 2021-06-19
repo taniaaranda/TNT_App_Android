@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Nueva Tienda"
-            app:backgroundTint="#009688" />
+            app:backgroundTint="#494646" />
 
         <Button
             android:id="@+id/btn_alta_productos"
@@ -25,7 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Cargar Productos"
-            app:backgroundTint="#009688" />
+            app:backgroundTint="#494646" />
 
         <Button
             android:id="@+id/btn_listado_pedidos"
@@ -35,7 +35,7 @@
             android:layout_gravity="center"
             android:gravity="right|center_horizontal"
             android:text="Pedidos"
-            app:backgroundTint="#009688" />
+            app:backgroundTint="#494646" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -1,43 +1,131 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".AltaTiendaFragment">
+    android:orientation="vertical"
+    tools:context=".AltaTiendaFragment" >
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="119dp"
+        android:layout_height="56dp"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="@dimen/fragment_vertical_margin"
+        android:layout_marginLeft="@dimen/fragment_vertical_margin"
+        android:layout_marginTop="@dimen/fragment_vertical_margin"
+        android:layout_marginEnd="@dimen/fragment_vertical_margin"
+        android:layout_marginRight="@dimen/fragment_vertical_margin"
+        android:layout_marginBottom="95dp"
+        android:text="Tienda"
+        android:textSize="30sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="371dp"
+        android:layout_height="471dp"
+        android:layout_alignWithParentIfMissing="false"
+        android:layout_centerInParent="true"
+        android:background="#FFFFFF"
+        android:orientation="vertical">
 
         <EditText
             android:id="@+id/txt_nombre"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Nombre"
             android:inputType="textPersonName"
-            android:text="Nombre de la tienda"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="83dp" />
+            app:errorEnabled="true"/>
 
-        <EditText
-            android:id="@+id/txt_rubro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:text="Rubro"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="146dp" />
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <AutoCompleteTextView
+                android:id="@+id/atxt_rubro"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:inputType="none"
+                android:hint="Rubro"
+                android:text=""
+                app:errorEnabled="true"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <EditText
             android:id="@+id/txt_ubicacion"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
+            android:hint="Ubicación"
             android:inputType="textPersonName"
-            android:text="Ubicacion"
-            tools:layout_editor_absoluteX="91dp"
-            tools:layout_editor_absoluteY="213dp" />
+            app:errorEnabled="true"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
-</FrameLayout>
+        <Button
+            android:id="@+id/btn_hora_inicio"
+            style="?android:spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hora de Inicio"
+            android:textColor="@color/black"
+            android:textColorHint="#FFFFFF"
+            android:textSize="18sp"
+            app:backgroundTint="#4E4C4C"
+            app:errorEnabled="true"/>
+
+        <Button
+            android:id="@+id/btn_hora_cierre"
+            style="?android:spinnerStyle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Hora de Cierre"
+            android:textColor="@color/black"
+            android:textSize="18sp"
+            app:backgroundTint="#4E4C4C"
+            app:errorEnabled="true"/>
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Métodos de pago"
+            android:textSize="20sp"
+            app:errorEnabled="true"/>
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Efectivo" />
+
+        <CheckBox
+            android:id="@+id/checkBox2"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tarjeta de débito"
+            android:textSize="14sp" />
+
+        <CheckBox
+            android:id="@+id/checkBox3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Tarjeta de crédito"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btn_aceptar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Aceptar"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            app:backgroundTint="#494646"
+            app:iconTint="#FFFFFF" />
+
+
+    </LinearLayout>
+</RelativeLayout>
