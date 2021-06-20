@@ -54,6 +54,16 @@ class MenuFragment : Fragment() {
             findNavController().navigate(R.id.altaProductosFragment)
         }
 
+
+        val btn_menu_productos = view.findViewById<Button>(R.id.btn_menu_productos)
+
+        btn_menu_productos.setOnClickListener {
+            //findNavController().navigate(R.id.altaProductosFragment)
+            findNavController().navigate(R.id.action_menuFragment_to_productosFragment)
+        }
+
+
+
         val btn_listado_pedidos = view.findViewById<Button>(R.id.btn_listado_pedidos)
 
         btn_listado_pedidos.setOnClickListener {
