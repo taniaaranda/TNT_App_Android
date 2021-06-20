@@ -51,35 +51,96 @@ class AltaTiendaFragment : Fragment() {
         val atxt_rubro = view.findViewById<AutoCompleteTextView>(R.id.atxt_rubro)
         atxt_rubro.setAdapter(arrayAdapter)
 
+
         val btn_hora_inicio = view.findViewById<Button>(R.id.btn_hora_inicio)
-
-        btn_hora_inicio.setOnClickListener{
-            val timePicker = TimePickerFragment { btn_hora_inicio.setText("Hora de Inicio $it") }
-            timePicker.show(childFragmentManager, "timePicker")
-        }
-
         val btn_hora_cierre = view.findViewById<Button>(R.id.btn_hora_cierre)
 
-        btn_hora_cierre.setOnClickListener{
-            val timePicker = TimePickerFragment { btn_hora_cierre.setText("Hora de Cierre $it") }
+
+        btn_hora_inicio.setOnClickListener{
+            val timePicker = TimePickerFragment {
+                btn_hora_inicio.setText("Hora de Inicio $it")
+                btn_hora_inicio.setError(null)
+                }
             timePicker.show(childFragmentManager, "timePicker")
         }
+
+        btn_hora_cierre.setOnClickListener{
+            val timePicker = TimePickerFragment {
+                btn_hora_cierre.setText("Hora de Cierre $it")
+                btn_hora_cierre.setError(null)
+            }
+            timePicker.show(childFragmentManager, "timePicker")
+        }
+
         val db = FirebaseFirestore.getInstance()
 
         val btn_aceptar = view.findViewById<Button>(R.id.btn_aceptar)
         val txt_nombre = view.findViewById<EditText>(R.id.txt_nombre)
         val txt_ubicacion = view.findViewById<EditText>(R.id.txt_ubicacion)
+        val check_box_efectivo = view.findViewById<CheckBox>(R.id.check_box_efectivo)
+        val check_box_debito = view.findViewById<CheckBox>(R.id.check_box_debito)
+        val check_box_credito = view.findViewById<CheckBox>(R.id.check_box_credito)
+        val txt_metodos_de_pago = view.findViewById<TextView>(R.id.txt_metodos_de_pago)
+
+        check_box_efectivo.setOnClickListener(){
+            if(check_box_efectivo.isChecked || check_box_debito.isChecked || check_box_credito.isChecked){
+                txt_metodos_de_pago.setError(null)
+            }else{
+                txt_metodos_de_pago.error = "Debe seleccionar al menos un Metodo de Pago"
+            }
+        }
+
+        check_box_debito.setOnClickListener(){
+            if(check_box_efectivo.isChecked || check_box_debito.isChecked || check_box_credito.isChecked){
+                txt_metodos_de_pago.setError(null)
+            }else{
+                txt_metodos_de_pago.error = "Debe seleccionar al menos un Metodo de Pago"
+            }
+        }
+
+        check_box_credito.setOnClickListener(){
+            if(check_box_efectivo.isChecked || check_box_debito.isChecked || check_box_credito.isChecked){
+                txt_metodos_de_pago.setError(null)
+            }else{
+                txt_metodos_de_pago.error = "Debe seleccionar al menos un Metodo de Pago"
+            }
+        }
+
+        atxt_rubro.setOnItemClickListener (AdapterView.OnItemClickListener{ parent, view, position, id ->
+            atxt_rubro.setError(null)
+        })
         btn_aceptar.setOnClickListener{
-            if (txt_nombre.text.isNotEmpty()){
+            if (txt_nombre.text.isEmpty() || atxt_rubro.text.isEmpty() || txt_ubicacion.text.isEmpty() ||
+                    btn_hora_inicio.text.toString().length == 14 || btn_hora_cierre.text.toString().length == 14
+                    || !(check_box_efectivo.isChecked || check_box_debito.isChecked || check_box_credito.isChecked)){
+                if(txt_nombre.text.isEmpty()){
+                    txt_nombre.error ="Debe completar el Nombre"
+                }
+                if(atxt_rubro.text.isEmpty()){
+                    atxt_rubro.error = "Debe seleccionar un Rubro"
+                }
+                if(txt_ubicacion.text.isEmpty()){
+                    txt_ubicacion.error = "Debe completar la Ubicación"
+                }
+                if(btn_hora_inicio.text.toString().length == 14){
+                    btn_hora_inicio.error = "Debe seleccionar un horario de Inicio"
+                }
+                if(btn_hora_cierre.text.toString().length == 14){
+                    btn_hora_cierre.error = "Debe seleccionar un horario de Cierre"
+                }
+                if(!(check_box_efectivo.isChecked || check_box_debito.isChecked || check_box_credito.isChecked)){
+                    txt_metodos_de_pago.error = "Debe seleccionar al menos un Metodo de Pago"
+                }
+            }else{
                 db.collection("tiendas").document(txt_nombre.text.toString()).set(
                         hashMapOf("rubro" to atxt_rubro.text.toString(),
-                                "ubicacion" to txt_ubicacion.text.toString()
+                                "ubicacion" to txt_ubicacion.text.toString(),
+                                "hora_inicio" to btn_hora_inicio.text.toString().substring(15,20),
+                                "hora_cierre" to btn_hora_cierre.text.toString().substring(15,20)
 
 
                         )
                 )
-            }else{
-                txt_nombre.error ="Debe completar el nombre"
             }
 
         }
