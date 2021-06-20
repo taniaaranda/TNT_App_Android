@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:visibility="visible"
     tools:context=".MenuFragment">
 
     <LinearLayout
@@ -38,10 +39,12 @@
             app:backgroundTint="#494646" />
 
         <Button
-            android:id="@+id/Productos"
-            android:layout_width="match_parent"
+            android:id="@+id/btn_menu_productos"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Button" />
+            android:layout_gravity="center"
+            android:text="Menu Productos"
+            app:backgroundTint="#494646"/>
     </LinearLayout>
 
 </RelativeLayout>

@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_menuFragment_to_listadoPedidosFragment"
             app:destination="@id/listadoPedidosFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_productosFragment"
+            app:destination="@id/productosFragment" />
     </fragment>
     <fragment
         android:id="@+id/altaTiendaFragment"
@@ -49,6 +52,9 @@
         <action
             android:id="@+id/action_altaProductosFragment_to_placeholder"
             app:destination="@id/placeholder" />
+        <action
+            android:id="@+id/action_altaProductosFragment_to_productosFragment"
+            app:destination="@id/productosFragment" />
     </fragment>
     <fragment
         android:id="@+id/listadoPedidosFragment"
@@ -69,5 +75,9 @@
         android:id="@+id/productosFragment"
         android:name="unpsjb.ing.tnt.vendedores.ProductosFragment"
         android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" />
+        tools:layout="@layout/fragment_item_list" >
+        <action
+            android:id="@+id/action_productosFragment_to_altaProductosFragment"
+            app:destination="@id/altaProductosFragment" />
+    </fragment>
 </navigation>

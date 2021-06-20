@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AutoCompleteTextView
+import android.widget.Button
+import androidx.navigation.fragment.findNavController
 import unpsjb.ing.tnt.vendedores.placeholder.PlaceholderContent
 
 /**
@@ -38,10 +41,18 @@ class ProductosFragment : Fragment() {
                     columnCount <= 1 -> LinearLayoutManager(context)
                     else -> GridLayoutManager(context, columnCount)
                 }
-                adapter = MyProductosRecyclerViewAdapter(PlaceholderContent.ITEMS)
+
             }
         }
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        val btn_agregar_producto = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_agregar_producto)
+        btn_agregar_producto.setOnClickListener(){
+            findNavController().navigate(R.id.altaProductosFragment)
+        }
     }
 
     companion object {

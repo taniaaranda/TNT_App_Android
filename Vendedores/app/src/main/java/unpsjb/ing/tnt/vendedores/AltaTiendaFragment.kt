@@ -1,6 +1,9 @@
 package unpsjb.ing.tnt.vendedores
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -132,15 +135,30 @@ class AltaTiendaFragment : Fragment() {
                     txt_metodos_de_pago.error = "Debe seleccionar al menos un Metodo de Pago"
                 }
             }else{
+                val metodos_de_pago: ArrayList<String> = ArrayList()
+                if(check_box_efectivo.isChecked){
+                    metodos_de_pago.add(check_box_efectivo.text.toString())
+                }
+                if(check_box_debito.isChecked){
+                    metodos_de_pago.add(check_box_debito.text.toString())
+                }
+                if(check_box_credito.isChecked){
+                    metodos_de_pago.add(check_box_credito.text.toString())
+                }
                 db.collection("tiendas").document(txt_nombre.text.toString()).set(
                         hashMapOf("rubro" to atxt_rubro.text.toString(),
                                 "ubicacion" to txt_ubicacion.text.toString(),
-                                "hora_inicio" to btn_hora_inicio.text.toString().substring(15,20),
-                                "hora_cierre" to btn_hora_cierre.text.toString().substring(15,20)
-
-
+                                "horario_de_atencion" to arrayListOf(btn_hora_inicio.text.toString().substring(15,20),btn_hora_cierre.text.toString().substring(15,20)),
+                                "metodos_de_pago" to metodos_de_pago
                         )
                 )
+                AlertDialog.Builder(context).apply{
+                    setTitle("¡La tienda se ha creado con éxito!")
+                    setMessage("Presiona aceptar para continuar")
+                    setPositiveButton("Aceptar"){_: DialogInterface, _: Int ->
+                        findNavController().navigate(R.id.menuFragment)
+                    }
+                }.show()
             }
 
         }
