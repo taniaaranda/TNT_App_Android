@@ -1,59 +1,75 @@
 package unpsjb.ing.tnt.vendedores
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.fragment.app.Fragment
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.QuerySnapshot
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
+import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
+import unpsjb.ing.tnt.vendedores.data.model.Pedido
+import unpsjb.ing.tnt.vendedores.databinding.FragmentListadoPedidosBinding
+import java.util.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListadoPedidosFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ListadoPedidosFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+private const val PEDIDOS_COLLECTION_NAME = "pedidos"
+
+class ListadoPedidosFragment : FirebaseConnectedFragment() {
+    private lateinit var binding: FragmentListadoPedidosBinding
+    private lateinit var listView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_listado_pedidos, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_listado_pedidos, container, false
+        )
+
+        listView = binding.root
+
+        getDbReference().collection(PEDIDOS_COLLECTION_NAME)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("ListadoPedidos", e.message.toString())
+                    return@addSnapshotListener
+                }
+
+                Log.d("ListadoPedidos", parsePedidos(snapshots).size.toString())
+
+                val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots))
+                binding.listadoPedidos.adapter = adapter
+            }
+
+        return listView
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListadoPedidosFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListadoPedidosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun parsePedidos(snapshots: QuerySnapshot?): List<Pedido> {
+        val pedidos = ArrayList<Pedido>()
+
+        if (snapshots != null) {
+            for (document in snapshots.documents) {
+                pedidos.add(
+                    Pedido(
+                        document.get("id") as String,
+                        document.get("productos") as ArrayList<String>,
+                        document.get("estado") as String,
+                        document.get("estampaDeTiempo") as Timestamp
+                    )
+                )
             }
+        }
+
+        return pedidos.sortedWith(compareBy { it.id })
     }
 }

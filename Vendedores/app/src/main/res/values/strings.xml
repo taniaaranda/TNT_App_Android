@@ -14,4 +14,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="descripcion_img_foto">Imagen Del Producto</string>
     <string name="descripcionAdd">Crear Producto</string>
+    <string name="pedidos_label">Pedidos</string>
+    <string name="productos_label">Productos:</string>
 </resources>
