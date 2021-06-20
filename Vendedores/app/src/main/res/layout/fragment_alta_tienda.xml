@@ -37,6 +37,7 @@
             android:ems="10"
             android:hint="Nombre"
             android:inputType="textPersonName"
+            android:textColorLink="#FF03DAC5"
             app:errorEnabled="true" />
 
         <com.google.android.material.textfield.TextInputLayout
