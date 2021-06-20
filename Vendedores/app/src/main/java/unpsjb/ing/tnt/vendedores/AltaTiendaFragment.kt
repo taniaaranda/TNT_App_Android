@@ -1,6 +1,9 @@
 package unpsjb.ing.tnt.vendedores
 
+import android.app.AlertDialog
+import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -149,6 +152,13 @@ class AltaTiendaFragment : Fragment() {
                                 "metodos_de_pago" to metodos_de_pago
                         )
                 )
+                AlertDialog.Builder(context).apply{
+                    setTitle("¡La tienda se ha creado con éxito!")
+                    setMessage("Presiona aceptar para continuar")
+                    setPositiveButton("Aceptar"){_: DialogInterface, _: Int ->
+                        findNavController().navigate(R.id.menuFragment)
+                    }
+                }.show()
             }
 
         }
