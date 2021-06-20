@@ -154,7 +154,6 @@ class AltaTiendaFragment : Fragment() {
                 )
                 AlertDialog.Builder(context).apply{
                     setTitle("¡La tienda se ha creado con éxito!")
-                    setMessage("Presiona aceptar para continuar")
                     setPositiveButton("Aceptar"){_: DialogInterface, _: Int ->
                         findNavController().navigate(R.id.menuFragment)
                     }
