@@ -23,8 +23,8 @@
         android:textStyle="bold" />
 
     <LinearLayout
-        android:layout_width="371dp"
-        android:layout_height="471dp"
+        android:layout_width="380dp"
+        android:layout_height="564dp"
         android:layout_alignWithParentIfMissing="false"
         android:layout_centerInParent="true"
         android:background="#FFFFFF"
@@ -33,18 +33,23 @@
         <EditText
             android:id="@+id/txt_nombre"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="69dp"
             android:ems="10"
             android:hint="Nombre"
             android:inputType="textPersonName"
-            app:errorEnabled="true"/>
+            android:textColorLink="#FF03DAC5"
+            app:errorEnabled="true" />
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="90dp"
+            android:textColorHint="#A5A5A5"
             app:boxBackgroundColor="#FFFFFF"
-            app:boxStrokeColor="#FFFFFF">
+            app:boxStrokeColor="#FFFFFF"
+            app:expandedHintEnabled="false"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:hintTextColor="#DDDDDD">
 
             <AutoCompleteTextView
                 android:id="@+id/atxt_rubro"
@@ -55,6 +60,7 @@
                 android:inputType="none"
                 android:text=""
                 android:textIsSelectable="false"
+                android:textSize="18sp"
                 app:errorEnabled="true" />
 
         </com.google.android.material.textfield.TextInputLayout>
@@ -62,11 +68,11 @@
         <EditText
             android:id="@+id/txt_ubicacion"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="75dp"
             android:ems="10"
             android:hint="Ubicación"
             android:inputType="textPersonName"
-            app:errorEnabled="true"/>
+            app:errorEnabled="true" />
 
         <Button
             android:id="@+id/btn_hora_inicio"
@@ -78,7 +84,7 @@
             android:textColorHint="#FFFFFF"
             android:textSize="18sp"
             app:backgroundTint="#4E4C4C"
-            app:errorEnabled="true"/>
+            app:errorEnabled="true" />
 
         <Button
             android:id="@+id/btn_hora_cierre"
@@ -89,31 +95,31 @@
             android:textColor="@color/black"
             android:textSize="18sp"
             app:backgroundTint="#4E4C4C"
-            app:errorEnabled="true"/>
+            app:errorEnabled="true" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txt_metodos_de_pago"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Métodos de pago"
             android:textSize="20sp"
-            app:errorEnabled="true"/>
+            app:errorEnabled="true" />
 
         <CheckBox
-            android:id="@+id/checkBox"
+            android:id="@+id/check_box_efectivo"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Efectivo" />
 
         <CheckBox
-            android:id="@+id/checkBox2"
+            android:id="@+id/check_box_debito"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tarjeta de débito"
             android:textSize="14sp" />
 
         <CheckBox
-            android:id="@+id/checkBox3"
+            android:id="@+id/check_box_credito"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Tarjeta de crédito"
