@@ -65,4 +65,9 @@
             app:popUpTo="@id/placeholder"
             app:popUpToInclusive="true" />
     </fragment>
+    <fragment
+        android:id="@+id/productosFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ProductosFragment"
+        android:label="fragment_item_list"
+        tools:layout="@layout/fragment_item_list" />
 </navigation>

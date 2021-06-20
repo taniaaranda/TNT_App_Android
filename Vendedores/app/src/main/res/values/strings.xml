@@ -16,4 +16,13 @@
     <string name="descripcionAdd">Crear Producto</string>
     <string name="pedidos_label">Pedidos</string>
     <string name="productos_label">Productos:</string>
+    <string-array name="rubros">
+        <item>Despensa</item>
+        <item>Ferretería</item>
+        <item>Heladería</item>
+        <item>Mercería</item>
+        <item>Verdulería</item>
+        <item>Rotisería</item>
+    </string-array>
+
 </resources>
