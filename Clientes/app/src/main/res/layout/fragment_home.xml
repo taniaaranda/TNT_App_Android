@@ -22,12 +22,6 @@
             android:textStyle="bold" />
 
         <Button
-            android:id="@+id/btn_carrito"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Carrito Debug" />
-
-        <Button
             android:id="@+id/btn_listado_tiendas"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
