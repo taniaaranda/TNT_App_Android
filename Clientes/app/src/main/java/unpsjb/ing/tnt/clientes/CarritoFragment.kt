@@ -42,14 +42,15 @@ class CarritoFragment : FirebaseConnectedFragment() {
 
         binding.realizarPedido.setOnClickListener {
             getDbReference().collection("pedidos")
-                .orderBy("id", Query.Direction.ASCENDING)
+                .orderBy("id", Query.Direction.DESCENDING)
                 .limit(1)
                 .get()
                 .addOnSuccessListener { resultPedidos ->
                     var id = "1"
 
                     if (resultPedidos.documents.isNotEmpty()) {
-                        id = resultPedidos.documents.first().get("id") as String
+                        val lastId = (resultPedidos.documents.first().get("id") as String).toInt()
+                        id = (lastId + 1).toString()
                     }
 
                     val pedido: Pedido? = crearObjetoPedido(id)
