@@ -9,10 +9,11 @@
 
     <LinearLayout
         android:id="@+id/linerProducto"
-        android:layout_width="0dp"
-        android:layout_height="603dp"
+        android:layout_width="364dp"
+        android:layout_height="720dp"
         android:layout_alignWithParentIfMissing="false"
         android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/activity_horizontal_margin"
         android:background="#FFFFFF"
         android:orientation="vertical"
         app:layout_constraintEnd_toEndOf="parent"
@@ -21,16 +22,11 @@
 
         <TextView
             android:id="@+id/nuevoProducto"
-            android:layout_width="243dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="100dp"
-            android:layout_marginLeft="100dp"
-            android:layout_marginTop="44dp"
-            android:text="Productos"
+            android:layout_width="302dp"
+            android:layout_height="62dp"
+            android:text="Nuevo Producto"
             android:textSize="30sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:textStyle="bold" />
 
         <EditText
             android:id="@+id/productoNombre"
@@ -58,33 +54,30 @@
             android:inputType="textPersonName"
             app:errorEnabled="true" />
 
-        <TextView
-            android:id="@+id/tipoCategoria"
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Categoria"
-            android:textSize="20sp"
-            app:errorEnabled="true" />
+            android:layout_height="90dp"
+            android:textColorHint="#A5A5A5"
+            app:boxBackgroundColor="#FFFFFF"
+            app:boxStrokeColor="#FFFFFF"
+            app:expandedHintEnabled="false"
+            app:hintTextAppearance="@style/TextAppearance.AppCompat.Medium"
+            app:hintTextColor="#DDDDDD">
 
-        <CheckBox
-            android:id="@+id/checkBox"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Alimentos" />
+            <AutoCompleteTextView
+                android:id="@+id/atxt_categoria"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint="Categoria"
+                android:inputType="none"
+                android:text=""
+                android:textIsSelectable="false"
+                android:textSize="18sp"
+                app:errorEnabled="true" />
 
-        <CheckBox
-            android:id="@+id/checkBox2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Herramientas"
-            android:textSize="14sp" />
-
-        <CheckBox
-            android:id="@+id/checkBox3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Otros"
-            android:textSize="14sp" />
+        </com.google.android.material.textfield.TextInputLayout>
 
         <ImageButton
             android:id="@+id/addImagen"
@@ -115,28 +108,5 @@
             android:textColorHint="#FFFFFF"
             app:backgroundTint="#494646"
             app:iconTint="#FFFFFF" />
-
     </LinearLayout>
-    <!--
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                tools:listitem="@layout/item_producto"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="@dimen/common_padding_min"
-                android:src="@drawable/ic_add"
-                android:contentDescription="@string/descripcionAdd"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"/>
-    -->
 </androidx.constraintlayout.widget.ConstraintLayout>

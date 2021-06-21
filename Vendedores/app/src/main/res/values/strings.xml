@@ -24,6 +24,14 @@
         <item>Verdulería</item>
         <item>Rotisería</item>
     </string-array>
+
+    <string-array name="categorias">
+        <item>Morfi</item>
+        <item>Herramientas</item>
+        <item>Hilo</item>
+        <item>Helados</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
