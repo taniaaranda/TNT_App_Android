@@ -31,7 +31,7 @@ class TiendasAdapter (private val context: Context, private val dataSource: List
                 item.rubro,
                 item.ubicacion,
                 item.horario_de_atencion,
-                item.metodos_de_pago
+                //item.metodos_de_pago
         )
     }
 

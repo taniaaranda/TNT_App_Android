@@ -54,11 +54,11 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
             for (document in snapshots.documents) {
                 tiendas.add(
                         Tienda(
-                                document.get("id") as String,
+                                document.id ,
                                 document.get("rubro") as String,
                                 document.get("ubicacion") as String,
                                 document.get("horario_de_atencion") as ArrayList<String>,
-                                document.get("metodos_de_pago") as ArrayList<String>
+                                //document.get("metodos_de_pago") as ArrayList<String>
                         )
                 )
             }
