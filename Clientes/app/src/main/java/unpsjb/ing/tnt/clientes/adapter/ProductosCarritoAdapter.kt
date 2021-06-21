@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores.adapter
+package unpsjb.ing.tnt.clientes.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,31 +7,21 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
-import unpsjb.ing.tnt.vendedores.R
-import unpsjb.ing.tnt.vendedores.data.model.Pedido
-import unpsjb.ing.tnt.vendedores.databinding.ItemPedidoBinding
+import unpsjb.ing.tnt.clientes.R
+import unpsjb.ing.tnt.clientes.data.model.Producto
+import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
+import unpsjb.ing.tnt.clientes.databinding.CarritoProductoItemBinding
 
-class PedidosAdapter(private val context: Context, private val dataSource: List<Pedido>): BaseAdapter() {
-    private lateinit var binding: ItemPedidoBinding
+class ProductosCarritoAdapter(private val context: Context, private val dataSource: List<ProductoCarrito>): BaseAdapter() {
+    private lateinit var binding: CarritoProductoItemBinding
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
         return dataSource.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): ProductoCarrito {
         return dataSource[position]
-    }
-
-    private fun getCastedItem(position: Int): Pedido {
-        val item = getItem(position) as Pedido
-
-        return Pedido(
-            item.id,
-            item.productos,
-            item.estado,
-            item.estampaDeTiempo
-        )
     }
 
     override fun getItemId(position: Int): Long {
@@ -41,9 +31,12 @@ class PedidosAdapter(private val context: Context, private val dataSource: List<
     @SuppressLint("ViewHolder")
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         binding = DataBindingUtil.inflate(
-            inflater, R.layout.item_pedido, parent, false
+            inflater, R.layout.carrito_producto_item, parent, false
         )
-        binding.pedido = getCastedItem(position)
+
+        val productoCarrito = getItem(position)
+        binding.producto = productoCarrito
+        binding.imagenProducto.setImageBitmap(productoCarrito.getBitmapImage())
 
         return binding.root
     }

@@ -18,4 +18,10 @@
     <string name="register_msg">Si no tenés cuenta, podes registrarte aquí:</string>
     <string name="registrarse">Registrarse</string>
     <string name="tienda_imagen_descripcion">Imagen de la tienda</string>
+    <string name="tiendas_label">Tiendas</string>
+    <string name="productos_label">Productos:</string>
+    <string name="total_a_pagar_label">Total a Pagar:</string>
+    <string name="informaci_n_de_tu_pedido_label">Información de tu pedido:</string>
+    <string name="realizar_pedido_label">¡Realizar Pedido!</string>
+    <string name="imagen_del_producto_description">Imagen del producto</string>
 </resources>

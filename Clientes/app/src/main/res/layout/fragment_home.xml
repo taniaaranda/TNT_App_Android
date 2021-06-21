@@ -16,31 +16,16 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Tiendas"
+            android:text="@string/tiendas_label"
             android:textColor="@color/black"
             android:textSize="24sp"
             android:textStyle="bold" />
 
-        <TableLayout
+        <Button
+            android:id="@+id/btn_carrito"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-            <TableRow
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-        </TableLayout>
+            android:layout_height="wrap_content"
+            android:text="Carrito Debug" />
     </LinearLayout>
 
 </layout>
