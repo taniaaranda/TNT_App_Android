@@ -18,4 +18,12 @@
         android:name="unpsjb.ing.tnt.clientes.ListadoTiendasFragment"
         android:label="fragment_listado_tiendas"
         tools:layout="@layout/fragment_listado_tiendas" />
+    <fragment
+        android:id="@+id/carritoFragment"
+        android:name="unpsjb.ing.tnt.clientes.CarritoFragment"
+        android:label="CarritoFragment" >
+        <action
+            android:id="@+id/action_carritoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
 </navigation>
