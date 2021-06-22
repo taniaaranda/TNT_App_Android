@@ -4,32 +4,37 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable
+            name="tienda"
+            type="unpsjb.ing.tnt.clientes.data.model.Tienda"/>
     </data>
 
     <com.google.android.material.card.MaterialCardView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/common_padding_min"
         android:layout_marginTop="@dimen/common_padding_min">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="180sp"
-            android:layout_height="200sp">
+            android:layout_width="match_parent"
+            android:layout_height="143dp">
 
             <ImageView
                 android:id="@+id/tienda_imagen"
-                android:layout_width="69dp"
-                android:layout_height="69dp"
+                android:layout_width="52dp"
+                android:layout_height="46dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:contentDescription="@string/tienda_imagen_descripcion"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.174"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:srcCompat="@drawable/store_icon" />
+                app:layout_constraintVertical_bias="0.03"
+                app:srcCompat="@drawable/store_icon" />
 
             <TextView
                 android:id="@+id/store_name"
@@ -37,22 +42,29 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:text="@{tienda.id}"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.13"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tienda_imagen"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.411"
                 tools:text="Un nombre de tienda largo" />
 
             <TextView
                 android:id="@+id/rubro_tienda"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:text="@{tienda.rubro}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.195"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/store_name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.629"
                 tools:text="Rubro" />
 
             <TextView
@@ -61,54 +73,84 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
+                android:text="@{tienda.ubicacion}"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.195"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/rubro_tienda"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.795"
                 tools:text="Ubicación" />
 
             <TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="136dp"
+                android:layout_height="20dp"
                 android:layout_marginStart="8dp"
                 android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
+                android:text="@{tienda.getFormattedHorario()}"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.255"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2"
-                app:layout_constraintVertical_bias="0.0"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.95"
                 tools:text="Horario de Atención" />
 
             <ImageView
                 android:id="@+id/imageView2"
                 android:layout_width="26dp"
                 android:layout_height="19dp"
-                app:layout_constraintEnd_toStartOf="@+id/rubro_tienda"
-                app:srcCompat="@drawable/rubro_icon"
-                tools:layout_editor_absoluteY="112dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.105"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.629"
+                app:srcCompat="@drawable/rubro_icon" />
 
             <ImageView
                 android:id="@+id/imageView3"
                 android:layout_width="18dp"
                 android:layout_height="19dp"
-                app:layout_constraintEnd_toStartOf="@+id/textView2"
-                app:srcCompat="@drawable/ubicacion_icon"
-                tools:layout_editor_absoluteY="140dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.116"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.795"
+                app:srcCompat="@drawable/ubicacion_icon" />
 
             <ImageView
                 android:id="@+id/imageView4"
                 android:layout_width="21dp"
                 android:layout_height="19dp"
-                app:srcCompat="@drawable/horario_icon"
-                tools:layout_editor_absoluteX="17dp"
-                tools:layout_editor_absoluteY="167dp" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.117"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.944"
+                app:srcCompat="@drawable/horario_icon" />
+
+            <Button
+                android:id="@+id/btn_ver_productos"
+                android:layout_width="119dp"
+                android:layout_height="38dp"
+                android:text="Ver Productos"
+                android:textColorHint="#FFFFFF"
+                android:textSize="9sp"
+                app:backgroundTint="#3E3E3E"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.942"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.742" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>

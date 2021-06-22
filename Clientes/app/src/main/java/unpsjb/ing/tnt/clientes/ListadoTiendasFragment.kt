@@ -1,59 +1,69 @@
 package unpsjb.ing.tnt.clientes
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import com.google.firebase.firestore.QuerySnapshot
+import unpsjb.ing.tnt.clientes.adapter.TiendasAdapter
+import unpsjb.ing.tnt.clientes.data.model.Tienda
+import unpsjb.ing.tnt.clientes.databinding.FragmentListadoTiendasBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+private const val  TIENDAS_COLLECTION_NAME = "tiendas"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ListadoTiendasFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ListadoTiendasFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ListadoTiendasFragment : FirebaseConnectedFragment() {
+    private lateinit var binding: FragmentListadoTiendasBinding
+    private lateinit var listView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_listado_tiendas, container, false)
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_listado_tiendas, container, false
+        )
+        listView = binding.root
+
+        getDbReference().collection(TIENDAS_COLLECTION_NAME)
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Log.e("ListadoTiendas", e.message.toString())
+                        return@addSnapshotListener
+                    }
+
+                    Log.d("ListadoTiendas", parseTiendas(snapshots).size.toString())
+
+                    val adapter = TiendasAdapter(this.requireContext(), parseTiendas(snapshots))
+                    binding.listadoTiendas.adapter = adapter
+                }
+
+        return listView
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListadoTiendasFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListadoTiendasFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    private fun parseTiendas(snapshots: QuerySnapshot?): List<Tienda> {
+        val tiendas = ArrayList<Tienda>()
+
+        if (snapshots != null) {
+            for (document in snapshots.documents) {
+                tiendas.add(
+                        Tienda(
+                                document.id ,
+                                document.get("rubro") as String,
+                                document.get("ubicacion") as String,
+                                document.get("horario_de_atencion") as ArrayList<String>,
+                                //document.get("metodos_de_pago") as ArrayList<String>
+                        )
+                )
             }
+        }
+
+        return tiendas.sortedWith(compareBy { it.id })
     }
 }

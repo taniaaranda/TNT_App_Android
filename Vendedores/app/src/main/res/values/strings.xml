@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Vendedores</string>
+    <string name="app_name">App Vendedor</string>
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
@@ -24,6 +24,14 @@
         <item>Verdulería</item>
         <item>Rotisería</item>
     </string-array>
+
+    <string-array name="categorias">
+        <item>Morfi</item>
+        <item>Herramientas</item>
+        <item>Hilo</item>
+        <item>Helados</item>
+    </string-array>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
