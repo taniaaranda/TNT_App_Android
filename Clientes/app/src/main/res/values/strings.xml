@@ -24,4 +24,6 @@
     <string name="informaci_n_de_tu_pedido_label">Información de tu pedido:</string>
     <string name="realizar_pedido_label">¡Realizar Pedido!</string>
     <string name="imagen_del_producto_description">Imagen del producto</string>
+    <string name="filtrar_rubro">Filtrar Rubro:</string>
+    <string name="filtrar_nombre">Filtrar Nombre:</string>
 </resources>
