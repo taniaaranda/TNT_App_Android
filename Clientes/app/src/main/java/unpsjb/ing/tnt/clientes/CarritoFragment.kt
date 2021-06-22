@@ -64,7 +64,6 @@ class CarritoFragment : FirebaseConnectedFragment() {
                 .addOnFailureListener {
                     Toast.makeText(fragmentContext, "No se pudo crear el pedido, por favor reintente", Toast.LENGTH_LONG).show()
                 }
-
         }
 
         getDbReference().collection("carritos")
