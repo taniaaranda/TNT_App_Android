@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/loginclienteFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="unpsjb.ing.tnt.clientes.HomeFragment"
@@ -24,6 +24,27 @@
         android:label="CarritoFragment" >
         <action
             android:id="@+id/action_carritoFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginclienteFragment"
+        android:name="unpsjb.ing.tnt.clientes.LoginclienteFragment"
+        android:label="fragment_logincliente"
+        tools:layout="@layout/fragment_logincliente" >
+        <action
+            android:id="@+id/action_loginclienteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_loginclienteFragment_to_registroclienteFragment"
+            app:destination="@id/registroclienteFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registroclienteFragment"
+        android:name="unpsjb.ing.tnt.clientes.RegistroclienteFragment"
+        android:label="fragment_registrocliente"
+        tools:layout="@layout/fragment_registrocliente" >
+        <action
+            android:id="@+id/action_registroclienteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
