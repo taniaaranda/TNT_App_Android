@@ -1,22 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginFragment">
+    tools:context=".RegistroFragment">
 
     <!-- TODO: Update blank fragment layout -->
-
-    <!--<Button
-        android:id="@+id/button_iniciar_sesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:editable="true"
-        android:text="Iniciar Sesión"
-        app:backgroundTint="#494646" />-->
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="596dp"
@@ -24,15 +13,23 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="273dp"
+            android:layout_height="85dp"
             android:background="@drawable/background">
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="93dp"
-                android:src="@drawable/icono1" />
+                android:layout_marginTop="93dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="12dp"
+                android:fontFamily="@font/poppins_medium"
+                android:text="REGISTRARSE EN EL SISTEMA"
+                android:textColor="#ffffff"
+                android:textSize="18.5sp" />
         </FrameLayout>
 
         <RelativeLayout
@@ -77,7 +74,7 @@
             android:background="@drawable/blue_border_rounded_cornwe">
             <!-- INPUT -->
             <EditText
-                android:id="@+id/contraseña"
+                android:id="@+id/pass"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_toRightOf="@+id/icon"
@@ -103,7 +100,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/button_iniciar_sesion"
+            android:id="@+id/button_registro"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -115,38 +112,11 @@
             android:gravity="center"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:text="Iniciar sesion"
+            android:text="Registrarse"
             android:textColor="#ffffff"
             android:textSize="12sp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Olvido la contraseña ?"
-            android:textColor="#1566e0"
-            android:textSize="10.5sp" />
 
-        <TextView
-            android:layout_width="158dp"
-            android:layout_height="23dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="12dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Aun no esta registrado ?"
-            android:textColor="#1566e0"
-            android:textSize="10.5sp"
-            />
-       <Button
-            android:id="@+id/button_registrar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="Registrarse"
-            app:backgroundTint="#1566e0"
-       />
 
     </LinearLayout>
     <LinearLayout
