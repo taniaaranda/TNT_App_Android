@@ -8,7 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.text.set
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
@@ -43,34 +45,48 @@ class RegistroFragment : Fragment() {
     }
 
     //VOLVER ACA !!
-   // override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-     //   super.onViewCreated(view, savedInstanceState)
-       // val db = FirebaseFirestore.getInstance()
+    //Todavia falta recuperar el usuario para enviarlo a los fragmentos que lo usan, no encuentro
+    //como pasar este dato entre fragmentos aun, una vez iniciada la session deberia pasar al fragmento
+    //cerrar sesion, la navegacion esta hecha
 
-      //  val btn_registrar = view.findViewById<Button>(R.id.btn_registrar)
-       // val email = view.findViewById<EditText>(R.id.email)
-      //  val contraseña = view.findViewById<EditText>(R.id.contraseña)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-      //  btn_registrar.setOnClickListener {
-      //      if (email.text.isEmpty() || contraseña.text.isEmpty()) {
-       //         if (email.text.isEmpty()) {
-       //             email.error = "Debe ingresar un email"
-        //        }
-          //      if (contraseña.text.isEmpty()) {
-         //           contraseña.error = "Debe ingresar una contraseña"
-         //       }
-        //    } else {
-//
-        //        AlertDialog.Builder(context).apply {
-         //           setTitle("¡El vendedor se ha creado con éxito!")
-         //           setPositiveButton("Aceptar") { _: DialogInterface, _: Int ->
-         //               findNavController().navigate(R.id.altaTiendaFragment)
-          //          }
-         //       }.show()
-        //    }
-   //     }
-   //     }
+        val email = view.findViewById<EditText>(R.id.email)
+        val pass = view.findViewById<EditText>(R.id.pass)
+       // val button_registro1 = view.findViewById<Button>(R.id.button_registro)
+        val button_registro = view.findViewById<Button>(R.id.button_registro)
+        button_registro.setOnClickListener {
+            if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
+                FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
+                AlertDialog.Builder(context).apply {
+                    setTitle("¡El vendedor se ha creado con éxito!").show()
+                    findNavController().navigate(R.id.altaTiendaFragment)
 
+                }
+            } else {
+                if(email.text.isEmpty()){
+                    email.error ="Debe ingresar un email con la forma xxxx@xxxx.com"
+                }
+                if(pass.text.isEmpty()){
+                    pass.error ="Debe ingresar una contraseña"
+                }
+                AlertDialog.Builder(context).apply {
+                    setTitle("¡Debe ingresar los datos requeridos!").show()
+                }
+                findNavController().navigate(R.id.registroFragment)
+            }
+
+        }
+    }
+
+
+/**AlertDialog.Builder(context).apply{
+setTitle("¡El Producto se ha creado con éxito!")
+setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
+findNavController().navigate(R.id.menuFragment)
+}
+}.show()**/
 
     companion object {
         /**
