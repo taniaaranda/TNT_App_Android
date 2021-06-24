@@ -3,9 +3,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginclienteFragment">
+    tools:context=".LoginclienteFragment"
+    >
 
     <!-- TODO: Update blank fragment layout -->
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -15,14 +18,14 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="273dp"
-            android:background="@drawable/back">
+            android:background="@drawable/img">
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="93dp"
-                android:src="@drawable/back" />
+                android:src="@drawable/img" />
         </FrameLayout>
 
         <RelativeLayout
@@ -144,12 +147,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="13.7dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

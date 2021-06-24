@@ -13,21 +13,22 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
-            android:background="@drawable/back">
+            android:layout_height="273dp"
+            android:background="@drawable/img">
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="93dp"/>
+                android:layout_marginTop="93dp"
+                android:src="@drawable/img" />
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_marginTop="12dp"
                 android:fontFamily="@font/poppins_medium"
-                android:text="REGISTRARSE EN EL SISTEMA"
                 android:textColor="#ffffff"
                 android:textSize="18.5sp" />
         </FrameLayout>
