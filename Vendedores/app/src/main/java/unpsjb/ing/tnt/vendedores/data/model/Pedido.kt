@@ -13,7 +13,7 @@ val STATES = mapOf(
     "entregado" to "Entregado"
 )
 
-class Pedido(val id: String, val productos: ArrayList<String>, val estado: String, val estampaDeTiempo: Timestamp) {
+class Pedido (val id: String, val productos: ArrayList<String>, val estado: String, val estampaDeTiempo: Timestamp) {
     fun getFormattedId(): String {
         return "Pedido #$id"
     }

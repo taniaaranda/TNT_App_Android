@@ -1,17 +1,15 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.clientes
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.*
-import androidx.core.text.set
+import android.widget.Button
+import android.widget.EditText
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -20,10 +18,10 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [RegistroFragment.newInstance] factory method to
+ * Use the [RegistroclienteFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class RegistroFragment : Fragment() {
+class RegistroclienteFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -41,8 +39,9 @@ class RegistroFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_registro, container, false)
+        return inflater.inflate(R.layout.fragment_registrocliente, container, false)
     }
+
 
     //VOLVER ACA !!
     //Todavia falta recuperar el usuario para enviarlo a los fragmentos que lo usan, no encuentro
@@ -54,14 +53,15 @@ class RegistroFragment : Fragment() {
 
         val email = view.findViewById<EditText>(R.id.email)
         val pass = view.findViewById<EditText>(R.id.pass)
-       // val button_registro1 = view.findViewById<Button>(R.id.button_registro)
-        val button_registro = view.findViewById<Button>(R.id.button_registro)
+        val direccion = view.findViewById<EditText>(R.id.direccion)
+        // val button_registro1 = view.findViewById<Button>(R.id.button_registro)
+        val button_registro = view.findViewById<Button>(R.id.button_registrocliente)
         button_registro.setOnClickListener {
-            if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
+            if (email.text.isNotEmpty() || pass.text.isNotEmpty() || direccion.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
                 AlertDialog.Builder(context).apply {
-                    setTitle("¡El vendedor se ha creado con éxito!").show()
-                    findNavController().navigate(R.id.altaTiendaFragment)
+                    setTitle("¡El cliente se ha creado con éxito!").show()
+                    findNavController().navigate(R.id.homeFragment)
 
                 }
             } else {
@@ -71,22 +71,17 @@ class RegistroFragment : Fragment() {
                 if(pass.text.isEmpty()){
                     pass.error ="Debe ingresar una contraseña"
                 }
+                if(direccion.text.isEmpty()){
+                    direccion.error ="Debe ingresar una contraseña"
+                }
                 AlertDialog.Builder(context).apply {
                     setTitle("¡Debe ingresar los datos requeridos!").show()
                 }
-                findNavController().navigate(R.id.registroFragment)
+                findNavController().navigate(R.id.registroclienteFragment)
             }
 
         }
     }
-
-
-/**AlertDialog.Builder(context).apply{
-setTitle("¡El Producto se ha creado con éxito!")
-setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-findNavController().navigate(R.id.menuFragment)
-}
-}.show()**/
 
     companion object {
         /**
@@ -95,12 +90,12 @@ findNavController().navigate(R.id.menuFragment)
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment RegistroFragment.
+         * @return A new instance of fragment RegistroclienteFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            RegistroFragment().apply {
+            RegistroclienteFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

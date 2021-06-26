@@ -43,6 +43,9 @@
         <action
             android:id="@+id/action"
             app:destination="@id/menuFragment" />
+        <action
+            android:id="@+id/action_loginFragment3_to_registroFragment"
+            app:destination="@id/registroFragment" />
     </fragment>
     <fragment
         android:id="@+id/altaProductosFragment"
@@ -83,4 +86,18 @@
             android:id="@+id/action_productosFragment_to_altaProductosFragment"
             app:destination="@id/altaProductosFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/registroFragment"
+        android:name="unpsjb.ing.tnt.vendedores.RegistroFragment"
+        android:label="fragment_registro"
+        tools:layout="@layout/fragment_registro" >
+        <action
+            android:id="@+id/action_registroFragment_to_cerrarSesionFragment"
+            app:destination="@id/cerrarSesionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cerrarSesionFragment"
+        android:name="unpsjb.ing.tnt.vendedores.CerrarSesionFragment"
+        android:label="fragment_cerrar_sesion"
+        tools:layout="@layout/fragment_cerrar_sesion" />
 </navigation>
