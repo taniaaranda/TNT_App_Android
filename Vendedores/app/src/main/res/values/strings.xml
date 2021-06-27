@@ -122,6 +122,13 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="filtrar">Filtrar:</string>
+    <string name="product_name_filter_label">Filtrar por Nombre:</string>
+    <string name="bienvenida_label">¡Bienvenid@!</string>
+    <string name="nueva_tienda_label">Nueva Tienda</string>
+    <string name="cargar_productos_label">Cargar Productos</string>
+    <string name="menu_productos_label">Listado Productos</string>
+    <string name="cerrar_sesion_btn_label">Cerrar Sesión</string>
+    <string name="listado_pedidos_label">Listado Pedidos</string>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
 

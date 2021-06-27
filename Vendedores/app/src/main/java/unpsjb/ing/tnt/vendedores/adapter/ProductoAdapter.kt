@@ -31,8 +31,8 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
             item.nombre,
             item.cantidadDisponible,
             item.precioUnitario,
-            item.categoría,
-            item.fotografía,
+            item.categoria,
+            item.fotografia,
             item.observaciones
         )
     }
@@ -46,7 +46,10 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
         binding = DataBindingUtil.inflate(
             inflater, R.layout.item_producto, parent, false
         )
-        binding.Producto = getCastedItem(position)
+
+        val producto = getCastedItem(position)
+        binding.producto = producto
+        binding.imgFoto.setImageBitmap(producto.getBitmapImage())
 
         return binding.root
     }

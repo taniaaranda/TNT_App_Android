@@ -20,8 +20,11 @@
             android:id="@+id/action_menuFragment_to_listadoPedidosFragment"
             app:destination="@id/listadoPedidosFragment" />
         <action
-            android:id="@+id/action_menuFragment_to_productosFragment"
-            app:destination="@id/productosFragment" />
+            android:id="@+id/action_menuFragment_to_listadoProductosFragment"
+            app:destination="@id/listadoProductosFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_loginFragment3"
+            app:destination="@id/loginFragment3" />
     </fragment>
     <fragment
         android:id="@+id/altaTiendaFragment"
@@ -58,9 +61,6 @@
         <action
             android:id="@+id/action_altaProductosFragment_to_placeholder"
             app:destination="@id/placeholder" />
-        <action
-            android:id="@+id/action_altaProductosFragment_to_productosFragment"
-            app:destination="@id/productosFragment" />
     </fragment>
     <fragment
         android:id="@+id/listadoPedidosFragment"
@@ -78,15 +78,6 @@
             app:popUpToInclusive="true" />
     </fragment>
     <fragment
-        android:id="@+id/productosFragment"
-        android:name="unpsjb.ing.tnt.vendedores.ProductosFragment"
-        android:label="fragment_item_list"
-        tools:layout="@layout/fragment_item_list" >
-        <action
-            android:id="@+id/action_productosFragment_to_altaProductosFragment"
-            app:destination="@id/altaProductosFragment" />
-    </fragment>
-    <fragment
         android:id="@+id/registroFragment"
         android:name="unpsjb.ing.tnt.vendedores.RegistroFragment"
         android:label="fragment_registro"
@@ -100,4 +91,8 @@
         android:name="unpsjb.ing.tnt.vendedores.CerrarSesionFragment"
         android:label="fragment_cerrar_sesion"
         tools:layout="@layout/fragment_cerrar_sesion" />
+    <fragment
+        android:id="@+id/listadoProductosFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ListadoProductosFragment"
+        android:label="ListadoProductosFragment" />
 </navigation>
