@@ -66,6 +66,10 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
         if (snapshots != null) {
             for (document in snapshots.documents) {
+                if (!Producto.validateDocument(document)) {
+                    continue
+                }
+
                 var producto: Producto? = null
 
                 if (filtro != "") {

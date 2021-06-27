@@ -1,6 +1,8 @@
 package unpsjb.ing.tnt.vendedores.data.model
 
+import android.util.Log
 import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
 import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
@@ -45,6 +47,36 @@ class Pedido (val id: String, val productos: ArrayList<String>, val estado: Stri
 
         fun getStateByKey(key: String): String {
             return STATES[key]!!
+        }
+
+        fun validateDocument(document: DocumentSnapshot?): Boolean {
+            var valid = false
+
+            if (document !== null) {
+                valid = true
+
+                if (!document.contains("id")) {
+                    Log.e("ValidacionPedido", "El campo 'id' no esta presente")
+                    valid = false
+                }
+
+                if (!document.contains("productos")) {
+                    Log.e("ValidacionPedido", "El campo 'productos' no esta presente")
+                    valid = false
+                }
+
+                if (!document.contains("estado")) {
+                    Log.e("ValidacionPedido", "El campo 'estado' no esta presente")
+                    valid = false
+                }
+
+                if (!document.contains("estampaDeTiempo")) {
+                    Log.e("ValidacionPedido", "El campo 'estampaDeTiempo' no esta presente")
+                    valid = false
+                }
+            }
+
+            return valid
         }
     }
 }

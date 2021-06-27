@@ -96,6 +96,10 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
 
         if (snapshots != null) {
             for (document in snapshots.documents) {
+                if (!Pedido.validateDocument(document)) {
+                    continue
+                }
+
                 val estado = document.get("estado") as String
 
                 if (filtro != "Todos" && estado != Pedido.getKeyByState(filtro)) {
