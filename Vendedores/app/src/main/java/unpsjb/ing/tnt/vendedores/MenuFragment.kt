@@ -6,9 +6,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import unpsjb.ing.tnt.vendedores.databinding.FragmentMenuBinding
 
 class MenuFragment : Fragment() {
+    private lateinit var binding: FragmentMenuBinding
+    private lateinit var menuView: View
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
@@ -16,36 +21,38 @@ class MenuFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_menu, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_menu, container, false
+        )
+        menuView = binding.root
+
+        return menuView
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setUpBindings()
+    }
 
-        val btn_alta_tienda = view.findViewById<Button>(R.id.btn_alta_tienda)
-        btn_alta_tienda.setOnClickListener {
+    private fun setUpBindings() {
+        binding.btnAltaTienda.setOnClickListener {
             findNavController().navigate(R.id.altaTiendaFragment)
         }
 
-        val btn_alta_productos = view.findViewById<Button>(R.id.btn_alta_productos)
-        btn_alta_productos.setOnClickListener {
+        binding.btnAltaProductos.setOnClickListener {
             findNavController().navigate(R.id.altaProductosFragment)
         }
 
-        val btn_menu_productos = view.findViewById<Button>(R.id.btn_menu_productos)
-        btn_menu_productos.setOnClickListener {
-            //findNavController().navigate(R.id.altaProductosFragment)
+        binding.btnMenuProductos.setOnClickListener {
             findNavController().navigate(R.id.listadoProductosFragment)
         }
 
-        val btn_listado_pedidos = view.findViewById<Button>(R.id.btn_listado_pedidos)
-        btn_listado_pedidos.setOnClickListener {
+        binding.btnListadoPedidos.setOnClickListener {
             findNavController().navigate(R.id.listadoPedidosFragment)
         }
 
-        val btn_cerrar_sesion = view.findViewById<Button>(R.id.cerrar_sesion)
-        btn_cerrar_sesion.setOnClickListener {
+        binding.cerrarSesion.setOnClickListener {
             findNavController().navigate(R.id.action_menuFragment_to_loginFragment3)
         }
     }
