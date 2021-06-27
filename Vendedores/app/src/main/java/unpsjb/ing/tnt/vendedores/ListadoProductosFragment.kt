@@ -6,15 +6,11 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
-import android.widget.ArrayAdapter
-import android.widget.Toast
+import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import unpsjb.ing.tnt.vendedores.adapter.ProductoAdapter
-import unpsjb.ing.tnt.vendedores.data.model.Pedido
 import unpsjb.ing.tnt.vendedores.data.model.Producto
 import unpsjb.ing.tnt.vendedores.databinding.FragmentItemListBinding
 import java.util.*
@@ -41,38 +37,17 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
         fragmentContext = this.requireContext()
         listView = binding.root
+        binding.nombreFiltro.doOnTextChanged { text, start, before, count ->
+            registerProductoSnapshotListener(text.toString())
+        }
 
-        prepareSpinner()
         registerProductoSnapshotListener()
 
         return listView
     }
 
-    private fun prepareSpinner() {
-        val estadosAdapter = ArrayAdapter(this.requireContext(),
-            android.R.layout.simple_spinner_item, Producto.getStateValues())
-        binding.filtroEstados.adapter = estadosAdapter
-
-        binding.filtroEstados.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
-            override fun onNothingSelected(parent: AdapterView<*>?) {
-                Toast.makeText(fragmentContext, "Debes seleccionar algún filtro", Toast.LENGTH_SHORT).show()
-            }
-
-            override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                registerProductoSnapshotListener()
-            }
-        }
-    }
-
-    private fun registerProductoSnapshotListener() {
+    private fun registerProductoSnapshotListener(filtro: String = "") {
         productosSnapshotListener?.remove()
-
-        var selectedFilter = binding.filtroEstados.selectedItem
-
-        if (selectedFilter == null) {
-            binding.filtroEstados.setSelection(0)
-            selectedFilter = binding.filtroEstados.selectedItem
-        }
 
         productosSnapshotListener = getDbReference().collection(PRODUCTOS_COLLECTION_NAME)
             .addSnapshotListener { snapshots, e ->
@@ -81,30 +56,48 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
                     return@addSnapshotListener
                 }
 
-                val adapter = ProductoAdapter(this.requireContext(), parseProducto(snapshots, selectedFilter as String))
+                val adapter = ProductoAdapter(this.requireContext(), parseProductos(snapshots, filtro))
                 binding.listadoProductos.adapter = adapter
             }
     }
 
-    private fun parseProducto(snapshots: QuerySnapshot?, filtro: String): List<Producto> {
+    private fun parseProductos(snapshots: QuerySnapshot?, filtro: String): List<Producto> {
         val productos = ArrayList<Producto>()
 
         if (snapshots != null) {
             for (document in snapshots.documents) {
-                val estado = document.get("estado") as String
+                var producto: Producto? = null
 
-                if (filtro != "Todos" && estado != Producto.getKeyByState(filtro)) {
-                    continue
+                if (filtro != "") {
+                    if (document.get("nombre").toString().contains(filtro, ignoreCase = true)) {
+                        producto = Producto(
+                            document.get("id") as String,
+                            document.get("nombre") as String,
+                            document.get("cantidadDisponible") as Long,
+                            document.get("precioUnitario") as Long,
+                            document.get("categoria") as String,
+                            document.get("fotografia") as String,
+                            document.get("observaciones") as String
+                        )
+                    }
+                } else {
+                    producto = Producto(
+                        document.get("id") as String,
+                        document.get("nombre") as String,
+                        document.get("cantidadDisponible") as Long,
+                        document.get("precioUnitario") as Long,
+                        document.get("categoria") as String,
+                        document.get("fotografia") as String,
+                        document.get("observaciones") as String
+                    )
                 }
 
-                productos.add(Producto(
-                    document.get("id") as String,
-                    document.get("nombre") as ArrayList<String>,
-                    Producto.getStateByKey(document.get("estado") as String),
-                    document.get("estampaDeTiempo") as Timestamp
-                    ))
+                if (producto != null) {
+                    productos.add(producto)
+                }
             }
         }
+
         return productos.sortedWith(compareBy { it.id })
     }
 }
