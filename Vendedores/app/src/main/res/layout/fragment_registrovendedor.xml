@@ -23,7 +23,6 @@
                 android:layout_marginTop="93dp"
                 android:src="@drawable/tiendaonline" />
 
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
