@@ -45,6 +45,7 @@ class LoginvendedorFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         val email = view.findViewById<EditText>(R.id.email)
         val contraseña = view.findViewById<EditText>(R.id.contraseña)
         val button_vendedorregistro = view.findViewById<Button>(R.id.button_vendedorregistro)

@@ -20,5 +20,6 @@ class MainActivity : AppCompatActivity() {
         selfReference = this
 
         setContentView(binding.root)
+        supportActionBar?.hide()
     }
 }

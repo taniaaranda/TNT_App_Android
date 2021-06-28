@@ -14,14 +14,14 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="273dp"
-            >
+            android:background="@drawable/tiendaonline">
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="93dp"
-                />
+                android:src="@drawable/tiendaonline" />
         </FrameLayout>
 
         <RelativeLayout
