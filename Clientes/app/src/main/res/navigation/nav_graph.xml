@@ -32,11 +32,11 @@
         android:label="fragment_logincliente"
         tools:layout="@layout/fragment_logincliente" >
         <action
-            android:id="@+id/action_loginclienteFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-        <action
             android:id="@+id/action_loginclienteFragment_to_registroclienteFragment"
             app:destination="@id/registroclienteFragment" />
+        <action
+            android:id="@+id/action_loginclienteFragment_to_cerrarsesionclienteFragment"
+            app:destination="@id/cerrarsesionclienteFragment" />
     </fragment>
     <fragment
         android:id="@+id/registroclienteFragment"
@@ -45,6 +45,15 @@
         tools:layout="@layout/fragment_registrocliente" >
         <action
             android:id="@+id/action_registroclienteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/cerrarsesionclienteFragment"
+        android:name="unpsjb.ing.tnt.clientes.CerrarsesionclienteFragment"
+        android:label="fragment_cerrarsesioncliente"
+        tools:layout="@layout/fragment_cerrarsesioncliente" >
+        <action
+            android:id="@+id/action_cerrarsesionclienteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
 </navigation>

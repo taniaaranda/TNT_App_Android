@@ -1,12 +1,15 @@
 package unpsjb.ing.tnt.clientes
 
+import android.app.AlertDialog
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.EditText
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.auth.FirebaseAuth
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -39,20 +42,42 @@ class LoginclienteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_logincliente, container, false)
     }
 
-    //volver aca, falta controlar que el usuario exista en la base de datos, que no ingresa vacio, la aplicacion
-    //falla, por eso comentado
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val button_iniciar_sesion = view.findViewById<Button>(R.id.button_iniciar_sesion)
-        button_iniciar_sesion.setOnClickListener {
-            // FirebaseAuth.getInstance().singOut()
-            findNavController().navigate(R.id.homeFragment)
-        }
-        val button_registrar = view.findViewById<Button>(R.id.button_clienteregistro)
-        button_registrar.setOnClickListener {
+        val email = view.findViewById<EditText>(R.id.email)
+        val contraseña = view.findViewById<EditText>(R.id.contraseña)
+        val button_registrarcliente = view.findViewById<Button>(R.id.button_clienteregistro)
+        button_registrarcliente.setOnClickListener {
             findNavController().navigate(R.id.registroclienteFragment)
         }
+        val button_iniciar_sesion = view.findViewById<Button>(R.id.button_iniciar_sesion)
+        button_iniciar_sesion.setOnClickListener {
+            if (email.text.isNotEmpty() || contraseña.text.isNotEmpty()) {
+                FirebaseAuth.getInstance()
+                    .signInWithEmailAndPassword(email.text.toString(), contraseña.text.toString())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Login exitoso!").show()
+                                findNavController().navigate(R.id.cerrarsesionclienteFragment)
+                            }
+
+                        } else {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Usuario o contraeña incorrectos!").show()
+                                findNavController().navigate(R.id.loginclienteFragment)
+                            }
+                        }
+                    }
+            } else {
+                AlertDialog.Builder(context).apply {
+                    setTitle("¡Ingrese los datos!").show()
+                    findNavController().navigate(R.id.loginclienteFragment)
+                }
+            }
+        }
+
     }
 
     companion object {
