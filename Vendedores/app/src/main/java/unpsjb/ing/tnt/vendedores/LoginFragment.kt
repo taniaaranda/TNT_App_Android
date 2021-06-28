@@ -46,36 +46,40 @@ class LoginFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_login, container, false)
     }
 
-//volver aca, falta controlar que el usuario exista en la base de datos, que no ingresa vacio, la aplicacion
-    //falla, por eso comentado
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-       // val email = view.findViewById<EditText>(R.id.email)
-        //val pass = view.findViewById<EditText>(R.id.pass)
-       // if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
-          //  val button_registrar = view.findViewById<Button>(R.id.button_registrar)
+        val email = view.findViewById<EditText>(R.id.email)
+        val contraseña = view.findViewById<EditText>(R.id.contraseña)
         val button_iniciar_sesion = view.findViewById<Button>(R.id.button_iniciar_sesion)
-            button_iniciar_sesion.setOnClickListener {
-               // FirebaseAuth.getInstance().singOut()
-                findNavController().navigate(R.id.menuFragment)
-            }
-        //}
-        /**} else {
-            if (email.text.isEmpty()) {
-                email.error = "Debe ingresar un email con la forma xxxx@xxxx.com"
-            }
-            if (pass.text.isEmpty()) {
-                pass.error = "Debe ingresar una contraseña"
-            }
-            AlertDialog.Builder(context).apply {
-                setTitle("¡Debe ingresar los datos requeridos!").show()
-            }**/
-            val button_registrar = view.findViewById<Button>(R.id.button_registrar)
-            button_registrar.setOnClickListener {
-                findNavController().navigate(R.id.registroFragment)
+        val button_registrar = view.findViewById<Button>(R.id.button_registrovendedor)
+        button_registrar.setOnClickListener {
+            findNavController().navigate(R.id.registroFragment)
+        }
+        button_iniciar_sesion.setOnClickListener {
+            if (email.text.isNotEmpty() || contraseña.text.isNotEmpty()) {
+                FirebaseAuth.getInstance()
+                    .signInWithEmailAndPassword(email.text.toString(), contraseña.text.toString())
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Login exitoso!").show()
+                                findNavController().navigate(R.id.menuFragment)
+                            }
+
+                        } else {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Usuario o contraeña incorrectos!").show()
+                                findNavController().navigate(R.id.loginvendedorFragment)
+                            }
+
+                        }
+                    }
             }
         }
+    }
+
 
 
 

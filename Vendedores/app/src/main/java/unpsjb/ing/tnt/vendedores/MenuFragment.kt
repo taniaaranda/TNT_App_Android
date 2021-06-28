@@ -53,7 +53,8 @@ class MenuFragment : Fragment() {
         }
 
         binding.cerrarSesion.setOnClickListener {
-            findNavController().navigate(R.id.action_menuFragment_to_loginFragment3)
+            findNavController().navigate(R.id.loginvendedorFragment)
         }
+
     }
 }

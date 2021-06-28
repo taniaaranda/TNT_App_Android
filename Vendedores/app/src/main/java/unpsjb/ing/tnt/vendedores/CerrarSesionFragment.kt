@@ -5,6 +5,9 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
+import android.widget.TextView
+import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -35,6 +38,20 @@ class CerrarSesionFragment : Fragment() {
     ): View? {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_cerrar_sesion, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val email = view.findViewById<TextView>(R.id.email)
+        val button_cerrarSesion = view.findViewById<Button>(R.id.button_cerrarSesion)
+        button_cerrarSesion.setOnClickListener {
+            findNavController().navigate(R.id.loginvendedorFragment)
+        }
+        val button_iramenuvendedor = view.findViewById<Button>(R.id.button_iramenuvendedor)
+        button_iramenuvendedor.setOnClickListener {
+            findNavController().navigate(R.id.menuFragment)
+        }
     }
 
     companion object {

@@ -8,14 +8,8 @@
 
     <!-- TODO: Update blank fragment layout -->
 
-    <!--<Button
-        android:id="@+id/button_iniciar_sesion"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:editable="true"
-        android:text="Iniciar Sesión"
-        app:backgroundTint="#494646" />-->
+
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -25,14 +19,14 @@
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="273dp"
-            android:background="@drawable/background">
+           >
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="93dp"
-                android:src="@drawable/icono1" />
+                />
         </FrameLayout>
 
         <RelativeLayout
@@ -139,14 +133,14 @@
             android:textColor="#1566e0"
             android:textSize="10.5sp"
             />
-       <Button
-            android:id="@+id/button_registrar"
+        <Button
+            android:id="@+id/button_registrovendedor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Registrarse"
-            app:backgroundTint="#1566e0"
-       />
+            android:foregroundTint="@color/white"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -154,12 +148,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="13.7dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

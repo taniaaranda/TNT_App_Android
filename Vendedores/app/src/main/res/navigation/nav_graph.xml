@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/loginFragment3">
+    app:startDestination="@id/loginvendedorFragment">
 
     <fragment
         android:id="@+id/menuFragment"
@@ -22,9 +22,6 @@
         <action
             android:id="@+id/action_menuFragment_to_listadoProductosFragment"
             app:destination="@id/listadoProductosFragment" />
-        <action
-            android:id="@+id/action_menuFragment_to_loginFragment3"
-            app:destination="@id/loginFragment3" />
     </fragment>
     <fragment
         android:id="@+id/altaTiendaFragment"
@@ -34,21 +31,6 @@
         <action
             android:id="@+id/action_altaTiendaFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/loginFragment3"
-        android:name="unpsjb.ing.tnt.vendedores.LoginFragment"
-        android:label="fragment_login"
-        tools:layout="@layout/fragment_login" >
-        <action
-            android:id="@+id/action_loginFragment3_to_menuFragment"
-            app:destination="@id/menuFragment" />
-        <action
-            android:id="@+id/action"
-            app:destination="@id/menuFragment" />
-        <action
-            android:id="@+id/action_loginFragment3_to_registroFragment"
-            app:destination="@id/registroFragment" />
     </fragment>
     <fragment
         android:id="@+id/altaProductosFragment"
@@ -82,17 +64,40 @@
         android:name="unpsjb.ing.tnt.vendedores.RegistroFragment"
         android:label="fragment_registro"
         tools:layout="@layout/fragment_registro" >
-        <action
-            android:id="@+id/action_registroFragment_to_cerrarSesionFragment"
-            app:destination="@id/cerrarSesionFragment" />
+
     </fragment>
     <fragment
         android:id="@+id/cerrarSesionFragment"
         android:name="unpsjb.ing.tnt.vendedores.CerrarSesionFragment"
         android:label="fragment_cerrar_sesion"
-        tools:layout="@layout/fragment_cerrar_sesion" />
+        tools:layout="@layout/fragment_cerrar_sesion" >
+        <action
+            android:id="@+id/action_cerrarSesionFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
     <fragment
         android:id="@+id/listadoProductosFragment"
         android:name="unpsjb.ing.tnt.vendedores.ListadoProductosFragment"
         android:label="ListadoProductosFragment" />
+    <fragment
+        android:id="@+id/loginvendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.LoginvendedorFragment"
+        android:label="fragment_loginvendedor"
+        tools:layout="@layout/fragment_loginvendedor" >
+        <action
+            android:id="@+id/action_loginvendedorFragment_to_cerrarSesionFragment"
+            app:destination="@id/cerrarSesionFragment" />
+        <action
+            android:id="@+id/action_loginvendedorFragment_to_registrovendedorFragment"
+            app:destination="@id/registrovendedorFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/registrovendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.RegistrovendedorFragment"
+        android:label="fragment_registrovendedor"
+        tools:layout="@layout/fragment_registrovendedor" >
+        <action
+            android:id="@+id/action_registrovendedorFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
+    </fragment>
 </navigation>

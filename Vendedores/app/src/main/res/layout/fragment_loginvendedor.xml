@@ -3,10 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CerrarSesionFragment">
+    tools:context=".LoginvendedorFragment">
 
 
-    <!-- TODO: Update blank fragment layout -->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="596dp"
@@ -14,23 +13,15 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="85dp"
-            android:background="@drawable/background">
+            android:layout_height="273dp"
+            >
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginTop="93dp"/>
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginTop="12dp"
-                android:fontFamily="@font/poppins_medium"
-                android:text=""
-                android:textColor="#ffffff"
-                android:textSize="18.5sp" />
+                android:layout_marginTop="93dp"
+                />
         </FrameLayout>
 
         <RelativeLayout
@@ -41,7 +32,7 @@
             android:layout_marginRight="62dp"
             android:background="@drawable/blue_border_rounded_cornwe">
             <!-- INPUT -->
-            <TextView
+            <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,7 +47,7 @@
                 android:paddingBottom="15dp"
                 android:textCursorDrawable="@drawable/cursor_color"
                 android:textSize="12sp" />
-
+            <!-- ICON -->
             <ImageView
                 android:id="@+id/username_icon"
                 android:layout_width="14.7dp"
@@ -73,11 +64,35 @@
             android:layout_marginTop="12.7dp"
             android:layout_marginRight="62dp"
             android:background="@drawable/blue_border_rounded_cornwe">
-
+            <!-- INPUT -->
+            <EditText
+                android:id="@+id/contraseña"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/icon"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="Contraseña"
+                android:inputType="textPassword"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:paddingLeft="17dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="12sp" />
+            <!-- ICON -->
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="14.7dp"
+                android:layout_height="10.3dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="17dp"
+                android:src="@drawable/password" />
         </RelativeLayout>
 
         <Button
-            android:id="@+id/button_cerrarSesion"
+            android:id="@+id/button_iniciar_sesionvendedor"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -89,27 +104,38 @@
             android:gravity="center"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:text="Cerrar sesión"
+            android:text="Iniciar sesion"
             android:textColor="#ffffff"
             android:textSize="12sp"/>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Olvido la contraseña ?"
+            android:textColor="#1566e0"
+            android:textSize="10.5sp" />
+
+        <TextView
+            android:layout_width="158dp"
+            android:layout_height="23dp"
+            android:layout_gravity="center"
+            android:layout_marginTop="12dp"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Aun no esta registrado ?"
+            android:textColor="#1566e0"
+            android:textSize="10.5sp"
+            />
         <Button
-            android:id="@+id/button_iramenuvendedor"
-            android:layout_width="match_parent"
+            android:id="@+id/button_vendedorregistro"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:layout_marginLeft="62dp"
-            android:layout_marginTop="18.7dp"
-            android:layout_marginRight="62dp"
-            android:background="@drawable/blue_fill__rounded_color"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center"
-            android:paddingTop="14dp"
-            android:paddingBottom="14dp"
-            android:text="Ir a menu"
-            android:textColor="#ffffff"
-            android:textSize="12sp"/>
-
+            android:text="Registrarse"
+            android:foregroundTint="@color/white"
+            />
 
     </LinearLayout>
     <LinearLayout
@@ -117,12 +143,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="13.7dp"
             android:gravity="center"
             android:orientation="horizontal">
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -133,6 +161,5 @@
         </LinearLayout>
 
     </LinearLayout>
-
 
 </FrameLayout>
