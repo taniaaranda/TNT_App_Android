@@ -42,37 +42,37 @@ class RegistroclienteFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_registrocliente, container, false)
     }
 
-
-    //VOLVER ACA !!
-    //Todavia falta recuperar el usuario para enviarlo a los fragmentos que lo usan, no encuentro
-    //como pasar este dato entre fragmentos aun, una vez iniciada la session deberia pasar al fragmento
-    //cerrar sesion, la navegacion esta hecha
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
         val email = view.findViewById<EditText>(R.id.email)
         val pass = view.findViewById<EditText>(R.id.pass)
         val direccion = view.findViewById<EditText>(R.id.direccion)
-        // val button_registro1 = view.findViewById<Button>(R.id.button_registro)
-        val button_registro = view.findViewById<Button>(R.id.button_registrocliente)
-        button_registro.setOnClickListener {
-            if (email.text.isNotEmpty() || pass.text.isNotEmpty() || direccion.text.isNotEmpty()) {
+        val button_registrocliente = view.findViewById<Button>(R.id.button_registrocliente)
+        button_registrocliente.setOnClickListener {
+            if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
-                AlertDialog.Builder(context).apply {
-                    setTitle("¡El cliente se ha creado con éxito!").show()
-                    findNavController().navigate(R.id.homeFragment)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡El cliente se ha creado con éxito!").show()
+                                findNavController().navigate(R.id.cerrarsesionclienteFragment)
+                            }
 
-                }
+                        } else {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Debe ingresar un email con forma xxx@xxxx y una contrasela alfanumerica!").show()
+                                findNavController().navigate(R.id.registroclienteFragment)
+                            }
+                        }
+                        }
+
             } else {
                 if(email.text.isEmpty()){
                     email.error ="Debe ingresar un email con la forma xxxx@xxxx.com"
                 }
                 if(pass.text.isEmpty()){
                     pass.error ="Debe ingresar una contraseña"
-                }
-                if(direccion.text.isEmpty()){
-                    direccion.error ="Debe ingresar una contraseña"
                 }
                 AlertDialog.Builder(context).apply {
                     setTitle("¡Debe ingresar los datos requeridos!").show()
@@ -82,6 +82,7 @@ class RegistroclienteFragment : Fragment() {
 
         }
     }
+
 
     companion object {
         /**
