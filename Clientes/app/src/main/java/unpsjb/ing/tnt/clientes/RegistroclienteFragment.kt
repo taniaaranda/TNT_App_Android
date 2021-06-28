@@ -52,11 +52,21 @@ class RegistroclienteFragment : Fragment() {
         button_registrocliente.setOnClickListener {
             if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
-                AlertDialog.Builder(context).apply {
-                    setTitle("¡El cliente se ha creado con éxito!").show()
-                    findNavController().navigate(R.id.homeFragment)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡El cliente se ha creado con éxito!").show()
+                                findNavController().navigate(R.id.cerrarsesionclienteFragment)
+                            }
 
-                }
+                        } else {
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Debe ingresar un email con forma xxx@xxxx y una contrasela alfanumerica!").show()
+                                findNavController().navigate(R.id.registroclienteFragment)
+                            }
+                        }
+                        }
+
             } else {
                 if(email.text.isEmpty()){
                     email.error ="Debe ingresar un email con la forma xxxx@xxxx.com"
