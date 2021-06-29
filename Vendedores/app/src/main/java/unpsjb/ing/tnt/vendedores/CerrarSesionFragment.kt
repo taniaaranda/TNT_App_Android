@@ -8,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
-import androidx.core.widget.addTextChangedListener
 import androidx.navigation.fragment.findNavController
 import unpsjb.ing.tnt.vendedores.databinding.FragmentMenuBinding
 
@@ -19,7 +18,11 @@ class CerrarSesionFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val email = this.arguments?.getStringArrayList("email")
+        var mail = view?.findViewById<TextView>(R.id.email)
+        if (mail != null) {
+            mail.text = email.toString()
+        }
     }
 
     override fun onCreateView(
@@ -32,9 +35,6 @@ class CerrarSesionFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-       // val correo = this.arguments?.getStringArrayList("email")
-        val correo = this.arguments?.getString(toString())
-        var mail = view.findViewById<TextView>(R.id.email)
 
         val button_cerrarSesion = view.findViewById<Button>(R.id.button_cerrarSesion)
         button_cerrarSesion.setOnClickListener {
