@@ -39,7 +39,7 @@
             android:layout_marginRight="62dp"
             android:background="@drawable/blue_border_rounded_cornwe">
             <!-- INPUT -->
-            <EditText
+            <TextView
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

@@ -11,17 +11,17 @@
         android:layout_height="596dp"
         android:orientation="vertical">
 
-        <FrameLayout
+         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="273dp"
-            >
+            android:background="@drawable/tiendaonline">
 
             <ImageView
                 android:layout_width="77dp"
                 android:layout_height="77dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="93dp"
-                />
+                android:src="@drawable/tiendaonline" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -99,8 +99,6 @@
                 android:layout_marginLeft="17dp"
                 android:src="@drawable/password" />
         </RelativeLayout>
-
-
 
         <Button
             android:id="@+id/button_registrovendedor"
