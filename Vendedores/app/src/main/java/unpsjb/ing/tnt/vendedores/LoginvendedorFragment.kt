@@ -2,12 +2,15 @@ package unpsjb.ing.tnt.vendedores
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.renderscript.ScriptGroup
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.os.bundleOf
+import androidx.databinding.BindingAdapter
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 
@@ -61,7 +64,8 @@ class LoginvendedorFragment : Fragment() {
                         if (it.isSuccessful) {
                             AlertDialog.Builder(context).apply {
                                 setTitle("¡Login exitoso!").show()
-                                findNavController().navigate(R.id.cerrarSesionFragment)
+                                val bundle = bundleOf("email" to email.text.toString())
+                                findNavController().navigate(R.id.cerrarSesionFragment, bundle)
                             }
 
                         } else {
