@@ -11,9 +11,6 @@
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action
-            android:id="@+id/action_menuFragment_to_altaTiendaFragment"
-            app:destination="@id/altaTiendaFragment" />
-        <action
             android:id="@+id/action_menuFragment_to_altaProductosFragment2"
             app:destination="@id/altaProductosFragment" />
         <action
@@ -40,9 +37,6 @@
         <action
             android:id="@+id/action_altaProductosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
-        <action
-            android:id="@+id/action_altaProductosFragment_to_placeholder"
-            app:destination="@id/placeholder" />
     </fragment>
     <fragment
         android:id="@+id/listadoPedidosFragment"
@@ -52,19 +46,6 @@
         <action
             android:id="@+id/action_listadoPedidosFragment_to_menuFragment"
             app:destination="@id/menuFragment" />
-    </fragment>
-    <fragment android:id="@+id/placeholder" >
-        <action
-            android:id="@+id/action_placeholder_pop"
-            app:popUpTo="@id/placeholder"
-            app:popUpToInclusive="true" />
-    </fragment>
-    <fragment
-        android:id="@+id/registroFragment"
-        android:name="unpsjb.ing.tnt.vendedores.RegistroFragment"
-        android:label="fragment_registro"
-        tools:layout="@layout/fragment_registro" >
-
     </fragment>
     <fragment
         android:id="@+id/cerrarSesionFragment"
@@ -90,6 +71,9 @@
         <action
             android:id="@+id/action_loginvendedorFragment_to_registrovendedorFragment"
             app:destination="@id/registrovendedorFragment" />
+        <action
+            android:id="@+id/action_loginvendedorFragment_to_menuFragment"
+            app:destination="@id/menuFragment" />
     </fragment>
     <fragment
         android:id="@+id/registrovendedorFragment"
@@ -97,7 +81,7 @@
         android:label="fragment_registrovendedor"
         tools:layout="@layout/fragment_registrovendedor" >
         <action
-            android:id="@+id/action_registrovendedorFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
+            android:id="@+id/action_registrovendedorFragment_to_altaTiendaFragment2"
+            app:destination="@id/altaTiendaFragment" />
     </fragment>
 </navigation>

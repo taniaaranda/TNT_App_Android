@@ -11,6 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -49,11 +50,14 @@ class AltaTiendaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val email = arguments?.getString("email")
+
+
         val rubros = resources.getStringArray(R.array.rubros)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, rubros)
         val atxt_rubro = view.findViewById<AutoCompleteTextView>(R.id.atxt_rubro)
         atxt_rubro.setAdapter(arrayAdapter)
-
 
         val btn_hora_inicio = view.findViewById<Button>(R.id.btn_hora_inicio)
         val btn_hora_cierre = view.findViewById<Button>(R.id.btn_hora_cierre)
@@ -149,15 +153,13 @@ class AltaTiendaFragment : Fragment() {
                         hashMapOf("rubro" to atxt_rubro.text.toString(),
                                 "ubicacion" to txt_ubicacion.text.toString(),
                                 "horario_de_atencion" to arrayListOf(btn_hora_inicio.text.toString().substring(15,20),btn_hora_cierre.text.toString().substring(15,20)),
-                                "metodos_de_pago" to metodos_de_pago
+                                "metodos_de_pago" to metodos_de_pago,
+                                "usuario" to email.toString()
                         )
                 )
-                AlertDialog.Builder(context).apply{
-                    setTitle("¡La tienda se ha creado con éxito!")
-                    setPositiveButton("Aceptar"){_: DialogInterface, _: Int ->
-                        findNavController().navigate(R.id.menuFragment)
-                    }
-                }.show()
+                Toast.makeText(requireParentFragment().requireContext(), "¡La tienda se ha creado con éxito!", Toast.LENGTH_SHORT).show()
+                val bundle = bundleOf("email" to email.toString())
+                findNavController().navigate(R.id.menuFragment, bundle)
             }
 
         }

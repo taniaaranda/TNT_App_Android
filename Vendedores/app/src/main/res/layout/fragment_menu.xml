@@ -24,23 +24,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:id="@+id/btn_alta_tienda"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:gravity="center"
-            android:text="@string/nueva_tienda_label"
-            app:backgroundTint="#494646"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView" />
-
-        <Button
             android:id="@+id/btn_alta_productos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -55,7 +38,7 @@
             app:backgroundTint="#494646"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/btn_alta_tienda" />
+            app:layout_constraintTop_toBottomOf="@+id/textView" />
 
         <View
             android:id="@+id/divider"

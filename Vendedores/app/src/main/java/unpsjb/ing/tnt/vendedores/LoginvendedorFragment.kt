@@ -13,6 +13,7 @@ import androidx.core.os.bundleOf
 import androidx.databinding.BindingAdapter
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -65,7 +66,7 @@ class LoginvendedorFragment : Fragment() {
                             AlertDialog.Builder(context).apply {
                                 setTitle("¡Login exitoso!").show()
                                 val bundle = bundleOf("email" to email.text.toString())
-                                findNavController().navigate(R.id.cerrarSesionFragment, bundle)
+                                findNavController().navigate(R.id.menuFragment, bundle)
                             }
 
                         } else {
