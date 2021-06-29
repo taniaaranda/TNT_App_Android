@@ -1,6 +1,7 @@
 package unpsjb.ing.tnt.vendedores
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -16,6 +17,14 @@ class MenuFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val email = this.arguments?.getStringArrayList("email")
+        if (email != null){
+            Log.d("Usuario menu", email.toString())
+        }
+        else{
+            Log.d("Usuario menu", "no esta")
+        }
     }
 
     override fun onCreateView(
