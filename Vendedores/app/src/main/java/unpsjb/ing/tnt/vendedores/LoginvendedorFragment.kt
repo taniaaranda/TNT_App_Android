@@ -62,10 +62,10 @@ class LoginvendedorFragment : Fragment() {
                     .signInWithEmailAndPassword(email.text.toString(), contraseña.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
+                            val bundle = bundleOf("email" to email.text.toString())
+                            findNavController().navigate(R.id.menuFragment, bundle)
                             AlertDialog.Builder(context).apply {
                                 setTitle("¡Login exitoso!").show()
-                                val bundle = bundleOf("email" to email.text.toString())
-                                findNavController().navigate(R.id.cerrarSesionFragment, bundle)
                             }
 
                         } else {
