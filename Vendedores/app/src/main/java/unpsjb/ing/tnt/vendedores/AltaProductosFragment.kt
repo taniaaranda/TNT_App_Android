@@ -7,8 +7,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 
 private const val ARG_PARAM1 = "param1"
 private const val ARG_PARAM2 = "param2"
@@ -35,6 +37,9 @@ class AltaProductosFragment : FirebaseConnectedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val tienda = arguments?.getString("tienda")
+
         val categorias = resources.getStringArray(R.array.categoria)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categorias)
         val atxt_categoria = view.findViewById<AutoCompleteTextView>(R.id.atxt_categoria)
@@ -73,15 +78,13 @@ class AltaProductosFragment : FirebaseConnectedFragment() {
 
                 db.collection("productos").document(productoNombre.text.toString()).set(
                     hashMapOf("cantidadDisponible" to cantidadDisponible.text.toString(),
-                        "precioUnitario" to productoPrecio.text.toString()
+                            "precioUnitario" to productoPrecio.text.toString(),
+                            "tienda" to tienda
                     )
                 )
-                AlertDialog.Builder(context).apply{
-                            setTitle("¡El Producto se ha creado con éxito!")
-                            setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-                                findNavController().navigate(R.id.menuFragment)
-                            }
-                }.show()
+
+                Toast.makeText(requireParentFragment().requireContext(), "¡Producto cargado con éxito!", Toast.LENGTH_SHORT).show()
+                findNavController().navigate(R.id.menuFragment)
             }
         }
     }
