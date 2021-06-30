@@ -47,9 +47,10 @@ class MenuFragment : FirebaseConnectedFragment() {
     private fun setUpBindings(usuario: String, tienda: String) {
 
         val bundle = bundleOf("tienda" to tienda)
+        val bundle_usuario = bundleOf("usuario" to usuario)
 
         binding.btnAltaProductos.setOnClickListener {
-            findNavController().navigate(R.id.altaProductosFragment)
+            findNavController().navigate(R.id.altaProductosFragment, bundle)
         }
 
         binding.btnMenuProductos.setOnClickListener {
@@ -61,7 +62,7 @@ class MenuFragment : FirebaseConnectedFragment() {
         }
 
         binding.cerrarSesion.setOnClickListener {
-            findNavController().navigate(R.id.loginvendedorFragment)
+            findNavController().navigate(R.id.cerrarSesionFragment, bundle_usuario)
         }
 
     }
