@@ -19,6 +19,9 @@
         <action
             android:id="@+id/action_menuFragment_to_listadoProductosFragment"
             app:destination="@id/listadoProductosFragment" />
+        <action
+            android:id="@+id/action_menuFragment_to_cerrarSesionFragment"
+            app:destination="@id/cerrarSesionFragment" />
     </fragment>
     <fragment
         android:id="@+id/altaTiendaFragment"
@@ -51,11 +54,7 @@
         android:id="@+id/cerrarSesionFragment"
         android:name="unpsjb.ing.tnt.vendedores.CerrarSesionFragment"
         android:label="fragment_cerrar_sesion"
-        tools:layout="@layout/fragment_cerrar_sesion" >
-        <action
-            android:id="@+id/action_cerrarSesionFragment_to_menuFragment"
-            app:destination="@id/menuFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_cerrar_sesion" />
     <fragment
         android:id="@+id/listadoProductosFragment"
         android:name="unpsjb.ing.tnt.vendedores.ListadoProductosFragment"
@@ -65,9 +64,6 @@
         android:name="unpsjb.ing.tnt.vendedores.LoginvendedorFragment"
         android:label="fragment_loginvendedor"
         tools:layout="@layout/fragment_loginvendedor" >
-        <action
-            android:id="@+id/action_loginvendedorFragment_to_cerrarSesionFragment"
-            app:destination="@id/cerrarSesionFragment" />
         <action
             android:id="@+id/action_loginvendedorFragment_to_registrovendedorFragment"
             app:destination="@id/registrovendedorFragment" />

@@ -56,7 +56,7 @@ class RegistrovendedorFragment : Fragment() {
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             val bundle = bundleOf("email" to email.text.toString())
-                            findNavController().navigate(R.id.menuFragment, bundle)
+                            findNavController().navigate(R.id.altaTiendaFragment, bundle)
                             AlertDialog.Builder(context).apply{
                                 setTitle("¡El vendedor ha creado con éxito!")
                                 setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
