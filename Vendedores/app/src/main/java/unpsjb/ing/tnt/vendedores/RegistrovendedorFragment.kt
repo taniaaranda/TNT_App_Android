@@ -1,7 +1,6 @@
 package unpsjb.ing.tnt.vendedores
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -9,7 +8,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
-import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 
@@ -51,34 +49,34 @@ class RegistrovendedorFragment : Fragment() {
         val pass = view.findViewById<EditText>(R.id.pass)
         val button_registrocliente = view.findViewById<Button>(R.id.button_registrovendedor)
         button_registrocliente.setOnClickListener {
-            if (email.text.isNotEmpty() && pass.text.isNotEmpty()) {
+            if (email.text.isNotEmpty() || pass.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val bundle = bundleOf("email" to email.text.toString())
-                            findNavController().navigate(R.id.menuFragment, bundle)
-                            AlertDialog.Builder(context).apply{
-                                setTitle("¡El vendedor se ha creado con éxito!")
-                                setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-                                }
-                            }.show()
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡El vendedor se ha creado con éxito!").show()
+                                findNavController().navigate(R.id.cerrarSesionFragment)
+                            }
+
                         } else {
-                            AlertDialog.Builder(context).apply{
-                                setTitle("¡Debe ingresar un email con forma xxx@xxxx y una contraseña alfanumerica!")
-                                setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-                                    findNavController().navigate(R.id.registrovendedorFragment)
-                                }
-                            }.show()
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Debe ingresar un email con forma xxx@xxxx y una contrasela alfanumerica!").show()
+                                findNavController().navigate(R.id.registrovendedorFragment)
+                            }
                         }
                     }
 
             } else {
-                AlertDialog.Builder(context).apply{
-                    setTitle("¡Debe ingresar los datos requeridos!")
-                    setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-                        findNavController().navigate(R.id.registrovendedorFragment)
-                    }
-                }.show()
+                if(email.text.isEmpty()){
+                    email.error ="Debe ingresar un email con la forma xxxx@xxxx.com"
+                }
+                if(pass.text.isEmpty()){
+                    pass.error ="Debe ingresar una contraseña"
+                }
+                AlertDialog.Builder(context).apply {
+                    setTitle("¡Debe ingresar los datos requeridos!").show()
+                }
+                findNavController().navigate(R.id.registrovendedorFragment)
             }
 
         }

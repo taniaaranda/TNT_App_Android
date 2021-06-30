@@ -1,7 +1,6 @@
 package unpsjb.ing.tnt.vendedores
 
 import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.renderscript.ScriptGroup
 import androidx.fragment.app.Fragment
@@ -58,13 +57,17 @@ class LoginvendedorFragment : Fragment() {
         }
         val button_iniciar_sesionvendedor = view.findViewById<Button>(R.id.button_iniciar_sesionvendedor)
         button_iniciar_sesionvendedor.setOnClickListener {
-            if (email.text.isNotEmpty() && contraseña.text.isNotEmpty()) {
+            if (email.text.isNotEmpty() || contraseña.text.isNotEmpty()) {
                 FirebaseAuth.getInstance()
                     .signInWithEmailAndPassword(email.text.toString(), contraseña.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             val bundle = bundleOf("email" to email.text.toString())
                             findNavController().navigate(R.id.menuFragment, bundle)
+                            AlertDialog.Builder(context).apply {
+                                setTitle("¡Login exitoso!").show()
+                            }
+
                         } else {
                             AlertDialog.Builder(context).apply{
                                 setTitle("¡Usuario o contraeña incorrectos!")
