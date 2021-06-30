@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -44,10 +45,29 @@
         <ListView
             android:id="@+id/listado_productos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:ignore="NestedScrolling"
-            android:padding="8dp"
+            android:layout_height="622dp"
+            android:divider="@color/white"
             android:dividerHeight="8dp"
-            android:divider="@color/white"/>
+            android:padding="8dp"
+            tools:ignore="NestedScrolling" />
+
+        <LinearLayout
+            android:layout_width="367dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/btn_alta_producto"
+                android:layout_width="305dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:baselineAlignBottom="false"
+                android:clickable="true"
+                android:contentDescription="@string/alta_producto"
+                app:backgroundTint="#454545"
+                app:rippleColor="#FFFFFF"
+                app:srcCompat="@drawable/ic_add" />
+        </LinearLayout>
+
     </LinearLayout>
 </layout>

@@ -11,9 +11,6 @@
         android:label="fragment_menu"
         tools:layout="@layout/fragment_menu" >
         <action
-            android:id="@+id/action_menuFragment_to_altaProductosFragment2"
-            app:destination="@id/altaProductosFragment" />
-        <action
             android:id="@+id/action_menuFragment_to_listadoPedidosFragment"
             app:destination="@id/listadoPedidosFragment" />
         <action
@@ -58,7 +55,11 @@
     <fragment
         android:id="@+id/listadoProductosFragment"
         android:name="unpsjb.ing.tnt.vendedores.ListadoProductosFragment"
-        android:label="ListadoProductosFragment" />
+        android:label="ListadoProductosFragment" >
+        <action
+            android:id="@+id/action_listadoProductosFragment_to_altaProductosFragment"
+            app:destination="@id/altaProductosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/loginvendedorFragment"
         android:name="unpsjb.ing.tnt.vendedores.LoginvendedorFragment"

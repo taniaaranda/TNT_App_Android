@@ -6,8 +6,10 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.core.widget.doOnTextChanged
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import unpsjb.ing.tnt.vendedores.adapter.ProductoAdapter
@@ -44,6 +46,18 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
         registerProductoSnapshotListener()
 
         return listView
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val tienda = arguments?.getString("tienda")
+        val bundle = bundleOf("tienda" to tienda.toString())
+
+        val btn_alta_producto = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_alta_producto)
+        btn_alta_producto.setOnClickListener{
+            findNavController().navigate(R.id.altaProductosFragment, bundle)
+        }
     }
 
     private fun registerProductoSnapshotListener(filtro: String = "") {

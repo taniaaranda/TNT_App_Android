@@ -35,6 +35,8 @@
     <string name="open_drawer">Abrir</string>
     <string name="close_drawer">Cerrar</string>
 
+    <string name="alta_producto">Agregar Producto</string>
+
     <string name="large_text">
         "Material is the metaphor.\n\n"
 
@@ -129,9 +131,9 @@
     <string name="bienvenida_label">¡Bienvenid@!</string>
     <string name="nueva_tienda_label">Nueva Tienda</string>
     <string name="cargar_productos_label">Cargar Productos</string>
-    <string name="menu_productos_label">Listado Productos</string>
+    <string name="menu_productos_label">Productos</string>
     <string name="cerrar_sesion_btn_label">Cerrar Sesión</string>
-    <string name="listado_pedidos_label">Listado Pedidos</string>
+    <string name="listado_pedidos_label">Pedidos</string>
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
 

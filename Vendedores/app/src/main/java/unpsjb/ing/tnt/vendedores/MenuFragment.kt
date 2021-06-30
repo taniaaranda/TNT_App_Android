@@ -49,10 +49,6 @@ class MenuFragment : FirebaseConnectedFragment() {
         val bundle = bundleOf("tienda" to tienda)
         val bundle_usuario = bundleOf("usuario" to usuario)
 
-        binding.btnAltaProductos.setOnClickListener {
-            findNavController().navigate(R.id.altaProductosFragment, bundle)
-        }
-
         binding.btnMenuProductos.setOnClickListener {
             findNavController().navigate(R.id.listadoProductosFragment, bundle)
         }
