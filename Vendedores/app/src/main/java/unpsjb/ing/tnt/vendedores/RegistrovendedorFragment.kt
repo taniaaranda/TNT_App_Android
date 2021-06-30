@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
@@ -57,11 +58,7 @@ class RegistrovendedorFragment : Fragment() {
                         if (it.isSuccessful) {
                             val bundle = bundleOf("email" to email.text.toString())
                             findNavController().navigate(R.id.altaTiendaFragment, bundle)
-                            AlertDialog.Builder(context).apply{
-                                setTitle("¡El vendedor ha creado con éxito!")
-                                setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
-                                }
-                            }.show()
+                            Toast.makeText(requireParentFragment().requireContext(), "¡Usuario registrado con éxito!", Toast.LENGTH_SHORT).show()
                         } else {
                             AlertDialog.Builder(context).apply{
                                 setTitle("¡Debe ingresar un email con forma xxx@xxxx y una contraseña alfanumerica!")
