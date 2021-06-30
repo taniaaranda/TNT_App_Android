@@ -52,7 +52,7 @@ class RegistroclienteFragment : Fragment() {
         val direccion = view.findViewById<EditText>(R.id.direccion)
         val button_registrocliente = view.findViewById<Button>(R.id.button_registrocliente)
         button_registrocliente.setOnClickListener {
-            if (email.text.isNotEmpty() && pass.text.isNotEmpty()) {
+            if (email.text.isNotEmpty() && pass.text.isNotEmpty() && direccion.text.isNotEmpty()) {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
