@@ -1,6 +1,7 @@
 package unpsjb.ing.tnt.clientes
 
 import android.app.AlertDialog
+import android.content.DialogInterface
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.EditText
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
 
@@ -53,28 +55,30 @@ class LoginclienteFragment : Fragment() {
         }
         val button_iniciar_sesion = view.findViewById<Button>(R.id.button_iniciar_sesion)
         button_iniciar_sesion.setOnClickListener {
-            if (email.text.isNotEmpty() || contraseña.text.isNotEmpty()) {
+            if (email.text.isNotEmpty() && contraseña.text.isNotEmpty()) {
                 FirebaseAuth.getInstance()
                     .signInWithEmailAndPassword(email.text.toString(), contraseña.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            AlertDialog.Builder(context).apply {
-                                setTitle("¡Login exitoso!").show()
-                                findNavController().navigate(R.id.cerrarsesionclienteFragment)
-                            }
+                            val bundle = bundleOf("email" to email.text.toString())
+                            findNavController().navigate(R.id.homeFragment, bundle)
 
                         } else {
-                            AlertDialog.Builder(context).apply {
-                                setTitle("¡Usuario o contraeña incorrectos!").show()
-                                findNavController().navigate(R.id.loginclienteFragment)
-                            }
+                            AlertDialog.Builder(context).apply{
+                                setTitle("¡Usuario o contraeña incorrectos!")
+                                setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
+                                    findNavController().navigate(R.id.loginclienteFragment)
+                                }
+                            }.show()
                         }
                     }
             } else {
-                AlertDialog.Builder(context).apply {
-                    setTitle("¡Ingrese los datos!").show()
-                    findNavController().navigate(R.id.loginclienteFragment)
-                }
+                AlertDialog.Builder(context).apply{
+                    setTitle("¡Ingrese los datos!")
+                    setPositiveButton("Aceptar"){ _: DialogInterface, _: Int ->
+                        findNavController().navigate(R.id.loginclienteFragment)
+                    }
+                }.show()
             }
         }
 
