@@ -36,16 +36,20 @@ class MenuFragment : FirebaseConnectedFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val email = arguments?.getString("email")
-        getDbReference().collection("tiendas").whereEqualTo("usuario",email.toString()).get()
-                .addOnSuccessListener { queryDocumentSnapshots ->
-                    setUpBindings(email.toString(), queryDocumentSnapshots.documents.get(0).id)
-                }
 
+        val email = arguments?.getString("email")
+
+        getDbReference().collection("tiendas").whereEqualTo("usuario", email.toString()).get()
+            .addOnSuccessListener { queryDocumentSnapshots ->
+                if (queryDocumentSnapshots.isEmpty) {
+                    // TODO: Redirigir a la creacion de tiendas.
+                } else {
+                    setUpBindings(email.toString(), queryDocumentSnapshots.documents.first().id)
+                }
+            }
     }
 
     private fun setUpBindings(usuario: String, tienda: String) {
-
         val bundle = bundleOf("tienda" to tienda)
         val bundle_usuario = bundleOf("usuario" to usuario)
 
@@ -60,6 +64,5 @@ class MenuFragment : FirebaseConnectedFragment() {
         binding.cerrarSesion.setOnClickListener {
             findNavController().navigate(R.id.cerrarSesionFragment, bundle_usuario)
         }
-
     }
 }
