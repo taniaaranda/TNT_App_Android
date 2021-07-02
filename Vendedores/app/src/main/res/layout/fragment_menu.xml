@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data />
@@ -88,6 +89,13 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/btn_menu_productos"
             app:layout_constraintVertical_bias="0.959" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="435dp"
+            android:layout_height="97dp"
+            app:srcCompat="@drawable/covi_pedidos_logo_pequenio"
+            tools:layout_editor_absoluteX="-5dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>
 <!--
