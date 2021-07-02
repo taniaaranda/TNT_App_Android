@@ -11,8 +11,10 @@ import unpsjb.ing.tnt.clientes.data.model.Tienda
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.databinding.TiendaWidgetBinding
 
-class TiendasAdapter (private val context: Context, private val dataSource: List<Tienda>): BaseAdapter(){
+class TiendasAdapter (private val context: Context, private val dataSource: List<Tienda>, userEmail: String, callback: (userEmail: String) -> Unit): BaseAdapter(){
     private lateinit var binding: TiendaWidgetBinding
+    private val userEmail: String = userEmail
+    private val callback: (String) -> Unit = callback
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
@@ -45,6 +47,10 @@ class TiendasAdapter (private val context: Context, private val dataSource: List
                 inflater, R.layout.tienda_widget, parent, false
         )
         binding.tienda = getCastedItem(position)
+
+        binding.btnVerProductos.setOnClickListener {
+            callback(userEmail)
+        }
 
         return binding.root
     }

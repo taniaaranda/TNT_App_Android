@@ -18,6 +18,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 
 private const val  TIENDAS_COLLECTION_NAME = "tiendas"
 
@@ -25,6 +27,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentListadoTiendasBinding
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
+    private lateinit var userEmail: String
     private var tiendasSnapshotListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,12 +37,14 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_listado_tiendas, container, false
         )
         fragmentContext = this.requireContext()
         listView = binding.root
+
+        userEmail = arguments?.getString("email").toString()
 
         prepareSpinner()
         prepareEditText()
@@ -83,7 +88,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
         tiendasSnapshotListener?.remove()
 
         var selectedFilter = binding.filtroRubros.selectedItem
-        var txtNombreFilter = binding.filtroNombre.text.toString()
+        val txtNombreFilter = binding.filtroNombre.text.toString()
 
         if (selectedFilter == null) {
             binding.filtroRubros.setSelection(0)
@@ -97,7 +102,10 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
                         return@addSnapshotListener
                     }
 
-                    val adapter = TiendasAdapter(this.requireContext(), parseTiendas(snapshots, selectedFilter as String, txtNombreFilter as String))
+                    val adapter = TiendasAdapter(this.requireContext(),
+                        parseTiendas(snapshots, selectedFilter as String, txtNombreFilter),
+                        userEmail
+                    ) { email -> findNavController().navigate(R.id.listadoProductosFragment, bundleOf("email" to email)) }
                     binding.listadoTiendas.adapter = adapter
                 }
     }

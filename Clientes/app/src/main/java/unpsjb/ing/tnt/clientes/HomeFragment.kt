@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
@@ -42,9 +43,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val email = arguments?.getString("email")
+
         val btn_listado_tiendas = view.findViewById<Button>(R.id.btn_listado_tiendas)
         btn_listado_tiendas.setOnClickListener(){
-            findNavController().navigate(R.id.listadoTiendasFragment)
+            findNavController().navigate(R.id.listadoTiendasFragment, bundleOf("email" to email.toString()))
         }
     }
 

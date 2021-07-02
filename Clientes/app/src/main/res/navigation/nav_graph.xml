@@ -17,7 +17,11 @@
         android:id="@+id/listadoTiendasFragment"
         android:name="unpsjb.ing.tnt.clientes.ListadoTiendasFragment"
         android:label="fragment_listado_tiendas"
-        tools:layout="@layout/fragment_listado_tiendas" />
+        tools:layout="@layout/fragment_listado_tiendas" >
+        <action
+            android:id="@+id/action_listadoTiendasFragment_to_listadoProductosFragment"
+            app:destination="@id/listadoProductosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/carritoFragment"
         android:name="unpsjb.ing.tnt.clientes.CarritoFragment"
@@ -56,4 +60,9 @@
             android:id="@+id/action_cerrarsesionclienteFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listadoProductosFragment"
+        android:name="unpsjb.ing.tnt.clientes.ListadoProductosFragment"
+        android:label="fragment_listado_productos"
+        tools:layout="@layout/fragment_listado_productos" />
 </navigation>
