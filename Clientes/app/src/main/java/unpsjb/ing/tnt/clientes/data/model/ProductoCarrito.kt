@@ -6,13 +6,13 @@ import android.util.Base64
 import unpsjb.ing.tnt.clientes.R
 
 class ProductoCarrito(
-    val idProducto: String,
-    val cantidad: Long,
-    val nombre: String,
-    val fotografia: String = "",
-    val observaciones: String = "",
-    val categoria: String = "",
-    val precio: Long = 0
+        var idProducto: String,
+        var cantidad: Long,
+        var nombre: String,
+        var fotografia: String = "",
+        var observaciones: String = "",
+        var categoria: String = "",
+        var precio: Long = 0
 ) {
     fun getBitmapImage(): Bitmap {
         var imageBytes = Base64.decode(DEFAULT_IMAGE, 0)

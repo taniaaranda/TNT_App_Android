@@ -2,7 +2,6 @@ package unpsjb.ing.tnt.clientes
 
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -105,7 +104,9 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
                     val adapter = TiendasAdapter(this.requireContext(),
                         parseTiendas(snapshots, selectedFilter as String, txtNombreFilter),
                         userEmail
-                    ) { email -> findNavController().navigate(R.id.listadoProductosFragment, bundleOf("email" to email)) }
+                    ) { email, tienda -> findNavController()
+                            .navigate(R.id.listadoProductosFragment,
+                                    bundleOf("email" to email, "tiendaId" to tienda)) }
                     binding.listadoTiendas.adapter = adapter
                 }
     }

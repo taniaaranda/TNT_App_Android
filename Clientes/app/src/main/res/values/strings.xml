@@ -26,4 +26,9 @@
     <string name="imagen_del_producto_description">Imagen del producto</string>
     <string name="filtrar_rubro">Filtrar Rubro:</string>
     <string name="filtrar_nombre">Filtrar Nombre:</string>
+    <string name="productos_title_label">Productos</string>
+    <string name="filtrar">Filtrar:</string>
+    <string name="agregar_al_carrito">Agregar al Carrito</string>
+    <string name="ir_al_carrito">Ir al Carrito</string>
+    <string name="descripcion_img_foto">Imagen del producto</string>
 </resources>

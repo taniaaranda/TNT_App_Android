@@ -6,5 +6,6 @@ class Pedido(
     val id: String,
     val estado: String,
     val estampaDeTiempo: Timestamp,
-    val productos: ArrayList<String>
+    val productos: ArrayList<String>,
+    //val tienda: String
 )
