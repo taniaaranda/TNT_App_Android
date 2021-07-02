@@ -94,7 +94,7 @@
             android:id="@+id/imageView"
             android:layout_width="435dp"
             android:layout_height="97dp"
-            app:srcCompat="@drawable/covi_pedidos_logo_pequenio"
+            app:srcCompat="@drawable/icono1"
             tools:layout_editor_absoluteX="-5dp" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

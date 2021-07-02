@@ -1,23 +1,24 @@
 package unpsjb.ing.tnt.vendedores
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
+import androidx.core.view.isEmpty
+import androidx.core.view.isNotEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
 import unpsjb.ing.tnt.vendedores.databinding.FragmentAltaProductosBinding
 
 class AltaProductosFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentAltaProductosBinding
     private lateinit var altaProductosView: View
-    private lateinit var tienda: String
+    private lateinit var tiendaId: String
     private lateinit var usuario: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,52 +35,97 @@ class AltaProductosFragment : FirebaseConnectedFragment() {
 
         altaProductosView = binding.root
         usuario = arguments?.getString("usuario").toString()
-        tienda = arguments?.getString("tienda").toString()
+        tiendaId = arguments?.getString("tienda").toString()
 
         return altaProductosView
+    }
+
+    private fun prepareSpinner(categorias: ArrayList<String>) {
+        val categoriasAdapter = ArrayAdapter(this.requireContext(),
+            android.R.layout.simple_spinner_item, categorias)
+        binding.categorias.setAdapter(categoriasAdapter)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val categorias = resources.getStringArray(R.array.categoria)
-        val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, categorias)
-        val atxt_categoria = view.findViewById<AutoCompleteTextView>(R.id.atxt_categoria)
-        atxt_categoria.setAdapter(arrayAdapter)
+        val tienda = getDbReference().collection("tiendas").document(tiendaId).get()
+        tienda.addOnSuccessListener { documentSnapshot ->
+            if (documentSnapshot.exists()) {
+                /** TODO: Quitar en algun momento y reemplazar por las categorias cargadas para esa tienda */
+                val rubro = documentSnapshot.get("rubro").toString()
+                prepareSpinner(arrayListOf(rubro))
+                /** TODO: Fin todo*/
 
-        atxt_categoria.setOnItemClickListener (AdapterView.OnItemClickListener{ parent, view, position, id ->
-            atxt_categoria.setError(null)
-        })
-
-        binding.btnAceptar.setOnClickListener {
-            crearProducto()
+                binding.btnAceptar.setOnClickListener {
+                    crearProducto(documentSnapshot)
+                }
+            } else {
+                // TODO: Mostrar mensaje de tienda no existente o mandarlo a la creacion de tienda.
+            }
+        }
+        .addOnFailureListener {
+            Log.d("AltaProductos", "Tienda no ok")
         }
     }
 
-    private fun crearProducto() {
+    private fun crearProducto(tienda: DocumentSnapshot) {
         if (formularioValido()) {
-            val metodos_de_pago: ArrayList<String> = ArrayList()
-            if (binding.productoPrecio.text.isEmpty()) {
-                metodos_de_pago.add(binding.productoPrecio.text.toString())
-            }
+            getDbReference().collection("productos")
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { resultProductos ->
+                    var id = "1"
 
-            val tienda = getDbReference().collection("tiendas").document(tienda).get()
-            tienda
-                .addOnSuccessListener {
-                    getDbReference().collection("productos").document(binding.productoNombre.text.toString()).set(
-                        hashMapOf(
-                            "cantidadDisponible" to binding.cantidadDisponible.text.toString(),
-                            "precioUnitario" to binding.productoPrecio.text.toString(),
-                            "tienda" to tienda
-                        )
-                    )
+                    if (resultProductos.documents.isNotEmpty()) {
+                        val lastId = (resultProductos.documents.first().get("id") as String).toInt()
+                        id = (lastId + 1).toString()
+                    }
 
-                    Toast.makeText(requireParentFragment().requireContext(), "¡Producto cargado con éxito!", Toast.LENGTH_SHORT).show()
-                    findNavController().navigate(R.id.menuFragment)
+                    persistirProducto(id, tienda)
                 }
                 .addOnFailureListener {
+                    // TODO: Mostrar un mensaje acorde
                 }
         }
+    }
+
+    private fun persistirProducto(id: String, tienda: DocumentSnapshot) {
+        val metodos_de_pago: ArrayList<String> = ArrayList()
+        if (binding.productoPrecio.text.isEmpty()) {
+            metodos_de_pago.add(binding.productoPrecio.text.toString())
+        }
+
+        var categoria = ""
+        if (binding.categorias.isNotEmpty()) {
+            categoria = binding.categorias.selectedItem.toString()
+        }
+
+        getDbReference().collection("productos")
+            .document().set(
+                hashMapOf(
+                    "id" to id,
+                    "nombre" to binding.productoNombre.text.toString(),
+                    "cantidadDisponible" to binding.cantidadDisponible.text.toString().toLong(),
+                    "precioUnitario" to binding.productoPrecio.text.toString().toLong(),
+                    "categoria" to categoria,
+                    "fotografia" to "",
+                    "observaciones" to binding.DescripcionProducto.text.toString(),
+                    "tienda" to tiendaId
+                )
+            )
+            .addOnSuccessListener {
+                Toast.makeText(
+                    requireParentFragment().requireContext(),
+                    "¡Producto cargado con éxito!",
+                    Toast.LENGTH_SHORT
+                ).show()
+
+                findNavController().navigate(R.id.menuFragment, bundleOf("email" to tienda.get("usuario")))
+            }
+            .addOnFailureListener {
+            }
     }
 
     private fun formularioValido(): Boolean {
@@ -96,6 +142,8 @@ class AltaProductosFragment : FirebaseConnectedFragment() {
             if (binding.cantidadDisponible.text.isEmpty()) {
                 binding.cantidadDisponible.error = "Debe completar la Cantidad Disponible"
             }
+
+            // TODO: Validar que haya seleccionado una categoría también
 
             return false
         }

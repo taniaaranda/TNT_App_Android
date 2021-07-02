@@ -13,7 +13,8 @@ class Producto(
     val precioUnitario: Long,
     val categoria: String,
     val fotografia: String,
-    val observaciones: String
+    val observaciones: String,
+    val tienda: String
 ) {
     fun getBitmapImage(): Bitmap {
         var imageBytes = Base64.decode(DEFAULT_IMAGE, 0)

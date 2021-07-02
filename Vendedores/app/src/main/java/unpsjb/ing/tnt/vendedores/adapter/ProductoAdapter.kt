@@ -33,7 +33,8 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
             item.precioUnitario,
             item.categoria,
             item.fotografia,
-            item.observaciones
+            item.observaciones,
+            item.tienda
         )
     }
 
