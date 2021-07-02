@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.Timestamp
@@ -109,7 +110,11 @@ class CarritoFragment : FirebaseConnectedFragment() {
             .add(pedido)
             .addOnSuccessListener { document ->
                 Toast.makeText(requireParentFragment().requireContext(), "¡Pedido Realizado, muchas gracias!", Toast.LENGTH_SHORT).show()
-                findNavController().navigate(R.id.action_carritoFragment_to_homeFragment)
+                val email = arguments?.getString("email")
+
+                findNavController().navigate(R.id.action_carritoFragment_to_homeFragment,
+                    bundleOf("email" to email.toString())
+                )
             }
             .addOnFailureListener {
                 Toast.makeText(fragmentContext, "No se pudo crear el pedido, por favor reintente", Toast.LENGTH_LONG).show()

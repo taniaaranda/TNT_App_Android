@@ -50,8 +50,12 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
         tiendaId = arguments?.getString("tiendaId").toString()
 
         if (tiendaId.isNotEmpty()) {
-            getDbReference().collection("tiendas")
-                .whereEqualTo("id", tiendaId)
+            crearCarrito()
+
+            registerCarritoButton()
+            registerProductosSnapshotListener(tiendaId)
+            /*getDbReference().collection("productos")
+                .whereEqualTo("tienda", tiendaId)
                 .get()
                 .addOnSuccessListener { documentSnapshot ->
                     if (documentSnapshot.documents.isNotEmpty()) {
@@ -65,7 +69,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
                 }
                 .addOnFailureListener {
                     // TODO: Falló al querer ir a buscar la tienda
-                }
+                }*/
         } else {
             // TODO: Error, no se pasó la tienda
         }
@@ -77,7 +81,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
     private fun registerCarritoButton() {
         binding.irAlCarrito.setOnClickListener {
             if (binding.irAlCarrito.isEnabled) {
-                findNavController().navigate(R.id.carritoFragment, bundleOf("tienda" to tiendaId))
+                findNavController().navigate(R.id.carritoFragment, bundleOf("tienda" to tiendaId, "email" to userEmail))
             } else {
                 Toast.makeText(fragmentContext, "¡Espere a que termine de actualizarse el carrito!", Toast.LENGTH_SHORT)
             }
@@ -118,7 +122,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
         val selectedFilter = binding.filtroNombre.text.toString()
 
-        productosSnapshotListener = getDbReference().collection("productos")
+        productosSnapshotListener = getDbReference().collection("productos").whereEqualTo("tienda", nombreTienda)
                 .addSnapshotListener { snapshots, e ->
                     if (e != null) {
                         Log.e("ListadoTiendas", e.message.toString())

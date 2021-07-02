@@ -50,7 +50,7 @@
         <ListView
             android:id="@+id/listado_productos"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="521dp"
             tools:ignore="NestedScrolling" />
 
         <Button

@@ -59,13 +59,17 @@
                 android:baselineAlignBottom="false"
                 android:clickable="true"
                 android:contentDescription="@string/agregar_al_carrito"
-                app:backgroundTint="#0288D1"
+                android:focusable="true"
+                app:backgroundTint="#4E4E4E"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@+id/TvName"
+                app:layout_constraintHorizontal_bias="0.902"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.694"
                 app:rippleColor="#FFFFFF"
                 app:srcCompat="@drawable/ic_add"
-                tools:layout_editor_absoluteX="323dp"
-                tools:layout_editor_absoluteY="95dp"
-                tools:ignore="MissingConstraints,VectorDrawableCompat"
-                android:focusable="true" />
+                tools:ignore="MissingConstraints,VectorDrawableCompat" />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

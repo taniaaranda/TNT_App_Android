@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores
+                                        package unpsjb.ing.tnt.vendedores
 
 import android.content.ContentValues.TAG
 import android.os.Bundle

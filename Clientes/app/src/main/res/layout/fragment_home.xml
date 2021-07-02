@@ -12,11 +12,11 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-       <!-- <ImageView
+        <ImageView
             android:id="@+id/imageView"
             android:layout_width="match_parent"
             android:layout_height="72dp"
-            app:srcCompat="@drawable/covi_pedidos_logo_pequenio" /> -->
+            app:srcCompat="@drawable/covi_pedidos_logo_pequenio" />
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
