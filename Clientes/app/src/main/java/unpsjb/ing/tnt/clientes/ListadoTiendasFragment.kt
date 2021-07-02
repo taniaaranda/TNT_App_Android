@@ -69,7 +69,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                registerTiendasSnapshotListener(userEmail)
+                registerTiendasSnapshotListener()
             }
         }
     }
@@ -77,7 +77,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     private fun prepareEditText() {
         binding.filtroNombre.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                registerTiendasSnapshotListener(userEmail)
+                registerTiendasSnapshotListener()
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -93,7 +93,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
         binding.switchUbicacion.setOnCheckedChangeListener { Switch, isChecked ->
             if (isChecked) {
                 Log.i(ContentValues.TAG, "FUNCIONA EL LISTENER")
-                registerTiendasSnapshotListener(userEmail)
+                registerTiendasSnapshotListener()
             }
         }
     }
@@ -123,7 +123,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
                     }
 
                     val adapter = TiendasAdapter(this.requireContext(),
-                        parseTiendas(snapshots, selectedFilter as String, txtNombreFilter, txtNombreFilter, switchUbicacionFilter,ubicacionUsuario),
+                        parseTiendas(snapshots, selectedFilter as String, txtNombreFilter, switchUbicacionFilter,ubicacionUsuario),
                         userEmail
                     ) { email, tienda -> findNavController()
                             .navigate(R.id.listadoProductosFragment,
