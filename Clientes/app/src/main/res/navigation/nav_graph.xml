@@ -12,12 +12,19 @@
         <action
             android:id="@+id/action_homeFragment_to_listadoTiendasFragment"
             app:destination="@id/listadoTiendasFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_cerrarsesionclienteFragment2"
+            app:destination="@id/cerrarsesionclienteFragment" />
     </fragment>
     <fragment
         android:id="@+id/listadoTiendasFragment"
         android:name="unpsjb.ing.tnt.clientes.ListadoTiendasFragment"
         android:label="fragment_listado_tiendas"
-        tools:layout="@layout/fragment_listado_tiendas" />
+        tools:layout="@layout/fragment_listado_tiendas" >
+        <action
+            android:id="@+id/action_listadoTiendasFragment_to_listadoProductosFragment"
+            app:destination="@id/listadoProductosFragment" />
+    </fragment>
     <fragment
         android:id="@+id/carritoFragment"
         android:name="unpsjb.ing.tnt.clientes.CarritoFragment"
@@ -35,8 +42,8 @@
             android:id="@+id/action_loginclienteFragment_to_registroclienteFragment"
             app:destination="@id/registroclienteFragment" />
         <action
-            android:id="@+id/action_loginclienteFragment_to_cerrarsesionclienteFragment"
-            app:destination="@id/cerrarsesionclienteFragment" />
+            android:id="@+id/action_loginclienteFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
     <fragment
         android:id="@+id/registroclienteFragment"
@@ -51,9 +58,14 @@
         android:id="@+id/cerrarsesionclienteFragment"
         android:name="unpsjb.ing.tnt.clientes.CerrarsesionclienteFragment"
         android:label="fragment_cerrarsesioncliente"
-        tools:layout="@layout/fragment_cerrarsesioncliente" >
+        tools:layout="@layout/fragment_cerrarsesioncliente" />
+    <fragment
+        android:id="@+id/listadoProductosFragment"
+        android:name="unpsjb.ing.tnt.clientes.ListadoProductosFragment"
+        android:label="fragment_listado_productos"
+        tools:layout="@layout/fragment_listado_productos" >
         <action
-            android:id="@+id/action_cerrarsesionclienteFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
+            android:id="@+id/action_listadoProductosFragment_to_carritoFragment"
+            app:destination="@id/carritoFragment" />
     </fragment>
 </navigation>

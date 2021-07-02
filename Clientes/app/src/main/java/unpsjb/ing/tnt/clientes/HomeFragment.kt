@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import androidx.core.os.bundleOf
 import androidx.navigation.fragment.findNavController
 
 // TODO: Rename parameter arguments, choose names that match
@@ -18,7 +19,7 @@ private const val ARG_PARAM2 = "param2"
  * Use the [HomeFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class HomeFragment : Fragment() {
+class HomeFragment : FirebaseConnectedFragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
@@ -42,9 +43,11 @@ class HomeFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val email = arguments?.getString("email")
+        val bundle_usuario = bundleOf("usuario" to email)
         val btn_listado_tiendas = view.findViewById<Button>(R.id.btn_listado_tiendas)
         btn_listado_tiendas.setOnClickListener(){
-            findNavController().navigate(R.id.listadoTiendasFragment)
+            findNavController().navigate(R.id.listadoTiendasFragment, bundle_usuario)
         }
     }
 

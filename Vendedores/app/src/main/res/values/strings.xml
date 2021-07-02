@@ -24,7 +24,7 @@
         <item>Verdulería</item>
         <item>Rotisería</item>
     </string-array>
-
+    <string name="direccion_label">Dirección</string>
     <string-array name="categorias">
         <item>Morfi</item>
         <item>Herramientas</item>
@@ -137,6 +137,8 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
 
+    <string name="android_sdk_places_apt_key">AIzaSyB6gXdyNw4jeHDU8EK3nJHO6kussLfMdbI</string>
+    
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>

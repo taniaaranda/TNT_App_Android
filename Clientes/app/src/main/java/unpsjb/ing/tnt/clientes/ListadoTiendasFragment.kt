@@ -1,5 +1,6 @@
 package unpsjb.ing.tnt.clientes
 
+import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -18,6 +19,10 @@ import com.google.firebase.firestore.ListenerRegistration
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import android.widget.Switch
+import com.android.volley.Request
+import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 
 private const val  TIENDAS_COLLECTION_NAME = "tiendas"
 
@@ -40,15 +45,16 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
         )
         fragmentContext = this.requireContext()
         listView = binding.root
-
-        prepareSpinner()
-        prepareEditText()
-        registerTiendasSnapshotListener()
+        val usuario = arguments?.getString("usuario")
+        prepareSpinner(usuario.toString())
+        prepareEditText(usuario.toString())
+        prepareSwitch(usuario.toString())
+        registerTiendasSnapshotListener(usuario.toString())
 
         return listView
     }
 
-    private fun prepareSpinner() {
+    private fun prepareSpinner(usuario: String) {
         val rubrosAdapter = ArrayAdapter(this.requireContext(),
                 android.R.layout.simple_spinner_item, Tienda.getRubrosValues())
         binding.filtroRubros.adapter = rubrosAdapter
@@ -59,15 +65,15 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                registerTiendasSnapshotListener()
+                registerTiendasSnapshotListener(usuario)
             }
         }
     }
 
-    private fun prepareEditText() {
+    private fun prepareEditText(usuario: String) {
         binding.filtroNombre.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                registerTiendasSnapshotListener()
+                registerTiendasSnapshotListener(usuario)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -79,11 +85,26 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
 
     }
 
-    private fun registerTiendasSnapshotListener() {
+    private fun prepareSwitch(usuario: String) {
+        binding.switchUbicacion.setOnCheckedChangeListener { Switch, isChecked ->
+            if (isChecked) {
+                Log.i(ContentValues.TAG, "FUNCIONA EL LISTENER")
+                registerTiendasSnapshotListener(usuario)
+            }
+        }
+    }
+
+    private fun registerTiendasSnapshotListener(usuario:String) {
         tiendasSnapshotListener?.remove()
 
         var selectedFilter = binding.filtroRubros.selectedItem
         var txtNombreFilter = binding.filtroNombre.text.toString()
+        var switchUbicacionFilter = binding.switchUbicacion.isChecked
+        var ubicacionUsuario: ArrayList<Double> = arrayListOf(0.0,0.0)
+        getDbReference().collection("datosClientes").whereEqualTo("usuario",usuario).get()
+                .addOnSuccessListener { queryDocumentSnapshots ->
+                    ubicacionUsuario = queryDocumentSnapshots.documents.get(0).get("ubicacionLatLong") as ArrayList<Double>
+                }
 
         if (selectedFilter == null) {
             binding.filtroRubros.setSelection(0)
@@ -97,12 +118,12 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
                         return@addSnapshotListener
                     }
 
-                    val adapter = TiendasAdapter(this.requireContext(), parseTiendas(snapshots, selectedFilter as String, txtNombreFilter as String))
+                    val adapter = TiendasAdapter(this.requireContext(), parseTiendas(snapshots, selectedFilter as String, txtNombreFilter, switchUbicacionFilter,ubicacionUsuario))
                     binding.listadoTiendas.adapter = adapter
                 }
     }
 
-    private fun parseTiendas(snapshots: QuerySnapshot?, filtro: String, filtroNombre: String): List<Tienda> {
+    private fun parseTiendas(snapshots: QuerySnapshot?, filtro: String, filtroNombre: String, filtroUbicacion: Boolean, ubicacionUsuario: ArrayList<Double>): List<Tienda> {
         val tiendas = ArrayList<Tienda>()
 
         if (snapshots != null) {
@@ -116,6 +137,32 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
 
                 if (filtroNombre != "" && !filtroNombre.equals(nombre, true) && !nombre.startsWith(filtroNombre,true)){
                     continue
+                }
+
+                if(filtroUbicacion){
+                    Log.i(ContentValues.TAG, "is checked")
+                    val ubicacionTienda = document.get("ubicacionLatLong") as  ArrayList<Double>
+                    val url = "http://maps.googleapis.com/maps/api/distancematrix/json?origins="+ubicacionTienda.get(0).toString()+","+ubicacionTienda.get(1).toString()+
+                            "&destinations="+ubicacionUsuario.get(0).toString()+","+ubicacionUsuario.get(1).toString()+"&key="+getString(R.string.android_sdk_places_apt_key)
+
+                    val jsonObjectRequest = JsonObjectRequest(
+                        Request.Method.GET, url, null,
+                        { response ->
+                            val rows = response.getJSONArray("rows")
+                            val elements = rows.getJSONObject(0).getJSONArray("elements")
+                            val distance = elements.getJSONObject(0).getJSONObject("distance").getString("value")
+                            Log.i(ContentValues.TAG, "DISTANCE"+distance)
+                        },
+                        { error ->
+                            // TODO: Handle error
+                            Log.e(ContentValues.TAG,"errooooor")
+                        }
+                    )
+
+                    Log.i(ContentValues.TAG,"PASOO")
+
+                    // Access the RequestQueue through your singleton class.
+                    //MySingleton.getInstance(this).addToRequestQueue(jsonObjectRequest)
                 }
 
                 tiendas.add(

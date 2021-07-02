@@ -65,14 +65,19 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <EditText
-            android:id="@+id/txt_ubicacion"
+        <TextView
+            android:id="@+id/txt_direccion"
             android:layout_width="match_parent"
-            android:layout_height="75dp"
-            android:ems="10"
-            android:hint="Ubicación"
-            android:inputType="textPersonName"
-            app:errorEnabled="true" />
+            android:layout_height="wrap_content"
+            android:textSize="18sp"
+            android:text="@string/direccion_label"
+            app:errorEnabled="true"/>
+
+        <fragment
+            android:id="@+id/autocomplete_fragment"
+            android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
 
         <Button
             android:id="@+id/btn_hora_inicio"

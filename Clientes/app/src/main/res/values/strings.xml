@@ -19,6 +19,7 @@
     <string name="registrarse">Registrarse</string>
     <string name="tienda_imagen_descripcion">Imagen de la tienda</string>
     <string name="tiendas_label">Tiendas</string>
+    <string name="direccion_label">Dirección</string>
     <string name="productos_label">Productos:</string>
     <string name="total_a_pagar_label">Total a Pagar:</string>
     <string name="informaci_n_de_tu_pedido_label">Información de tu pedido:</string>
@@ -26,4 +27,6 @@
     <string name="imagen_del_producto_description">Imagen del producto</string>
     <string name="filtrar_rubro">Filtrar Rubro:</string>
     <string name="filtrar_nombre">Filtrar Nombre:</string>
+    <string name="filtrar_ubicacion">Filtrar ubicación más cercana</string>
+    <string name="android_sdk_places_apt_key">AIzaSyB6gXdyNw4jeHDU8EK3nJHO6kussLfMdbI</string>
 </resources>
