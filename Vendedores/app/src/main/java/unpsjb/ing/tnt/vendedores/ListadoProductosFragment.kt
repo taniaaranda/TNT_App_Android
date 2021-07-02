@@ -23,6 +23,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentItemListBinding
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
+    private lateinit var tienda: String
     private var productosSnapshotListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,6 +40,8 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
         fragmentContext = this.requireContext()
         listView = binding.root
+
+        tienda = arguments?.getString("tienda").toString()
         binding.nombreFiltro.doOnTextChanged { text, start, before, count ->
             registerProductoSnapshotListener(text.toString())
         }
@@ -51,8 +54,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val tienda = arguments?.getString("tienda")
-        val bundle = bundleOf("tienda" to tienda.toString())
+        val bundle = bundleOf("tienda" to tienda)
 
         val btn_alta_producto = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_alta_producto)
         btn_alta_producto.setOnClickListener{
@@ -64,6 +66,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
         productosSnapshotListener?.remove()
 
         productosSnapshotListener = getDbReference().collection(PRODUCTOS_COLLECTION_NAME)
+            .whereEqualTo("tienda", tienda)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.e("ListadoProductos", e.message.toString())
@@ -91,22 +94,24 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
                         producto = Producto(
                             document.get("id") as String,
                             document.get("nombre") as String,
-                            document.get("cantidadDisponible") as Long,
-                            document.get("precioUnitario") as Long,
+                            document.get("cantidadDisponible").toString().toLong(),
+                            document.get("precioUnitario").toString().toLong(),
                             document.get("categoria") as String,
                             document.get("fotografia") as String,
-                            document.get("observaciones") as String
+                            document.get("observaciones") as String,
+                            document.get("tienda") as String
                         )
                     }
                 } else {
                     producto = Producto(
                         document.get("id") as String,
                         document.get("nombre") as String,
-                        document.get("cantidadDisponible") as Long,
-                        document.get("precioUnitario") as Long,
+                        document.get("cantidadDisponible").toString().toLong(),
+                        document.get("precioUnitario").toString().toLong(),
                         document.get("categoria") as String,
                         document.get("fotografia") as String,
-                        document.get("observaciones") as String
+                        document.get("observaciones") as String,
+                        document.get("tienda") as String
                     )
                 }
 

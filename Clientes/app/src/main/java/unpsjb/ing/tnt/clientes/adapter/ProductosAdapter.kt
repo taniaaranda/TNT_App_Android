@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores.adapter
+package unpsjb.ing.tnt.clientes.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -7,12 +7,14 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import androidx.databinding.DataBindingUtil
-import unpsjb.ing.tnt.vendedores.R
-import unpsjb.ing.tnt.vendedores.data.model.Producto
-import unpsjb.ing.tnt.vendedores.databinding.ItemProductoBinding
+import unpsjb.ing.tnt.clientes.R
+import unpsjb.ing.tnt.clientes.data.model.Producto
+import unpsjb.ing.tnt.clientes.databinding.ItemProductoBinding
 
-class ProductoAdapter(private val context: Context, private val dataSource: List<Producto>): BaseAdapter() {
+class ProductosAdapter(private val context: Context, private val dataSource: List<Producto>,
+                       callback: (producto: String) -> Unit): BaseAdapter() {
     private lateinit var binding: ItemProductoBinding
+    private val callback: (String) -> Unit = callback
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 
     override fun getCount(): Int {
@@ -50,9 +52,11 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
 
         val producto = getCastedItem(position)
         binding.producto = producto
-        binding.imgFoto.setImageBitmap(producto.getBitmapImage())
+
+        binding.agregarAlCarrito.setOnClickListener {
+            callback(producto.id)
+        }
 
         return binding.root
     }
-
 }

@@ -29,4 +29,9 @@
     <string name="filtrar_nombre">Filtrar Nombre:</string>
     <string name="filtrar_ubicacion">Filtrar ubicación más cercana</string>
     <string name="android_sdk_places_apt_key">AIzaSyB6gXdyNw4jeHDU8EK3nJHO6kussLfMdbI</string>
+    <string name="productos_title_label">Productos</string>
+    <string name="filtrar">Filtrar:</string>
+    <string name="agregar_al_carrito">Agregar al Carrito</string>
+    <string name="ir_al_carrito">Ir al Carrito</string>
+    <string name="descripcion_img_foto">Imagen del producto</string>
 </resources>

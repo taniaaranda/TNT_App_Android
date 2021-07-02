@@ -68,4 +68,9 @@
             android:id="@+id/action_listadoProductosFragment_to_carritoFragment"
             app:destination="@id/carritoFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/listadoProductosFragment"
+        android:name="unpsjb.ing.tnt.clientes.ListadoProductosFragment"
+        android:label="fragment_listado_productos"
+        tools:layout="@layout/fragment_listado_productos" />
 </navigation>

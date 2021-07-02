@@ -44,10 +44,10 @@ class HomeFragment : FirebaseConnectedFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val email = arguments?.getString("email")
-        val bundle_usuario = bundleOf("usuario" to email)
+
         val btn_listado_tiendas = view.findViewById<Button>(R.id.btn_listado_tiendas)
         btn_listado_tiendas.setOnClickListener(){
-            findNavController().navigate(R.id.listadoTiendasFragment, bundle_usuario)
+            findNavController().navigate(R.id.listadoTiendasFragment, bundleOf("email" to email.toString()))
         }
     }
 

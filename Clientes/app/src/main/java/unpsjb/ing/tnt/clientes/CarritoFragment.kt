@@ -23,6 +23,7 @@ class CarritoFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentCarritoBinding
     private lateinit var carritoView: View
     private lateinit var fragmentContext: Context
+    private lateinit var tienda: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,6 +36,8 @@ class CarritoFragment : FirebaseConnectedFragment() {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_carrito, container, false
         )
+
+        tienda = arguments?.getString("tienda").toString()
 
         carritoView = binding.root
         toggleButton()
@@ -166,6 +169,7 @@ class CarritoFragment : FirebaseConnectedFragment() {
             carrito.get("fechaCreacion") as Timestamp,
             getTotalCarrito(productosCarritoList),
             carrito.get("activo") as Boolean,
+            tienda
         )
     }
 

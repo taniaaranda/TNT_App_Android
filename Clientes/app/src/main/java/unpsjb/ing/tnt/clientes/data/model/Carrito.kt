@@ -7,12 +7,13 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class Carrito(
-    val id: String,
-    val usuario: String,
-    val productos: ArrayList<ProductoCarrito>,
-    val fechaCreacion: Timestamp,
-    val total: Long,
-    val activo: Boolean
+    var id: String,
+    var usuario: String,
+    var productos: ArrayList<ProductoCarrito>,
+    var fechaCreacion: Timestamp,
+    var total: Long,
+    var activo: Boolean,
+    var tienda: String
 ) {
     @SuppressLint("SimpleDateFormat")
     fun getFechaCreacionForView(): String {
@@ -25,5 +26,10 @@ class Carrito(
 
     fun getTotalForView(): String {
         return "Total: $$total"
+    }
+
+    fun actualizarTotal(): Long {
+        total = productos.map { it.precio * it.cantidad }.sum()
+        return total
     }
 }

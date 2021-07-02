@@ -3,7 +3,6 @@ package unpsjb.ing.tnt.clientes
 import android.content.ContentValues
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -19,6 +18,8 @@ import com.google.firebase.firestore.ListenerRegistration
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
+import androidx.core.os.bundleOf
+import androidx.navigation.fragment.findNavController
 import android.widget.Switch
 import com.android.volley.Request
 import com.android.volley.Response
@@ -30,6 +31,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentListadoTiendasBinding
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
+    private lateinit var userEmail: String
     private var tiendasSnapshotListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,22 +41,24 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_listado_tiendas, container, false
         )
         fragmentContext = this.requireContext()
         listView = binding.root
-        val usuario = arguments?.getString("usuario")
-        prepareSpinner(usuario.toString())
-        prepareEditText(usuario.toString())
-        prepareSwitch(usuario.toString())
-        registerTiendasSnapshotListener(usuario.toString())
+
+        userEmail = arguments?.getString("email").toString()
+
+        prepareSpinner()
+        prepareEditText()
+        prepareSwitch()
+        registerTiendasSnapshotListener()
 
         return listView
     }
 
-    private fun prepareSpinner(usuario: String) {
+    private fun prepareSpinner() {
         val rubrosAdapter = ArrayAdapter(this.requireContext(),
                 android.R.layout.simple_spinner_item, Tienda.getRubrosValues())
         binding.filtroRubros.adapter = rubrosAdapter
@@ -65,15 +69,15 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
             }
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                registerTiendasSnapshotListener(usuario)
+                registerTiendasSnapshotListener(userEmail)
             }
         }
     }
 
-    private fun prepareEditText(usuario: String) {
+    private fun prepareEditText() {
         binding.filtroNombre.addTextChangedListener(object : TextWatcher {
             override fun afterTextChanged(s: Editable?) {
-                registerTiendasSnapshotListener(usuario)
+                registerTiendasSnapshotListener(userEmail)
             }
 
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
@@ -85,23 +89,23 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
 
     }
 
-    private fun prepareSwitch(usuario: String) {
+    private fun prepareSwitch() {
         binding.switchUbicacion.setOnCheckedChangeListener { Switch, isChecked ->
             if (isChecked) {
                 Log.i(ContentValues.TAG, "FUNCIONA EL LISTENER")
-                registerTiendasSnapshotListener(usuario)
+                registerTiendasSnapshotListener(userEmail)
             }
         }
     }
 
-    private fun registerTiendasSnapshotListener(usuario:String) {
+    private fun registerTiendasSnapshotListener() {
         tiendasSnapshotListener?.remove()
 
         var selectedFilter = binding.filtroRubros.selectedItem
         var txtNombreFilter = binding.filtroNombre.text.toString()
         var switchUbicacionFilter = binding.switchUbicacion.isChecked
         var ubicacionUsuario: ArrayList<Double> = arrayListOf(0.0,0.0)
-        getDbReference().collection("datosClientes").whereEqualTo("usuario",usuario).get()
+        getDbReference().collection("datosClientes").whereEqualTo("usuario",userEmail).get()
                 .addOnSuccessListener { queryDocumentSnapshots ->
                     ubicacionUsuario = queryDocumentSnapshots.documents.get(0).get("ubicacionLatLong") as ArrayList<Double>
                 }
@@ -118,7 +122,13 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
                         return@addSnapshotListener
                     }
 
-                    val adapter = TiendasAdapter(this.requireContext(), parseTiendas(snapshots, selectedFilter as String, txtNombreFilter, switchUbicacionFilter,ubicacionUsuario))
+                    val adapter = TiendasAdapter(this.requireContext(),
+                        parseTiendas(snapshots, selectedFilter as String, txtNombreFilter, txtNombreFilter, switchUbicacionFilter,ubicacionUsuario),
+                        userEmail
+                    ) { email, tienda -> findNavController()
+                            .navigate(R.id.listadoProductosFragment,
+                                    bundleOf("email" to email, "tiendaId" to tienda)) }
+
                     binding.listadoTiendas.adapter = adapter
                 }
     }

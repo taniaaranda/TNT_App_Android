@@ -1,59 +1,238 @@
 package unpsjb.ing.tnt.clientes
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
-import androidx.fragment.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.databinding.DataBindingUtil
+import androidx.navigation.fragment.findNavController
+import com.google.firebase.Timestamp
+import com.google.firebase.firestore.DocumentSnapshot
+import com.google.firebase.firestore.ListenerRegistration
+import com.google.firebase.firestore.Query
+import com.google.firebase.firestore.QuerySnapshot
+import unpsjb.ing.tnt.clientes.adapter.ProductosAdapter
+import unpsjb.ing.tnt.clientes.data.model.Carrito
+import unpsjb.ing.tnt.clientes.data.model.Producto
+import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
+import unpsjb.ing.tnt.clientes.databinding.FragmentListadoProductosBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
-
-/**
- * A simple [Fragment] subclass.
- * Use the [ListadoProductosFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class ListadoProductosFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+class ListadoProductosFragment : FirebaseConnectedFragment() {
+    private lateinit var binding: FragmentListadoProductosBinding
+    private lateinit var fragmentContext: Context
+    private lateinit var listView: View
+    private lateinit var userEmail: String
+    private lateinit var tiendaId: String
+    private lateinit var carrito: Carrito
+    private lateinit var productos: List<Producto>
+    private var productosSnapshotListener: ListenerRegistration? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_listado_productos, container, false)
+    ): View {
+        binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_listado_productos, container, false
+        )
+        fragmentContext = this.requireContext()
+        listView = binding.root
+
+        userEmail = arguments?.getString("email").toString()
+        tiendaId = arguments?.getString("tiendaId").toString()
+
+        if (tiendaId.isNotEmpty()) {
+            getDbReference().collection("tiendas")
+                .whereEqualTo("id", tiendaId)
+                .get()
+                .addOnSuccessListener { documentSnapshot ->
+                    if (documentSnapshot.documents.isNotEmpty()) {
+                        crearCarrito()
+
+                        registerCarritoButton()
+                        registerProductosSnapshotListener(documentSnapshot.documents.first().id)
+                    } else {
+                        // TODO: No se encontró la tienda
+                    }
+                }
+                .addOnFailureListener {
+                    // TODO: Falló al querer ir a buscar la tienda
+                }
+        } else {
+            // TODO: Error, no se pasó la tienda
+        }
+
+
+        return listView
+    }
+
+    private fun registerCarritoButton() {
+        binding.irAlCarrito.setOnClickListener {
+            if (binding.irAlCarrito.isEnabled) {
+                findNavController().navigate(R.id.carritoFragment, bundleOf("tienda" to tiendaId))
+            } else {
+                Toast.makeText(fragmentContext, "¡Espere a que termine de actualizarse el carrito!", Toast.LENGTH_SHORT)
+            }
+        }
+    }
+
+    private fun crearCarrito() {
+        getDbReference().collection("carritos")
+                .orderBy("id", Query.Direction.DESCENDING)
+                .limit(1)
+                .get()
+                .addOnSuccessListener { resultCarritos ->
+                    var id = "1"
+
+                    if (resultCarritos.documents.isNotEmpty()) {
+                        val lastId = (resultCarritos.documents.first().get("id") as String).toInt()
+                        id = (lastId + 1).toString()
+                    }
+
+                    carrito = Carrito(
+                        id,
+                        userEmail,
+                        arrayListOf<ProductoCarrito>(),
+                        Timestamp.now(),
+                        0,
+                        true,
+                        tiendaId
+                    )
+                }
+                .addOnFailureListener {
+                    // TODO: Mostrar un toast y redirigir al home de tiendas
+                }
+
+    }
+
+    private fun registerProductosSnapshotListener(nombreTienda: String) {
+        productosSnapshotListener?.remove()
+
+        val selectedFilter = binding.filtroNombre.text.toString()
+
+        productosSnapshotListener = getDbReference().collection("productos")
+                .addSnapshotListener { snapshots, e ->
+                    if (e != null) {
+                        Log.e("ListadoTiendas", e.message.toString())
+                        return@addSnapshotListener
+                    }
+
+                    productos = parseProductos(snapshots, selectedFilter)
+                    val adapter = ProductosAdapter(this.requireContext(),
+                        productos,
+                    ) { producto -> agregarAlCarrito(producto) }
+                    binding.listadoProductos.adapter = adapter
+                }
+    }
+
+    private fun agregarAlCarrito(producto: String) {
+        if (productos.isNotEmpty()) {
+            toggleButton()
+            val productoObj = productos.find { it.id == producto }
+
+            if (productoObj != null) {
+                val productoCarritoList = carrito.productos.filter { it.idProducto == productoObj.id }
+
+                if (productoCarritoList.isEmpty()) {
+                    carrito.productos.add(crearProductoCarrito(productoObj))
+                } else {
+                    val productoCarritoObj = productoCarritoList.first()
+                    productoCarritoObj.cantidad += 1
+                    productoCarritoObj.precio = productoObj.precioUnitario * productoCarritoObj.cantidad
+                    carrito.actualizarTotal()
+                    // TODO: Actualizar leyenda del total en el botón
+                }
+            } else {
+                // TODO: Error, el producto no se encontró
+            }
+
+            toggleButton()
+        } else {
+            // TODO: Error, no se habían cargado productos
+        }
+    }
+
+    private fun crearProductoCarrito(producto: Producto, cantidad: Long = 1): ProductoCarrito {
+        return ProductoCarrito(
+            producto.id,
+            cantidad,
+            producto.nombre,
+            producto.fotografia,
+            producto.observaciones,
+            producto.categoria,
+            producto.precioUnitario * cantidad
+        )
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun toggleButton() {
+        val irAlCarritoBtn = binding.irAlCarrito
+
+        if (irAlCarritoBtn.isEnabled) {
+            irAlCarritoBtn.text = GUARDANDO_CARRITO_BTN_TEXT
+            irAlCarritoBtn.isEnabled = false
+        } else {
+            irAlCarritoBtn.text = CARRITO_DISPONIBLE_BTN_TEXT + "($" + carrito.total + ")"
+            irAlCarritoBtn.isEnabled = true
+        }
+    }
+
+    private fun parseProductos(snapshots: QuerySnapshot?, filtro: String): List<Producto> {
+        val productos = java.util.ArrayList<Producto>()
+
+        if (snapshots != null) {
+            for (document in snapshots.documents) {
+                if (!Producto.validateDocument(document)) {
+                    continue
+                }
+
+                var producto: Producto? = null
+
+                if (filtro != "") {
+                    if (document.get("nombre").toString().contains(filtro, ignoreCase = true)) {
+                        producto = Producto(
+                                document.get("id") as String,
+                                document.get("nombre") as String,
+                                document.get("cantidadDisponible").toString().toLong(),
+                                document.get("precioUnitario").toString().toLong(),
+                                document.get("categoria") as String,
+                                document.get("fotografia") as String,
+                                document.get("observaciones") as String,
+                                document.get("tienda") as String
+                        )
+                    }
+                } else {
+                    producto = Producto(
+                            document.get("id") as String,
+                            document.get("nombre") as String,
+                            document.get("cantidadDisponible").toString().toLong(),
+                            document.get("precioUnitario").toString().toLong(),
+                            document.get("categoria") as String,
+                            document.get("fotografia") as String,
+                            document.get("observaciones") as String,
+                            document.get("tienda") as String
+                    )
+                }
+
+                if (producto != null) {
+                    productos.add(producto)
+                }
+            }
+        }
+
+        return productos.sortedWith(compareBy { it.id })
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment ListadoProductosFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            ListadoProductosFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+        const val GUARDANDO_CARRITO_BTN_TEXT = "Actualizando carrito"
+        const val CARRITO_DISPONIBLE_BTN_TEXT = "Ir al Carrito"
     }
 }
