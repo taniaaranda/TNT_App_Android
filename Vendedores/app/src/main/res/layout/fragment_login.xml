@@ -3,26 +3,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginvendedorFragment">
+    tools:context=".ui.login.LoginVendedorFragment">
 
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="596dp"
+        android:layout_height="match_parent"
         android:orientation="vertical">
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="273dp"
-            android:background="@drawable/tiendaonline">
-
-            <ImageView
-                android:layout_width="77dp"
-                android:layout_height="77dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="93dp"
-                android:src="@drawable/tiendaonline" />
-        </FrameLayout>
+            android:layout_height="220dp"
+            android:background="@drawable/tiendaonline" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -106,7 +98,7 @@
             android:paddingBottom="14dp"
             android:text="Iniciar sesion"
             android:textColor="#ffffff"
-            android:textSize="12sp"/>
+            android:textSize="12sp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -126,16 +118,15 @@
             android:fontFamily="@font/poppins_medium"
             android:text="Aun no esta registrado ?"
             android:textColor="#1566e0"
-            android:textSize="10.5sp"
-            />
+            android:textSize="10.5sp" />
+
         <Button
             android:id="@+id/button_vendedorregistro"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Registrarse"
             android:foregroundTint="@color/white"
-            />
+            android:text="Registrarse" />
 
     </LinearLayout>
     <LinearLayout

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/nav_orders">
+
+    <fragment
+        android:id="@+id/nav_orders"
+        android:name="unpsjb.ing.tnt.vendedores.ui.home.HomeFragment"
+        android:label="@string/menu_orders"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_products"
+        android:name="unpsjb.ing.tnt.vendedores.ui.gallery.ProductosFragment"
+        android:label="@string/menu_products"
+        tools:layout="@layout/fragment_productos" >
+        <action
+            android:id="@+id/action_nav_products_to_altaProductosFragment2"
+            app:destination="@id/product_new" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_logout"
+        android:name="unpsjb.ing.tnt.vendedores.CerrarSesionFragment"
+        android:label="fragment_cerrar_sesion"
+        tools:layout="@layout/fragment_cerrar_sesion" />
+    <fragment
+        android:id="@+id/product_new"
+        android:name="unpsjb.ing.tnt.vendedores.ui.productos.AltaProductosFragment"
+        android:label="AltaProductosFragment" />
+</navigation>

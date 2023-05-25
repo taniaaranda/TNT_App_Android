@@ -1,7 +1,6 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.home
 
 import android.content.Context
-import android.net.sip.SipSession
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -11,37 +10,33 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
 import com.google.firebase.Timestamp
-import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
+import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
+import unpsjb.ing.tnt.vendedores.databinding.FragmentHomeBinding
 import unpsjb.ing.tnt.vendedores.databinding.FragmentListadoPedidosBinding
-import java.util.*
-
+import java.util.ArrayList
 
 private const val PEDIDOS_COLLECTION_NAME = "pedidos"
 
-class ListadoPedidosFragment : FirebaseConnectedFragment() {
-    private lateinit var binding: FragmentListadoPedidosBinding
+class HomeFragment : FirebaseConnectedFragment() {
+    private var _binding: FragmentHomeBinding? = null
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
     private var pedidosSnapshotListener: ListenerRegistration? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
+    private val binding get() = _binding!!
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.fragment_listado_pedidos, container, false
+        _binding = DataBindingUtil.inflate(
+            inflater, R.layout.fragment_home, container, false
         )
 
         fragmentContext = this.requireContext()
@@ -55,7 +50,7 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
 
     private fun prepareSpinner() {
         val estadosAdapter = ArrayAdapter(this.requireContext(),
-                android.R.layout.simple_spinner_item, Pedido.getStateValues())
+            android.R.layout.simple_spinner_item, Pedido.getStateValues())
         binding.filtroEstados.adapter = estadosAdapter
 
         binding.filtroEstados.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -80,15 +75,15 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
         }
 
         pedidosSnapshotListener = getDbReference().collection(PEDIDOS_COLLECTION_NAME)
-                .addSnapshotListener { snapshots, e ->
-                    if (e != null) {
-                        Log.e("ListadoPedidos", e.message.toString())
-                        return@addSnapshotListener
-                    }
-
-                    val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots, selectedFilter as String))
-                    binding.listadoPedidos.adapter = adapter
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("ListadoPedidos", e.message.toString())
+                    return@addSnapshotListener
                 }
+
+                val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots, selectedFilter as String))
+                binding.listadoPedidos.adapter = adapter
+            }
     }
 
     private fun parsePedidos(snapshots: QuerySnapshot?, filtro: String): List<Pedido> {
@@ -106,15 +101,22 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
                     continue
                 }
 
-                pedidos.add(Pedido(
-                        document.get("id") as String,
-                        document.get("productos") as ArrayList<String>,
-                        Pedido.getStateByKey(document.get("estado") as String),
-                        document.get("estampaDeTiempo") as Timestamp
-                ))
+                pedidos.add(
+                    Pedido(
+                    document.get("id") as String,
+                    document.get("productos") as ArrayList<String>,
+                    Pedido.getStateByKey(document.get("estado") as String),
+                    document.get("estampaDeTiempo") as Timestamp
+                )
+                )
             }
         }
 
         return pedidos.sortedWith(compareBy { it.id })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }

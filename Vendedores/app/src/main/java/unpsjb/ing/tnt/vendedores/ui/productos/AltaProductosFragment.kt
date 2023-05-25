@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.productos
 
 import android.os.Bundle
 import android.util.Log
@@ -7,12 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.core.os.bundleOf
-import androidx.core.view.isEmpty
 import androidx.core.view.isNotEmpty
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
+import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.databinding.FragmentAltaProductosBinding
 
 class AltaProductosFragment : FirebaseConnectedFragment() {
@@ -122,7 +123,7 @@ class AltaProductosFragment : FirebaseConnectedFragment() {
                     Toast.LENGTH_SHORT
                 ).show()
 
-                findNavController().navigate(R.id.menuFragment, bundleOf("email" to tienda.get("usuario")))
+                findNavController().navigate(R.id.home, bundleOf("email" to tienda.get("usuario")))
             }
             .addOnFailureListener {
             }

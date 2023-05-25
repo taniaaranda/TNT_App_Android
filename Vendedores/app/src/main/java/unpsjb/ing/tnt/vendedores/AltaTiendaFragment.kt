@@ -82,12 +82,7 @@ class AltaTiendaFragment : Fragment() {
 
         })
 
-
-
-
         val email = arguments?.getString("email")
-
-
         val rubros = resources.getStringArray(R.array.rubros)
         val arrayAdapter = ArrayAdapter(requireContext(), R.layout.dropdown_item, rubros)
         val atxt_rubro = view.findViewById<AutoCompleteTextView>(R.id.atxt_rubro)
@@ -204,11 +199,9 @@ class AltaTiendaFragment : Fragment() {
                     Toast.LENGTH_SHORT
                 ).show()
                 val bundle = bundleOf("email" to email.toString())
-                findNavController().navigate(R.id.menuFragment, bundle)
+                findNavController().navigate(R.id.home, bundle)
             }
-
         }
-
     }
 
     companion object {

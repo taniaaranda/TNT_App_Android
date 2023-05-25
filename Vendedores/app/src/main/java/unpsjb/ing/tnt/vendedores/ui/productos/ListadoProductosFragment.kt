@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.productos
 
 import android.content.Context
 import android.os.Bundle
@@ -12,10 +12,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
+import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.adapter.ProductoAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Producto
 import unpsjb.ing.tnt.vendedores.databinding.FragmentItemListBinding
-import java.util.*
+import java.util.ArrayList
 
 private const val PRODUCTOS_COLLECTION_NAME = "productos"
 
@@ -56,9 +58,11 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
         val bundle = bundleOf("tienda" to tienda)
 
-        val btn_alta_producto = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(R.id.btn_alta_producto)
+        val btn_alta_producto = view.findViewById<com.google.android.material.floatingactionbutton.FloatingActionButton>(
+            R.id.btn_alta_producto
+        )
         btn_alta_producto.setOnClickListener{
-            findNavController().navigate(R.id.altaProductosFragment, bundle)
+            findNavController().navigate(R.id.product_new, bundle)
         }
     }
 
@@ -73,7 +77,8 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
                     return@addSnapshotListener
                 }
 
-                val adapter = ProductoAdapter(this.requireContext(), parseProductos(snapshots, filtro))
+                val adapter =
+                    ProductoAdapter(this.requireContext(), parseProductos(snapshots, filtro))
                 binding.listadoProductos.adapter = adapter
             }
     }

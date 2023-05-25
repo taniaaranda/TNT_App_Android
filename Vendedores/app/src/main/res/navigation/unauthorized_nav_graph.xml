@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/unauthorized_nav_graph"
+    app:startDestination="@id/loginVendedorFragment">
+
+    <fragment
+        android:id="@+id/loginVendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ui.login.LoginVendedorFragment"
+        android:label="fragment_loginvendedor"
+        tools:layout="@layout/fragment_login" >
+        <action
+            android:id="@+id/action_loginvendedorFragment_to_registrovendedorFragment"
+            app:destination="@id/registroVendedorFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/registroVendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ui.vendedores.RegistroVendedorFragment"
+        android:label="fragment_registrovendedor"
+        tools:layout="@layout/fragment_registrovendedor" >
+        <action
+            android:id="@+id/action_registroVendedorFragment_to_altaTiendaFragment"
+            app:destination="@id/altaTiendaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/altaTiendaFragment"
+        android:name="unpsjb.ing.tnt.vendedores.AltaTiendaFragment"
+        android:label="fragment_alta_tienda"
+        tools:layout="@layout/fragment_alta_tienda" />
+</navigation>
