@@ -1,7 +1,8 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.auth
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import unpsjb.ing.tnt.vendedores.HomeActivity
 
 
 class CerrarSesionFragment : Fragment() {

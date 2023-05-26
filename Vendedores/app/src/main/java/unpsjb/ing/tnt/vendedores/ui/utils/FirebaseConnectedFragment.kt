@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.utils
 
 import androidx.fragment.app.Fragment
 import com.google.firebase.firestore.FirebaseFirestore

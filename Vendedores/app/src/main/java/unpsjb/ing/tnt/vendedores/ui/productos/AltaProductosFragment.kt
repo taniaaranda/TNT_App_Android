@@ -12,7 +12,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.Query
-import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.databinding.FragmentAltaProductosBinding
 

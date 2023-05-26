@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores
+package unpsjb.ing.tnt.vendedores.ui.utils
 
 import android.app.Dialog
 import android.app.TimePickerDialog

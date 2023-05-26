@@ -1,28 +1,48 @@
 package unpsjb.ing.tnt.vendedores
 
 import android.app.AlertDialog
-import android.content.Context
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import android.util.AttributeSet
 import android.util.Log
-import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.os.bundleOf
-import androidx.navigation.fragment.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 
 class UnauthorizedActivity : AppCompatActivity() {
+    private var db: FirebaseFirestore = Firebase.firestore
+    var _user: FirebaseUser? = null
+    private val currentUser get() = _user
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_unauthorized)
+        _user = FirebaseAuth.getInstance().currentUser
+        checkUser()
+    }
 
-        if (FirebaseAuth.getInstance().currentUser != null) {
-            Log.d("UnauthorizedActivity", "User is logged in, redirecting...")
-            finish()
-            startActivity(Intent(this@UnauthorizedActivity, HomeActivity::class.java))
+    private fun checkUser() {
+        if (currentUser != null) {
+            Log.d("UnauthorizedActivity", "Usuario: " + currentUser!!.uid)
+            db.collection("tiendas").whereEqualTo("usuario", currentUser!!.uid).get()
+                .addOnSuccessListener {
+                    if (it.isEmpty) {
+                        Log.d("UnauthorizedActivity", "El usuario no tiene una tienda, redireccionando...")
+                        finish()
+                        startActivity(Intent(this@UnauthorizedActivity, NuevaTiendaActivity::class.java))
+                    } else {
+                        Log.d("UnauthorizedActivity", "Usuario logueado y con una tienda creada, redireccionando...")
+                        finish()
+                        startActivity(Intent(this@UnauthorizedActivity, HomeActivity::class.java))
+                    }
+                }
+                .addOnFailureListener {
+                    Log.d("GetStoreError", it.message.toString())
+                }
         }
     }
 
@@ -34,9 +54,7 @@ class UnauthorizedActivity : AppCompatActivity() {
                     finish()
                     startActivity(Intent(this@UnauthorizedActivity, HomeActivity::class.java))
                 } else {
-                    AlertDialog.Builder(applicationContext).apply{
-                        setTitle("¡Usuario o contraeña incorrectos!")
-                    }.show()
+                    Toast.makeText(applicationContext, "¡Usuario o clave inválidos!", Toast.LENGTH_SHORT).show()
                 }
             }
     }

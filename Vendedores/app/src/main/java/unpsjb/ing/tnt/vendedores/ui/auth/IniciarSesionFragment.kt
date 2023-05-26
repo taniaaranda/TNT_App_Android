@@ -1,4 +1,4 @@
-package unpsjb.ing.tnt.vendedores.ui.login
+package unpsjb.ing.tnt.vendedores.ui.auth
 
 import android.app.AlertDialog
 import android.content.DialogInterface
@@ -13,7 +13,7 @@ import androidx.navigation.fragment.findNavController
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.UnauthorizedActivity
 
-class LoginVendedorFragment : Fragment() {
+class IniciarSesionFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }

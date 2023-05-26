@@ -57,8 +57,6 @@ class RegistroVendedorFragment : Fragment() {
                 FirebaseAuth.getInstance().createUserWithEmailAndPassword(email.text.toString(), pass.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            val bundle = bundleOf("email" to email.text.toString())
-                            findNavController().navigate(R.id.altaTiendaFragment, bundle)
                             Toast.makeText(requireParentFragment().requireContext(), "¡Usuario registrado con éxito!", Toast.LENGTH_SHORT).show()
                         } else {
                             AlertDialog.Builder(context).apply{

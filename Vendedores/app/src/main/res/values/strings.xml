@@ -137,12 +137,13 @@
 
     <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar"></style>
 
-    <string name="android_sdk_places_apt_key">AIzaSyB6gXdyNw4jeHDU8EK3nJHO6kussLfMdbI</string>
+    <string name="android_sdk_places_apt_key">AIzaSyDL8Sb0TsKkJ_ArCtQFUX1IL7z_ZdiFdUo</string>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
+
     <string name="title_activity_home">HomeActivity</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -158,5 +159,21 @@
     <string name="hint_nombre_producto">Nombre</string>
     <string name="hint_cantidad_disponible">Cantidad Disponible</string>
     <string name="hint_precio">Precio</string>
-
+    <string name="label_tienda_new">Nueva Tienda</string>
+    <string name="label_tienda">Tienda</string>
+    <string name="label_nombre">Nombre</string>
+    <string name="label_rubro">Rubro</string>
+    <string name="label_hora_de_inicio">Hora de Inicio</string>
+    <string name="label_hora_de_cierre">Hora de Cierre</string>
+    <string name="label_metodos_de_pago">Métodos de pago</string>
+    <string name="label_efectivo">Efectivo</string>
+    <string name="label_tarjeta_de_debito">Tarjeta de débito</string>
+    <string name="label_tarjeta_de_credito">Tarjeta de crédito</string>
+    <string name="label_debito">Débito</string>
+    <string name="label_credito">Crédito</string>
+    <string name="label_aceptar">Aceptar</string>
+    <string name="label_covi_pedidos">Covi-Pedidos</string>
+    <string name="label_horarios">Horarios</string>
+    <string name="label_cancelar">Cancelar</string>
+    <string name="menu_store">Tienda</string>
 </resources>

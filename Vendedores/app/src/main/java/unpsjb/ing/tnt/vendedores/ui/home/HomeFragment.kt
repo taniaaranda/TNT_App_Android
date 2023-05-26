@@ -13,12 +13,11 @@ import androidx.databinding.DataBindingUtil
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
 import unpsjb.ing.tnt.vendedores.databinding.FragmentHomeBinding
-import unpsjb.ing.tnt.vendedores.databinding.FragmentListadoPedidosBinding
 import java.util.ArrayList
 
 private const val PEDIDOS_COLLECTION_NAME = "pedidos"

@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/loginVendedorFragment"
-        android:name="unpsjb.ing.tnt.vendedores.ui.login.LoginVendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ui.auth.IniciarSesionFragment"
         android:label="fragment_loginvendedor"
         tools:layout="@layout/fragment_login" >
         <action
@@ -19,14 +19,5 @@
         android:id="@+id/registroVendedorFragment"
         android:name="unpsjb.ing.tnt.vendedores.ui.vendedores.RegistroVendedorFragment"
         android:label="fragment_registrovendedor"
-        tools:layout="@layout/fragment_registrovendedor" >
-        <action
-            android:id="@+id/action_registroVendedorFragment_to_altaTiendaFragment"
-            app:destination="@id/altaTiendaFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/altaTiendaFragment"
-        android:name="unpsjb.ing.tnt.vendedores.AltaTiendaFragment"
-        android:label="fragment_alta_tienda"
-        tools:layout="@layout/fragment_alta_tienda" />
+        tools:layout="@layout/fragment_registrovendedor" />
 </navigation>

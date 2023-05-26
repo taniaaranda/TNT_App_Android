@@ -11,9 +11,11 @@ import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.Timestamp
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import unpsjb.ing.tnt.vendedores.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
@@ -28,6 +30,14 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
     private var pedidosSnapshotListener: ListenerRegistration? = null
+
+    private lateinit var _user: FirebaseUser
+    private val currentUser get() = _user
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        _user = FirebaseAuth.getInstance().currentUser!!
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -72,16 +82,18 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
             selectedFilter = binding.filtroEstados.selectedItem
         }
 
-        pedidosSnapshotListener = getDbReference().collection(PEDIDOS_COLLECTION_NAME)
-                .addSnapshotListener { snapshots, e ->
-                    if (e != null) {
-                        Log.e("ListadoPedidos", e.message.toString())
-                        return@addSnapshotListener
-                    }
-
-                    val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots, selectedFilter as String))
-                    binding.listadoPedidos.adapter = adapter
+        pedidosSnapshotListener = getDbReference()
+            .collection(PEDIDOS_COLLECTION_NAME)
+            .whereEqualTo("usuario", currentUser.uid)
+            .addSnapshotListener { snapshots, e ->
+                if (e != null) {
+                    Log.e("ListadoPedidos", e.message.toString())
+                    return@addSnapshotListener
                 }
+
+                val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots, selectedFilter as String))
+                binding.listadoPedidos.adapter = adapter
+            }
     }
 
     private fun parsePedidos(snapshots: QuerySnapshot?, filtro: String): List<Pedido> {
