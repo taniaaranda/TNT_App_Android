@@ -211,7 +211,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             "horario_de_atencion" to getHorariosDeAtencion(),
             "metodos_de_pago" to getMetodosDePago(),
             "usuario" to getUserUuid(),
-            "ubicacionLatLong" to getUbicacionLatLong()  // TODO: Devolver hashMap
+            "ubicacionLatLong" to getUbicacionLatLong()
         )
     }
 

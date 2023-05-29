@@ -176,4 +176,20 @@
     <string name="label_horarios">Horarios</string>
     <string name="label_cancelar">Cancelar</string>
     <string name="menu_store">Tienda</string>
+    <string name="label_producto_nuevo">Producto Nuevo</string>
+    <string name="hint_descripcion_del_producto">Descripcion del producto</string>
+    <string name="hint_precio_numero">Precio unitario del producto (Ej: 100.00)</string>
+    <string name="hint_stock">Cantidad disponible (Ej: 10)</string>
+    <string name="label_informacion_nutricional">Información Nutricional</string>
+    <string name="label_foto">Foto</string>
+    <string name="label_exceso_de_azucares">Exceso de Azúcares</string>
+    <string name="label_exceso_de_sodio">Exceso de Sodio</string>
+    <string name="label_exceso_de_grasas_saturadas">Exceso de Grasas Saturadas</string>
+    <string name="label_exceso_de_grasas_totales">Exceso de Grasas Totales</string>
+    <string name="label_exceso_de_calor_as">Exceso de Calorías</string>
+    <string name="label_crear">Crear</string>
+    <string name="hint_imagen_del_producto">Imagen del Producto</string>
+    <string name="label_sacar_foto">Sacar Foto</string>
+    <string name="label_subir_foto">Subir Foto</string>
+    <string name="label_informaci_n_b_sica">Información básica</string>
 </resources>

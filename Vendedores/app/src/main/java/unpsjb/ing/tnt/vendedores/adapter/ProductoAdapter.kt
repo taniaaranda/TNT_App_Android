@@ -29,11 +29,16 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
         return Producto(
             item.id,
             item.nombre,
-            item.cantidadDisponible,
-            item.precioUnitario,
-            item.categoria,
-            item.fotografia,
             item.observaciones,
+            item.precio,
+            item.stock,
+            item.foto,
+            item.categoria,
+            item.excesoDeAzucar,
+            item.excesoDeSodio,
+            item.excesoDeGrasasSaturadas,
+            item.excesoDeGrasasTotales,
+            item.excesoDeCalorias,
             item.tienda
         )
     }

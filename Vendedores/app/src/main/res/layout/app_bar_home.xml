@@ -23,4 +23,4 @@
 
   <include layout="@layout/content_home"/>
 
-  </androidx.coordinatorlayout.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

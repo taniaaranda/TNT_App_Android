@@ -28,7 +28,7 @@
         tools:layout="@layout/fragment_cerrar_sesion" />
     <fragment
         android:id="@+id/product_new"
-        android:name="unpsjb.ing.tnt.vendedores.ui.productos.AltaProductosFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ui.productos.NuevoProductoFragment"
         android:label="AltaProductosFragment" />
     <fragment
         android:id="@+id/nav_store"

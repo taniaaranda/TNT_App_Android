@@ -9,18 +9,23 @@ import com.google.firebase.firestore.DocumentSnapshot
 class Producto(
     val id: String,
     val nombre: String,
-    val cantidadDisponible: Long,
-    val precioUnitario: Long,
-    val categoria: String,
-    val fotografia: String,
     val observaciones: String,
+    val precio: Long,
+    val stock: Long,
+    val foto: String,
+    val categoria: String,
+    val excesoDeAzucar: Boolean,
+    val excesoDeSodio: Boolean,
+    val excesoDeGrasasSaturadas: Boolean,
+    val excesoDeGrasasTotales: Boolean,
+    val excesoDeCalorias: Boolean,
     val tienda: String
 ) {
     fun getBitmapImage(): Bitmap {
         var imageBytes = Base64.decode(DEFAULT_IMAGE, 0)
 
-        if (fotografia !== "") {
-            imageBytes = Base64.decode(fotografia, 0)
+        if (foto !== "") {
+            imageBytes = Base64.decode(foto, 0)
         }
 
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
@@ -35,22 +40,17 @@ class Producto(
             if (document !== null) {
                 valid = true
 
-                if (!document.contains("id")) {
-                    Log.e("ValidacionProducto", "El campo 'id' no esta presente")
-                    valid = false
-                }
-
                 if (!document.contains("nombre")) {
                     Log.e("ValidacionProducto", "El campo 'nombre' no esta presente")
                     valid = false
                 }
 
-                if (!document.contains("cantidadDisponible")) {
+                if (!document.contains("stock")) {
                     Log.e("ValidacionProducto", "El campo 'cantidadDisponible' no esta presente")
                     valid = false
                 }
 
-                if (!document.contains("precioUnitario")) {
+                if (!document.contains("precio")) {
                     Log.e("ValidacionProducto", "El campo 'precioUnitario' no esta presente")
                     valid = false
                 }
@@ -60,7 +60,7 @@ class Producto(
                     valid = false
                 }
 
-                if (!document.contains("fotografia")) {
+                if (!document.contains("foto")) {
                     Log.e("ValidacionProducto", "El campo 'fotografia' no esta presente")
                     valid = false
                 }
