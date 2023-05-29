@@ -51,8 +51,7 @@ class UnauthorizedActivity : AppCompatActivity() {
             .signInWithEmailAndPassword(email, clave)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
-                    finish()
-                    startActivity(Intent(this@UnauthorizedActivity, HomeActivity::class.java))
+                    checkUser()
                 } else {
                     Toast.makeText(applicationContext, "¡Usuario o clave inválidos!", Toast.LENGTH_SHORT).show()
                 }

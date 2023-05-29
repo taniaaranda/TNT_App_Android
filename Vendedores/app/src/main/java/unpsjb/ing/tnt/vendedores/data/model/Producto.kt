@@ -28,6 +28,9 @@ class Producto(
             imageBytes = Base64.decode(foto, 0)
         }
 
+        // TODO: Vamos a buscar la imagen a inet
+        // TODO: COnvertimos la imagen a bytes
+
         return BitmapFactory.decodeByteArray(imageBytes, 0, imageBytes.size)
     }
 
