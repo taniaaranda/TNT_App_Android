@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.home.RubroFragment">
+
+    <data>
+        <variable
+            name="rubro"
+            type="unpsjb.ing.tnt.clientes.data.model.Rubro"/>
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginTop="8dp"
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
+
+        <TextView
+            android:id="@+id/nombre_rubro"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/rounded_corners"
+            android:gravity="center_vertical"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:text="@{rubro.nombre}"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:drawableEndCompat="@drawable/arrow_right_icon_filled_gray"
+            app:drawableTint="#000000" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/flecha"-->
+<!--            android:layout_width="0dp"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_weight=".15"-->
+<!--            android:background="@drawable/rounded_corner_right"-->
+<!--            android:paddingEnd="16dp"-->
+<!--            android:paddingRight="16dp"-->
+<!--            app:drawableRightCompat="@drawable/arrow_right_icon_filled_gray"-->
+<!--            app:drawableTint="@android:color/darker_gray"-->
+<!--            tools:ignore="RtlSymmetry" />-->
+    </LinearLayout>
+</layout>

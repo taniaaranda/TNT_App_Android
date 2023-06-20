@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/cart_icon_filled_white"
+        android:bottom="20dp"
+        android:left="0dp"
+        android:right="20dp"
+        android:top="20dp">
+    </item>
+
+    <item
+        android:id="@+id/cart_count"
+        android:drawable="@drawable/number_container_white"
+        android:top="20dp"
+        android:left="25dp"
+        android:right="0dp"
+        android:bottom="20dp"
+    />
+</layer-list>

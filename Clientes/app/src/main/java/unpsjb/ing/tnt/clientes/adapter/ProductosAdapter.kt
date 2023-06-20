@@ -1,62 +1,168 @@
 package unpsjb.ing.tnt.clientes.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.recyclerview.widget.RecyclerView
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Producto
-import unpsjb.ing.tnt.clientes.databinding.ItemProductoBinding
+import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
+import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.cargandoStock
 
-class ProductosAdapter(private val context: Context, private val dataSource: List<Producto>,
-                       callback: (producto: String) -> Unit): BaseAdapter() {
-    private lateinit var binding: ItemProductoBinding
-    private val callback: (String) -> Unit = callback
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+class ProductosAdapter(
+    private val context: Context,
+    private val productos: List<Producto>,
+    private val productosCarrito: List<ProductoCarrito>,
+    private val callbackAgregar: (producto: Producto) -> Unit,
+    private val callbackQuitar: (producto: Producto) -> Unit
+): RecyclerView.Adapter<ProductosAdapter.ProductoViewHolder>() {
+    private lateinit var productoViewHolder: ProductoViewHolder
 
-    override fun getCount(): Int {
-        return dataSource.size
-    }
-
-    override fun getItem(position: Int): Any {
-        return dataSource[position]
-    }
-
-    private fun getCastedItem(position: Int): Producto {
-        val item = getItem(position) as Producto
-
-        return Producto(
-            item.id,
-            item.nombre,
-            item.cantidadDisponible,
-            item.precioUnitario,
-            item.categoria,
-            item.fotografia,
-            item.observaciones,
-            item.tienda
-        )
-    }
-
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
-    }
-
-    @SuppressLint("ViewHolder")
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.item_producto, parent, false
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoViewHolder {
+        val itemView = LayoutInflater.from(context).inflate(
+            R.layout.item_producto, parent, false
         )
 
-        val producto = getCastedItem(position)
-        binding.producto = producto
+        return ProductoViewHolder(itemView)
+    }
 
-        binding.agregarAlCarrito.setOnClickListener {
-            callback(producto.id)
+    override fun onBindViewHolder(holder: ProductoViewHolder, position: Int) {
+        productoViewHolder = holder
+
+        holder.nombreProducto.text = productos[position].nombre
+
+        cargarCantidad(holder, position)
+
+        productos[position].getBitmapImage().addOnSuccessListener {
+            holder.fotoProducto.setImageBitmap(
+                BitmapFactory.decodeByteArray(it, 0, it.size)
+            )
+        }.addOnFailureListener {
+            val default = productos[position].getDefaultImage()
+            holder.fotoProducto.setImageBitmap(
+                BitmapFactory.decodeByteArray(default, 0, default.size)
+            )
         }
 
-        return binding.root
+        hayStock(holder, (productos[position].stock.toString().toInt() != 0))
+
+        setAgregarAlCarritoListener(holder, position)
+        setQuitarDelCarritoListener(holder, position)
+        cargandoStock(cargandoStock)
+    }
+
+    private fun cargarCantidad(holder: ProductoViewHolder, position: Int) {
+        if (productosCarrito.isNotEmpty()) {
+            try {
+                val producto = productosCarrito.first { it.producto.id == productos[position].id }
+                holder.cantidadAgregada.text = producto.cantidad.toString()
+            } catch (e: NoSuchElementException) {
+                holder.cantidadAgregada.text = "0"
+            }
+        }
+    }
+
+    private fun setAgregarAlCarritoListener(holder: ProductoViewHolder, position: Int) {
+        holder.botonAgregar.setOnClickListener {
+            cargandoStock = true
+            incrementarCantidad(productos[position])
+        }
+    }
+
+    private fun incrementarCantidad(producto: Producto) {
+        producto.decrementarStock()
+
+        producto.guardar()
+            .addOnSuccessListener {
+                callbackAgregar(producto)
+                cargandoStock = false
+            }
+            .addOnFailureListener {
+                cargandoStock = false
+            }
+    }
+
+    private fun setQuitarDelCarritoListener(holder: ProductoViewHolder, position: Int) {
+        holder.botonQuitar.setOnClickListener {
+            cargandoStock = true
+
+            val productoCarrito = carritoTieneProducto(position)
+
+            if (productoCarrito == null || productoCarrito.cantidad <= 0) {
+                cargandoStock = false
+                return@setOnClickListener
+            }
+
+            decrementarCantidad(productos[position])
+        }
+    }
+
+    private fun carritoTieneProducto(position: Int): ProductoCarrito? {
+        return productosCarrito
+            .firstOrNull { it.producto.id == productos[position].id }
+    }
+
+    private fun decrementarCantidad(producto: Producto) {
+        producto.incrementarStock()
+
+        val cantidadActual = productoViewHolder.cantidadAgregada.text.toString().toInt()
+
+        if (cantidadActual == 0) {
+            cargandoStock = false
+            return
+        }
+
+        producto.guardar()
+            .addOnSuccessListener {
+                callbackQuitar(producto)
+                productoViewHolder.cantidadAgregada.text =
+                    productoViewHolder.cantidadAgregada.text.toString().toInt().dec().toString()
+                cargandoStock = false
+            }
+            .addOnFailureListener {
+                cargandoStock = false
+            }
+    }
+
+    private fun hayStock(holder: ProductoViewHolder, hay: Boolean) {
+        if (hay) {
+            holder.sinStock.visibility = View.GONE
+            holder.cargandoStock.visibility = View.GONE
+            holder.controlStock.visibility = View.VISIBLE
+        } else {
+            holder.sinStock.visibility = View.VISIBLE
+            holder.cargandoStock.visibility = View.GONE
+            holder.controlStock.visibility = View.GONE
+        }
+    }
+
+    private fun cargandoStock(cargando: Boolean) {
+        if (cargando) {
+            productoViewHolder.controlStock.visibility = View.GONE
+            productoViewHolder.cargandoStock.visibility = View.VISIBLE
+        } else {
+            productoViewHolder.cargandoStock.visibility = View.GONE
+            productoViewHolder.controlStock.visibility = View.VISIBLE
+        }
+    }
+
+    override fun getItemCount(): Int {
+        return productos.size
+    }
+
+    class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto)
+        val fotoProducto: ImageView = itemView.findViewById(R.id.imagen_producto)
+        val botonAgregar: TextView = itemView.findViewById(R.id.agregar_producto)
+        val botonQuitar: TextView = itemView.findViewById(R.id.quitar_producto)
+        val cantidadAgregada: TextView = itemView.findViewById(R.id.cuenta_productos)
+
+        val controlStock: View = itemView.findViewById(R.id.controles_stock)
+        val cargandoStock: View = itemView.findViewById(R.id.loading_stock)
+        val sinStock: TextView = itemView.findViewById(R.id.sin_stock)
     }
 }
