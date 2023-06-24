@@ -44,6 +44,13 @@
     <fragment
         android:id="@+id/nav_cart"
         android:name="unpsjb.ing.tnt.clientes.ui.pedidos.CarritoFragment"
-        android:label="Carrito" />
-
+        android:label="Carrito" >
+        <action
+            android:id="@+id/action_nav_cart_to_nav_checkout"
+            app:destination="@id/nav_checkout" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_checkout"
+        android:name="unpsjb.ing.tnt.clientes.ui.checkout.CheckoutFragment"
+        android:label="Checkout" />
 </navigation>

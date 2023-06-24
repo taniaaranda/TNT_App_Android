@@ -11,6 +11,7 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.Timestamp
@@ -121,38 +122,41 @@ class CarritoFragment : FirebaseConnectedFragment() {
 
     private fun setPedidoButtonHandler() {
         binding.hacerPedido.setOnClickListener {
-            getDbReference().collection("pedidos")
-                .orderBy("id", Query.Direction.DESCENDING)
-                .limit(1)
-                .get()
-                .addOnSuccessListener { resultPedidos ->
-                    var id = "1"
-
-                    if (resultPedidos.documents.isNotEmpty()) {
-                        val lastId = (resultPedidos.documents.first().get("id") as String).toInt()
-                        id = (lastId + 1).toString()
-                    }
-
-                    val pedido: Pedido? = crearObjetoPedido(id)
-
-                    if (pedido != null) {
-                        guardarPedido(pedido)
-                    } else {
-                        Toast.makeText(
-                            requireContext(),
-                            "No se pudo crear el pedido, por favor reintente",
-                            Toast.LENGTH_LONG
-                        ).show()
-                    }
-                }
-                .addOnFailureListener {
-                    Toast.makeText(
-                        requireContext(),
-                        "No se pudo crear el pedido, por favor reintente",
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
+            carritoView.findNavController().navigate(R.id.nav_checkout)
         }
+//        binding.hacerPedido.setOnClickListener {
+//            getDbReference().collection("pedidos")
+//                .orderBy("id", Query.Direction.DESCENDING)
+//                .limit(1)
+//                .get()
+//                .addOnSuccessListener { resultPedidos ->
+//                    var id = "1"
+//
+//                    if (resultPedidos.documents.isNotEmpty()) {
+//                        val lastId = (resultPedidos.documents.first().get("id") as String).toInt()
+//                        id = (lastId + 1).toString()
+//                    }
+//
+//                    val pedido: Pedido? = crearObjetoPedido(id)
+//
+//                    if (pedido != null) {
+//                        guardarPedido(pedido)
+//                    } else {
+//                        Toast.makeText(
+//                            requireContext(),
+//                            "No se pudo crear el pedido, por favor reintente",
+//                            Toast.LENGTH_LONG
+//                        ).show()
+//                    }
+//                }
+//                .addOnFailureListener {
+//                    Toast.makeText(
+//                        requireContext(),
+//                        "No se pudo crear el pedido, por favor reintente",
+//                        Toast.LENGTH_LONG
+//                    ).show()
+//                }
+//        }
     }
 
     private fun crearObjetoPedido(id: String = "1"): Pedido? {

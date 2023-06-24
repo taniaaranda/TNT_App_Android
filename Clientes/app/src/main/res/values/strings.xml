@@ -79,4 +79,23 @@
     <string name="tu_carrito">Tu Carrito</string>
     <string name="cantidad">Cantidad</string>
     <string name="precio_view">Precio $%1$s</string>
+    <string name="paga_tu_pedido">Paga tu pedido</string>
+    <string name="tarjeta">Número de la Tarjeta</string>
+    <string name="vencimiento">Vencimiento</string>
+    <string name="cvv">CVV</string>
+    <string name="nombre_y_apellido">Nombre y Apellido</string>
+    <string name="dni">DNI</string>
+    <string name="finaliza_tu_pedido">Finaliza tu Pedido</string>
+    <string name="elegir_otra_direccion">Elegir otra Direccion</string>
+    <string name="cambiar">Cambiar</string>
+    <string name="efectivo">Efectivo</string>
+    <string name="dejale_propina_al_repartidor">¡Dejale propina al repartidor!</string>
+    <string name="sugerencia_10_porciento">Sugerencia (10%):</string>
+    <string name="propina">Propina:</string>
+    <string name="resumen_de_tu_pedido">Resumen de tu pedido</string>
+    <string name="total_de_productos">Total de productos:</string>
+    <string name="total">Total:</string>
+    <string name="comisi_n_covi_pedidos">Comisión Covi-Pedidos:</string>
+    <string name="propina_label">Propina:</string>
+    <string name="envio_label">Envío:</string>
 </resources>
