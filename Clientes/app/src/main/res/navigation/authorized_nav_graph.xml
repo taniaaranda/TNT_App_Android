@@ -13,7 +13,11 @@
         android:id="@+id/nav_addresses"
         android:name="unpsjb.ing.tnt.clientes.ui.direcciones.DireccionesFragment"
         android:label="@string/mis_direcciones"
-        tools:layout="@layout/fragment_direcciones" />
+        tools:layout="@layout/fragment_direcciones" >
+        <action
+            android:id="@+id/action_nav_addresses_to_direccionFragment"
+            app:destination="@id/nav_address" />
+    </fragment>
     <fragment
         android:id="@+id/nav_stores"
         android:name="unpsjb.ing.tnt.clientes.ui.tiendas.ListadoTiendasFragment"
@@ -52,5 +56,35 @@
     <fragment
         android:id="@+id/nav_checkout"
         android:name="unpsjb.ing.tnt.clientes.ui.checkout.CheckoutFragment"
-        android:label="Checkout" />
+        android:label="Checkout" >
+        <action
+            android:id="@+id/action_nav_checkout_to_nav_payment_method"
+            app:destination="@id/nav_payment_method" />
+        <action
+            android:id="@+id/action_nav_checkout_to_nav_addresses_checkout"
+            app:destination="@id/nav_addresses_checkout" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_address"
+        android:name="unpsjb.ing.tnt.clientes.ui.direcciones.DireccionFragment"
+        android:label="@string/direccion_label"
+        tools:layout="@layout/fragment_direccion" />
+    <fragment
+        android:id="@+id/nav_payment_method"
+        android:name="unpsjb.ing.tnt.clientes.ui.checkout.FormaDePagoCheckoutFragment"
+        android:label="Método de Pago"
+        tools:layout="@layout/fragment_forma_de_pago_checkout" >
+        <action
+            android:id="@+id/action_nav_payment_method_to_nav_checkout"
+            app:destination="@id/nav_checkout" />
+    </fragment>
+    <fragment
+        android:id="@+id/nav_addresses_checkout"
+        android:name="unpsjb.ing.tnt.clientes.ui.checkout.DireccionCheckoutFragment"
+        android:label="Direcci{on de Envío"
+        tools:layout="@layout/fragment_direccion_checkout" >
+        <action
+            android:id="@+id/action_nav_addresses_checkout_to_nav_checkout"
+            app:destination="@id/nav_checkout" />
+    </fragment>
 </navigation>

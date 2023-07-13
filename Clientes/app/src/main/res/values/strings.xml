@@ -80,7 +80,7 @@
     <string name="cantidad">Cantidad</string>
     <string name="precio_view">Precio $%1$s</string>
     <string name="paga_tu_pedido">Paga tu pedido</string>
-    <string name="tarjeta">Número de la Tarjeta</string>
+    <string name="tarjeta">Tarjeta</string>
     <string name="vencimiento">Vencimiento</string>
     <string name="cvv">CVV</string>
     <string name="nombre_y_apellido">Nombre y Apellido</string>
@@ -98,4 +98,23 @@
     <string name="comisi_n_covi_pedidos">Comisión Covi-Pedidos:</string>
     <string name="propina_label">Propina:</string>
     <string name="envio_label">Envío:</string>
+    <string name="_150">$150</string>
+    <string name="_200">$200</string>
+    <string name="empty_string" />
+    <string name="a_donde_lo_enviamos">¿A donde lo enviamos?</string>
+    <string name="c_mo_lo_vas_a_pagar">¿Cómo lo vas a pagar?</string>
+    <string name="signo_pesos">$</string>
+    <string name="icono_ubicacion_descripcion">Icono ubicacion</string>
+    <string name="tus_direcciones">Tus Direcciones</string>
+    <string name="nueva_direccion">Nueva dirección</string>
+    <string name="guardar">Guardar</string>
+    <string name="a_donde_te_enviamos_el_pedido">¿A donde te enviamos el pedido?</string>
+    <string name="elegi_la_direccion_de_entrega">Elegí la Dirección de Entrega</string>
+    <string name="aceptar">Aceptar</string>
+    <string name="elegi_la_forma_de_pago">Elegí la Forma de Pago</string>
+    <string name="signo_pregunta_cierre">\?</string>
+    <string name="con_cuanto_pagas_los">¿Con cuanto pagas los $</string>
+    <string name="cuota_s_de">cuota/s de $</string>
+    <string name="cft">(CFT:</string>
+    <string name="parentesis_cerrando">)</string>
 </resources>

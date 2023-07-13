@@ -1,8 +1,6 @@
 package unpsjb.ing.tnt.clientes
 
-import android.content.ClipData.Item
 import android.content.Intent
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -15,11 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import unpsjb.ing.tnt.clientes.data.model.Carrito
-import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -54,11 +50,6 @@ class HomeActivity : AppCompatActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        //menuInflater.inflate(R.menu.home, menu)
-
-        //binding.appBarHome.toolbar.overflowIcon =
-        //    ContextCompat.getDrawable(applicationContext, R.drawable.cart_icon_with_count)
-
         findViewById<TextView>(R.id.user_name).text = currentUser?.displayName
         findViewById<TextView>(R.id.user_email).text = currentUser?.email
 
@@ -70,30 +61,21 @@ class HomeActivity : AppCompatActivity() {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    fun getCarrito(): Carrito {
-        return carrito
-    }
-
-    fun setCarrito(nuevoCarrito: Carrito) {
-        carrito = nuevoCarrito
-    }
-
     fun logOut() {
         FirebaseAuth.getInstance().signOut()
         finish()
         startActivity(Intent(this, UnauthorizedActivity::class.java))
     }
 
-    private fun checkLogIn() {
-        _user = FirebaseAuth.getInstance().currentUser;
+    fun checkLogIn() {
+        _user = FirebaseAuth.getInstance().currentUser
+
         if (currentUser == null) {
             Log.d("HomeActivity", "Usuario no logueado, redireccionando al login...")
             finish()
             startActivity(Intent(this@HomeActivity, UnauthorizedActivity::class.java))
+        } else {
+            ClientesApplication.loadUsuario(currentUser!!)
         }
-    }
-
-    companion object {
-        private lateinit var carrito: Carrito
     }
 }

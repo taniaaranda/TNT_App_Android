@@ -17,19 +17,23 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
+import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
-import unpsjb.ing.tnt.clientes.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.ProductosAdapter
 import unpsjb.ing.tnt.clientes.data.model.Carrito
 import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.databinding.FragmentListadoProductosBinding
+import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
 
-class ListadoProductosFragment : FirebaseConnectedFragment() {
+class ListadoProductosFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentListadoProductosBinding
     private lateinit var fragmentContext: Context
     private lateinit var listadoProductosView: View
@@ -131,13 +135,18 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
     }
 
     private fun irAlCarrito() {
-        carrito!!.guardar()
-            .addOnSuccessListener {
-                view?.findNavController()?.navigate(R.id.nav_cart)
-            }
-            .addOnFailureListener {
-                Log.d("Carrito", it.message.toString())
-            }
+        if (!carrito!!.estaGuardado()) {
+            carrito!!.guardar(OnCompleteListener {
+                if (it.isSuccessful) {
+                    carrito!!.id = it.result.id
+                    view?.findNavController()?.navigate(R.id.nav_cart)
+                } else {
+                    Toast.makeText(context, "No se pudo guardar el carrito", Toast.LENGTH_SHORT).show()
+                }
+            })
+        } else {
+            view?.findNavController()?.navigate(R.id.nav_cart)
+        }
     }
 
     private fun registerProductosSnapshotListener() {
@@ -148,7 +157,7 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
             return
         }
 
-        productosSnapshotListener = getDbReference()
+        productosSnapshotListener = FirebaseFirestore.getInstance()
             .collection("productos")
             .whereEqualTo("tienda", tiendaId)
             .addSnapshotListener { snapshots, e ->
@@ -192,12 +201,30 @@ class ListadoProductosFragment : FirebaseConnectedFragment() {
 
     private fun agregarAlCarrito(producto: Producto) {
         carrito!!.agregarAlCarrito(producto)
-        handleCarrito()
+        guardarCarrito()
     }
 
     private fun quitarDelCarrito(producto: Producto) {
         carrito!!.quitarDelCarrito(producto)
-        handleCarrito()
+        guardarCarrito()
+    }
+
+    private fun guardarCarrito() {
+        if (carrito!!.estaGuardado()) {
+            carrito!!.actualizar(actualizadoListener())
+        } else {
+            handleCarrito()
+        }
+    }
+
+    private fun actualizadoListener(): OnCompleteListener<Void> {
+        return OnCompleteListener {
+            if (it.isSuccessful) {
+                handleCarrito()
+            } else {
+                Toast.makeText(context, "No se pudo actualizar el carrito", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 
     @SuppressLint("NotifyDataSetChanged")

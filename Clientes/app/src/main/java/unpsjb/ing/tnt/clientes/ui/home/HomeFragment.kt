@@ -7,19 +7,15 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.databinding.DataBindingUtil
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.ktx.Firebase
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.RubrosAdapter
 import unpsjb.ing.tnt.clientes.data.model.Rubro
 import unpsjb.ing.tnt.clientes.data.model.Tienda
 import unpsjb.ing.tnt.clientes.databinding.FragmentHomeBinding
-import unpsjb.ing.tnt.clientes.ui.utils.FirebaseConnectedFragment
+import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
 
-class HomeFragment : FirebaseConnectedFragment() {
+class HomeFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentHomeBinding
     private lateinit var homeView: View
 

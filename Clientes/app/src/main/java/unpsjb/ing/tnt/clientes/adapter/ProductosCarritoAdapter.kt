@@ -9,6 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.DocumentReference
+import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
 import java.lang.IndexOutOfBoundsException
@@ -16,8 +19,8 @@ import java.lang.IndexOutOfBoundsException
 class ProductosCarritoAdapter(
     private val context: Context,
     private val dataSource: List<ProductoCarrito>,
-    private val callbackAgregar: (producto: ProductoCarrito) -> Unit,
-    private val callbackQuitar: (producto: ProductoCarrito) -> Unit
+    private val callbackAgregar: () -> Unit,
+    private val callbackQuitar: () -> Unit
 ): RecyclerView.Adapter<ProductosCarritoAdapter.ProductoCarritoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoCarritoViewHolder {
         val itemView = LayoutInflater.from(context).inflate(
@@ -68,8 +71,9 @@ class ProductosCarritoAdapter(
 
             dataSource[position].producto.guardar()
                 .addOnSuccessListener {
-                    callbackAgregar(dataSource[position])
-                    cargandoStock(holder, false)
+                    ClientesApplication.carrito!!.agregarAlCarrito(dataSource[position].producto)
+
+                    guardarCarrito(holder)
                 }
                 .addOnFailureListener {
                     cargandoStock(holder, false)
@@ -90,8 +94,9 @@ class ProductosCarritoAdapter(
             dataSource[position].producto.guardar()
                 .addOnSuccessListener {
                     try {
-                        callbackQuitar(dataSource[position])
-                        cargandoStock(holder, false)
+                        ClientesApplication.carrito!!.quitarDelCarrito(dataSource[position].producto)
+
+                        guardarCarrito(holder)
                     } catch (e: IndexOutOfBoundsException) {
                         cargandoStock(holder, false)
                     }  // TODO: Carga de cantidad al modificarla
@@ -100,6 +105,41 @@ class ProductosCarritoAdapter(
                     cargandoStock(holder, false)
                     // TODO: Mostrar error
                 }
+        }
+    }
+
+    private fun guardarCarrito(holder: ProductoCarritoViewHolder) {
+        if (ClientesApplication.carrito!!.estaGuardado()) {
+            ClientesApplication.carrito!!.actualizar(actualizadoListener(holder))
+        } else {
+            ClientesApplication.carrito!!.guardar(guardadoListener(holder))
+        }
+    }
+
+    private fun actualizadoListener(holder: ProductoCarritoViewHolder): OnCompleteListener<Void> {
+        return OnCompleteListener {
+            if (it.isSuccessful) {
+                callbackAgregar()
+                cargandoStock(holder, false)
+            } else {
+                cargandoStock(holder, false)
+                // TODO: Restaurar stock al producto
+                // TODO: Mostrar error
+            }
+        }
+    }
+
+    private fun guardadoListener(holder: ProductoCarritoViewHolder): OnCompleteListener<DocumentReference> {
+        return OnCompleteListener {
+            if (it.isSuccessful) {
+                ClientesApplication.carrito!!.id = it.result.id
+                callbackAgregar()
+                cargandoStock(holder, false)
+            } else {
+                cargandoStock(holder, false)
+                // TODO: Restaurar stock al producto
+                // TODO: Mostrar error
+            }
         }
     }
 

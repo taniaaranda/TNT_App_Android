@@ -1,13 +1,11 @@
 package unpsjb.ing.tnt.clientes.ui.tiendas
 
 import android.app.AlertDialog
-import android.content.ContentValues
 import android.content.Context
 import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,8 +16,7 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
-import com.android.volley.Request
-import com.android.volley.toolbox.JsonObjectRequest
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import unpsjb.ing.tnt.clientes.ClientesApplication
@@ -27,12 +24,12 @@ import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.TiendasAdapter
 import unpsjb.ing.tnt.clientes.data.model.Tienda
 import unpsjb.ing.tnt.clientes.databinding.FragmentListadoTiendasBinding
-import unpsjb.ing.tnt.clientes.ui.utils.FirebaseConnectedFragment
+import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
 
 
 private const val  TIENDAS_COLLECTION_NAME = "tiendas"
 
-class ListadoTiendasFragment : FirebaseConnectedFragment() {
+class ListadoTiendasFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentListadoTiendasBinding
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
@@ -47,7 +44,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_listado_tiendas, container, false
+            inflater, R.layout.fragment_listado_tiendas, container, false
         )
         fragmentContext = this.requireContext()
         listView = binding.root
@@ -111,7 +108,7 @@ class ListadoTiendasFragment : FirebaseConnectedFragment() {
     private fun registerTiendasSnapshotListener() {
         tiendasSnapshotListener?.remove()
 
-        tiendasSnapshotListener = getDbReference().collection(TIENDAS_COLLECTION_NAME)
+        tiendasSnapshotListener = FirebaseFirestore.getInstance().collection(TIENDAS_COLLECTION_NAME)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     return@addSnapshotListener

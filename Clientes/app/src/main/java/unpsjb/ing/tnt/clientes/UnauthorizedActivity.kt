@@ -26,6 +26,8 @@ class UnauthorizedActivity : AppCompatActivity() {
         _user = FirebaseAuth.getInstance().currentUser
 
         if (currentUser != null) {
+            ClientesApplication.loadUsuario(currentUser!!)
+
             Log.d("UnauthorizedActivity", "Usuario: " + currentUser!!.uid)
             db.collection("tiendas").whereEqualTo("usuario", currentUser!!.uid).get()
                 .addOnSuccessListener {

@@ -1,9 +1,11 @@
 package unpsjb.ing.tnt.clientes.data.model
 
 import android.annotation.SuppressLint
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.android.gms.tasks.Task
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import java.text.SimpleDateFormat
@@ -43,16 +45,13 @@ class Carrito(
         return productos.isEmpty()
     }
 
-    fun guardar(): Task<out Any> {
-        if (!estaGuardado()) {
-            return getConnection().add(this.getToSave())
-        } else {
-            return actualizar()
-        }
+    fun guardar(listener: OnCompleteListener<DocumentReference>): Task<out Any> {
+        return getConnection().add(this.getToSave()).addOnCompleteListener(listener)
     }
 
-    fun actualizar(): Task<Void> {
-        return getConnection().document(id).update("productos", productos)
+    fun actualizar(listener: OnCompleteListener<Void>): Task<Void> {
+        return getConnection().document(id).update("productos", productos.map { it.getToSave() })
+            .addOnCompleteListener(listener)
     }
 
     fun agregarAlCarrito(producto: Producto) {
@@ -86,6 +85,16 @@ class Carrito(
         }
 
         return 0
+    }
+
+    fun getPropinaSugerida(): Double {
+        if (productos.isNotEmpty()) {
+            return productos.sumOf {
+                it.cantidad * it.producto.precio
+            } * 0.030
+        }
+
+        return 0.0
     }
 
     fun getToSave(): HashMap<String, Any> {
