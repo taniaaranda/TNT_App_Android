@@ -32,186 +32,193 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/imageView7" />
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout"
+        <ScrollView
+            android:id="@+id/scrollview"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="32dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/blue_border_rounded_cornwe"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6">
 
-            <EditText
-                android:id="@+id/nombre"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/nom_bre"
-                android:inputType="text|textPersonName"
-                android:maxLines="1"
-                android:paddingStart="17dp"
-                android:paddingLeft="17dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:textSize="12sp"
-                android:autofillHints="nombre"
-                tools:ignore="RtlSymmetry" />
-        </RelativeLayout>
+                android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout2"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/blue_border_rounded_cornwe"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
 
-            <EditText
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/username_icon"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:paddingLeft="17dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:textSize="12sp"
-                android:autofillHints="email"
-                android:layout_toEndOf="@+id/username_icon"
-                android:paddingStart="17dp"
-                tools:ignore="RtlSymmetry" />
+                    <EditText
+                        android:id="@+id/nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="nombre"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/nom_bre"
+                        android:inputType="text|textPersonName"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+                </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/username_icon"
-                android:layout_width="14.7dp"
-                android:layout_height="10.3dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="17dp"
-                android:src="@drawable/email"
-                android:layout_marginStart="17dp"
-                android:contentDescription="@string/email_icon_description" />
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout3"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/blue_border_rounded_cornwe"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2">
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/username_icon"
+                        android:layout_toRightOf="@+id/username_icon"
+                        android:autofillHints="email"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
 
-            <EditText
-                android:id="@+id/clave"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toRightOf="@+id/icon"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/poppins_regular"
-                android:hint="@string/contrase_a"
-                android:inputType="textPassword"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:paddingLeft="17dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:textSize="12sp"
-                android:layout_toEndOf="@+id/icon"
-                android:paddingStart="17dp"
-                tools:ignore="RtlSymmetry"
-                android:autofillHints="clave" />
+                    <ImageView
+                        android:id="@+id/username_icon"
+                        android:layout_width="14.7dp"
+                        android:layout_height="10.3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:contentDescription="@string/email_icon_description"
+                        android:src="@drawable/email" />
+                </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/icon"
-                android:layout_width="14.7dp"
-                android:layout_height="10.3dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="17dp"
-                android:src="@drawable/password"
-                android:layout_marginStart="17dp"
-                android:contentDescription="@string/clave_description" />
-        </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/relativeLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
 
-        <RelativeLayout
-            android:id="@+id/relativeLayout4"
-            android:layout_width="0dp"
-            android:layout_height="109dp"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="32dp"
-            android:layout_marginRight="32dp"
-            android:background="@drawable/blue_border_rounded_cornwe"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout3">
+                    <EditText
+                        android:id="@+id/clave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon"
+                        android:layout_toRightOf="@+id/icon"
+                        android:autofillHints="clave"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/contrase_a"
+                        android:inputType="textPassword"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
 
-            <TextView
-                android:id="@+id/direccion"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_toEndOf="@+id/icon1"
-                android:layout_toRightOf="@+id/icon1"
-                android:background="@android:color/transparent"
-                android:fontFamily="@font/poppins_regular"
-                android:maxLength="10"
-                android:maxLines="1"
-                android:paddingLeft="17dp"
-                android:paddingTop="15dp"
-                android:paddingBottom="15dp"
-                android:text="@string/direccion_label"
-                android:textCursorDrawable="@drawable/cursor_color"
-                android:textSize="12sp"
-                app:errorEnabled="true"
-                android:paddingStart="17dp"
-                tools:ignore="RtlSymmetry" />
-            <!-- ICON -->
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="14.7dp"
+                        android:layout_height="10.3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:contentDescription="@string/clave_description"
+                        android:src="@drawable/password" />
+                </RelativeLayout>
 
-            <ImageView
-                android:id="@+id/icon1"
-                android:layout_width="25.7dp"
-                android:layout_height="20.3dp"
-                android:layout_alignParentBottom="true"
-                android:layout_marginStart="17dp"
-                android:layout_marginLeft="17dp"
-                android:layout_marginBottom="74dp"
-                android:contentDescription="@string/icono_direccion_description"
-                android:src="@drawable/dir" />
+                <RelativeLayout
+                    android:id="@+id/relativeLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="109dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
 
-            <androidx.fragment.app.FragmentContainerView
-                android:id="@+id/ubicacion"
-                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
-                android:layout_width="match_parent"
-                android:layout_height="44dp"
-                android:layout_below="@+id/direccion"
-                android:layout_alignParentBottom="true"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="11dp" />
-        </RelativeLayout>
+                    <TextView
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon1"
+                        android:layout_toRightOf="@+id/icon1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/direccion_label"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        app:errorEnabled="true"
+                        tools:ignore="RtlSymmetry" />
+                    <!-- ICON -->
+
+                    <ImageView
+                        android:id="@+id/icon1"
+                        android:layout_width="25.7dp"
+                        android:layout_height="20.3dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginBottom="74dp"
+                        android:contentDescription="@string/icono_direccion_description"
+                        android:src="@drawable/dir" />
+
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/ubicacion"
+                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_below="@+id/direccion"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="11dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
 
         <Button
             android:id="@+id/boton_registro"
@@ -233,6 +240,6 @@
             android:textSize="12sp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/scrollview" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

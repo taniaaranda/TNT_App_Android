@@ -12,11 +12,14 @@ import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.common.api.Api.Client
+import kotlinx.coroutines.Runnable
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.HomeActivity
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.CuotasAdapter
 import unpsjb.ing.tnt.clientes.data.model.MetodoDePago
+import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.databinding.FragmentFormaDePagoCheckoutBinding
 import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
 import unpsjb.ing.tnt.clientes.ui.utils.MaskWatcher
@@ -24,6 +27,7 @@ import unpsjb.ing.tnt.clientes.ui.utils.MaskWatcher
 class FormaDePagoCheckoutFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentFormaDePagoCheckoutBinding
     private lateinit var formaDePagoView: View
+    private var pedido: Pedido = ClientesApplication.pedido!!
     private var formaDePagoData: HashMap<String, Any> = hashMapOf()
 
     private lateinit var cuotasList: List<HashMap<String, Double>>
@@ -72,7 +76,8 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
             binding.tarjetaLayout.visibility = View.GONE
             binding.efectivoLayout.visibility = View.VISIBLE
             limpiarTarjetaLayout()
-            formaDePagoData = hashMapOf()
+            pedido.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
+            pedido.metodoDePago.datos = hashMapOf()
         }
 
         binding.checkboxTarjeta.setOnClickListener {
@@ -81,7 +86,8 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
             binding.efectivoLayout.visibility = View.GONE
             binding.tarjetaLayout.visibility = View.VISIBLE
             limpiarEfectivoLayout()
-            formaDePagoData = hashMapOf()
+            pedido.metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
+            pedido.metodoDePago.datos = hashMapOf()
         }
     }
 
@@ -106,8 +112,13 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 if (s != null) {
                     if (s.isNotEmpty()) {
-                        binding.aceptar.text = "Pagar $${ClientesApplication.pedido!!.total} en efectivo con $${binding.montoPago.text.toString().toDouble()}"
-                        formaDePagoData["pagaCon"] = s.toString()
+                        val pedido = ClientesApplication.pedido!!
+                        binding.aceptar.text = "Pagar $${pedido.total} en efectivo con $${binding.montoPago.text.toString().toDouble()}"
+
+                        pedido.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
+                        pedido.metodoDePago.datos =  hashMapOf(
+                            "pagaCon" to s.toString()
+                        )
                     }
                 }
             }
@@ -116,67 +127,45 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
 
     private fun setTarjetaFormListeners() {
         binding.numeroTarjeta.addTextChangedListener(MaskWatcher("#### #### #### ####"))
-        binding.numeroTarjeta.addTextChangedListener(object: TextWatcher {
-            override fun afterTextChanged(s: Editable?) {}
-            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
-
-            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                if (s != null) {
-                    if (s.length >= 6) {
-                        MetodoDePago.checkTarjeta(
-                            s.toString().filterNot { it.isWhitespace() },
-                            callbackError = {
-                                Log.d("TARJETA", "Error")
-                            },
-                            callbackSuccess = { tipo, red ->
-                                formaDePagoData["tipo"] = tipo
-                                formaDePagoData["red"] = red
-
-//                                if (tipo == "credit") {
-//                                    agregarCuotas()
-//                                } else {
-//                                    quitarCuotas()
-//                                }
-                            })
+        binding.numeroTarjeta.setOnFocusChangeListener { _, b ->
+            if (!b) {
+                MetodoDePago.checkTarjeta(
+                    binding.numeroTarjeta.text.toString().filterNot { it.isWhitespace() },
+                    callbackError = {
+                        Log.d("TARJETA", "Error")
+                        // TODO: Mostrar el error
+                        pedido.metodoDePago.datos = hashMapOf()
+                    },
+                    callbackSuccess = { tipo, red ->
+                        pedido.metodoDePago.datos = hashMapOf(
+                            "tipo" to tipo,
+                            "red" to red
+                        )
                     }
-                }
+                )
             }
-        })
-
+        }
         binding.vencimientoTarjeta.addTextChangedListener(MaskWatcher("##/##"))
     }
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun agregarCuotas() {
-        cuotasList = MetodoDePago.getCuotas()
-        cuotasAdapter.notifyDataSetChanged()
-    }
+    private fun completarFormaDePagoData() {
+        val metodoDePago = ClientesApplication.pedido!!.metodoDePago
 
-    @SuppressLint("NotifyDataSetChanged")
-    private fun quitarCuotas() {
-        cuotasList = listOf()
-        cuotasAdapter.notifyDataSetChanged()
-    }
-
-    private fun setFormaDePagoData() {
         if (binding.checkboxTarjeta.isChecked) {
-            formaDePagoData["tarjeta"] = binding.numeroTarjeta.text.toString()
-            formaDePagoData["nombre"] = binding.nombreTh.text.toString()
-            formaDePagoData["dni"] = binding.dniTh.text.toString()
-            ClientesApplication.pedido!!.metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
+            metodoDePago.datos["tarjeta"] = binding.numeroTarjeta.text.toString()
+            metodoDePago.datos["nombre"] = binding.nombreTh.text.toString()
+            metodoDePago.datos["dni"] = binding.dniTh.text.toString()
+            metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
         } else {
-            ClientesApplication.pedido!!.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
+            metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
         }
-
-        ClientesApplication.pedido!!.metodoDePago.datos = formaDePagoData
     }
 
     private fun setBotonAceptarListener() {
         binding.aceptar.setOnClickListener {
-            setFormaDePagoData()
+            completarFormaDePagoData()
 
             if (ClientesApplication.pedido!!.metodoDePago.esValido()) {
-                Log.d("FormaDePago", "Todo ok!")
                 (activity as HomeActivity).onBackPressed()
             } else {
                 Toast.makeText(context, "Por favor revise los datos ingresados", Toast.LENGTH_SHORT).show()

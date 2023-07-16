@@ -1,5 +1,6 @@
 package unpsjb.ing.tnt.clientes.ui.checkout
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -7,17 +8,24 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
+import android.widget.SpinnerAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.databinding.FragmentCheckoutBinding
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.pedido
+import unpsjb.ing.tnt.clientes.data.model.MetodoDePago
 import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.data.model.Producto
+import unpsjb.ing.tnt.clientes.data.model.Tienda
+import java.math.RoundingMode
+import kotlin.math.roundToLong
 
 class CheckoutFragment : Fragment() {
     private lateinit var binding: FragmentCheckoutBinding
@@ -43,15 +51,18 @@ class CheckoutFragment : Fragment() {
     }
 
     private fun crearPedido() {
-        pedido = Pedido.new(
-            tienda = carrito!!.tienda,
-            usuario = FirebaseAuth.getInstance().currentUser!!.uid,
-            productos = carrito!!.productos.map { it.producto } as ArrayList<Producto>
-        )
+        if (pedido == null) {
+            pedido = Pedido.new()
+        }
+
+        pedido!!.tienda = carrito!!.tienda
+        pedido!!.usuario = FirebaseAuth.getInstance().currentUser!!.uid
+        pedido!!.productos = carrito!!.productos.map { it.producto } as ArrayList<Producto>
     }
 
     private fun setViewData() {
         setDireccion()
+        setMetodoDePago()
         setTotalProductos()
         setTotalEnvio()
         setPropina()
@@ -61,6 +72,37 @@ class CheckoutFragment : Fragment() {
 
     private fun setDireccion() {
         FirebaseFirestore.getInstance().collection("direcciones")
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setMetodoDePago() {
+        if (pedido!!.metodoDePago.esValido()) {
+            if (pedido!!.metodoDePago.tipo == MetodoDePago.TIPO_TARJETA) {
+                binding.efectivoLayout.visibility = View.GONE
+                binding.tarjetaLayout.visibility = View.VISIBLE
+                binding.tarjetaText.text = "Pagas con ${pedido!!.metodoDePago.getTarjetaOfuscada()}"
+                binding.cuotas.adapter = ArrayAdapter(this.requireContext(),
+                    android.R.layout.simple_spinner_item,
+                    pedido!!.metodoDePago.getCuotas().map {
+                        it["numero"].toString().toDouble().toInt().toString() +
+                            " cuota/s de " +
+                            (
+                                (pedido!!.total +
+                                (it["cft"].toString().toDouble() / 100 * pedido!!.total)) /
+                                it["numero"].toString().toDouble().toInt()
+                            ).toBigDecimal().setScale(2, RoundingMode.FLOOR).toString() +
+                            " (CFT: " + it["cft"].toString() + "%)"
+                    }
+                )
+            } else {
+                binding.tarjetaLayout.visibility = View.GONE
+                binding.efectivoLayout.visibility = View.VISIBLE
+                binding.efectivoText.text = "Pagas en efectivo con ${pedido!!.metodoDePago.getPagaCon()}"
+            }
+        } else {
+            binding.tarjetaLayout.visibility = View.GONE
+            binding.efectivoText.text = "Elija un método de pago válido"
+        }
     }
 
     private fun setTotalFinal() {

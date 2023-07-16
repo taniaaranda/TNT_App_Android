@@ -21,6 +21,44 @@ class MetodoDePago(
         }
     }
 
+    fun getTarjetaOfuscada(): String {
+        if (datos.containsKey("tarjeta")) {
+            val tarjeta = datos["tarjeta"].toString().filterNot { it.isWhitespace() }
+
+            return tarjeta.substring(0, 6) + "XXXXXX" + tarjeta.substring(12, 16)
+        }
+
+        return ""
+    }
+
+    fun getPagaCon(): String {
+        if (datos.containsKey("pagaCon")) {
+            return datos["pagaCon"].toString().toBigDecimal().toString()
+        }
+
+        return ""
+    }
+
+    fun getCuotas(): List<HashMap<String, Double>> {
+        if (tipo == TIPO_TARJETA && datos.containsKey("tipo")) {
+            return if (datos["tipo"] == "credit") {
+                listOf(
+                    hashMapOf("numero" to 1.0, "cft" to 0.0),
+                    hashMapOf("numero" to 3.0, "cft" to 29.94),
+                    hashMapOf("numero" to 6.0, "cft" to 54.12),
+                    hashMapOf("numero" to 9.0, "cft" to 79.01),
+                    hashMapOf("numero" to 12.0, "cft" to 104.06)
+                )
+            } else {
+                listOf(
+                    hashMapOf("numero" to 1.0, "cft" to 0.0)
+                )
+            }
+        }
+
+        return listOf()
+    }
+
     private fun validaEfectivo(): Boolean {
         if (!datos.containsKey("pagaCon")) {
             return false
@@ -68,16 +106,6 @@ class MetodoDePago(
                     }
                 }
             })
-        }
-
-        fun getCuotas(): List<HashMap<String, Double>> {
-            return listOf(
-                hashMapOf("numero" to 1.0, "cft" to 0.0),
-                hashMapOf("numero" to 3.0, "cft" to 29.94),
-                hashMapOf("numero" to 6.0, "cft" to 54.12),
-                hashMapOf("numero" to 9.0, "cft" to 79.01),
-                hashMapOf("numero" to 12.0, "cft" to 104.06)
-            )
         }
     }
 }

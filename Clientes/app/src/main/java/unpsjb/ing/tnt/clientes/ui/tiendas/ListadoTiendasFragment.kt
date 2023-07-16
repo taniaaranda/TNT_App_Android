@@ -164,12 +164,10 @@ class ListadoTiendasFragment : AuthorizedFragment() {
             } else {
                 val builder = AlertDialog.Builder(context)
                 builder.setMessage("Vas a perder el carrito. Continuar?")
-                    .setPositiveButton("Si",
-                        DialogInterface.OnClickListener { dialog, id ->
-                            listView.findNavController().navigate(R.id.nav_products, bundle)
-                        })
-                    .setNegativeButton("Permanecer Aquí",
-                        DialogInterface.OnClickListener { dialog, id -> })
+                    .setPositiveButton("Si" ) { dialog, id ->
+                        listView.findNavController().navigate(R.id.nav_products, bundle)
+                    }
+                    .setNegativeButton("Permanecer Aquí") { dialog, id -> }
                 builder.show()
             }
         } else {

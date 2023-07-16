@@ -29,6 +29,7 @@ import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.ProductosAdapter
 import unpsjb.ing.tnt.clientes.data.model.Carrito
+import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.databinding.FragmentListadoProductosBinding
 import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment

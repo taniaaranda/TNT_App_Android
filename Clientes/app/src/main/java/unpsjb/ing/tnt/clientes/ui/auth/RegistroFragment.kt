@@ -16,6 +16,7 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseAuthUserCollisionException
 import com.google.firebase.auth.ktx.userProfileChangeRequest
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.UnauthorizedActivity
@@ -60,12 +61,16 @@ class RegistroFragment : FirebaseConnectedFragment() {
                                 .addOnSuccessListener {
                                     guardarDireccion()
                                 }
-                        } else {
-                            Toast.makeText(context, "La registración no tuvo éxito, por favor reintente", Toast.LENGTH_SHORT).show()
                         }
                     }
                     .addOnFailureListener {
-                        Toast.makeText(context, "No se pudo guardar la registracion, por favor reintente", Toast.LENGTH_SHORT).show()
+                        Log.d("Registration", it.message.toString())
+
+                        if (it::class == FirebaseAuthUserCollisionException::class) {
+                            Toast.makeText(context, "El email ya esta en uso", Toast.LENGTH_SHORT).show()
+                        } else {
+                            Toast.makeText(context, "No se pudo guardar la registracion, por favor reintente", Toast.LENGTH_SHORT).show()
+                        }
                     }
             } else {
                 Toast.makeText(context, "Verifique los datos ingresados", Toast.LENGTH_SHORT).show()
