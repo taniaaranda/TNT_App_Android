@@ -1,43 +1,168 @@
 package unpsjb.ing.tnt.clientes.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.BaseAdapter
-import androidx.databinding.DataBindingUtil
+import android.widget.ImageView
+import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.firestore.DocumentReference
+import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.R
-import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
-import unpsjb.ing.tnt.clientes.databinding.CarritoProductoItemBinding
+import java.lang.IndexOutOfBoundsException
 
-class ProductosCarritoAdapter(private val context: Context, private val dataSource: List<ProductoCarrito>): BaseAdapter() {
-    private lateinit var binding: CarritoProductoItemBinding
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+class ProductosCarritoAdapter(
+    private val context: Context,
+    private val dataSource: List<ProductoCarrito>,
+    private val callbackAgregar: () -> Unit,
+    private val callbackQuitar: () -> Unit
+): RecyclerView.Adapter<ProductosCarritoAdapter.ProductoCarritoViewHolder>() {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ProductoCarritoViewHolder {
+        val itemView = LayoutInflater.from(context).inflate(
+            R.layout.carrito_producto_item, parent, false
+        )
 
-    override fun getCount(): Int {
+        return ProductoCarritoViewHolder(itemView)
+    }
+
+    override fun getItemCount(): Int {
         return dataSource.size
     }
 
-    override fun getItem(position: Int): ProductoCarrito {
-        return dataSource[position]
+    override fun onBindViewHolder(holder: ProductoCarritoViewHolder, position: Int) {
+        setData(holder, position)
+
+        setAgregarAlCarritoListener(holder, position)
+        setQuitarDelCarritoListener(holder, position)
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong()
+    private fun setData(holder: ProductoCarritoViewHolder, position: Int) {
+        holder.nombreProducto.text = dataSource[position].producto.nombre
+        holder.descripcionProducto.text = dataSource[position].producto.observaciones
+        holder.categoriaProducto.text = dataSource[position].producto.categoria
+        holder.precioProducto.text = dataSource[position].getPrecioForView()
+        holder.stockProducto.text = dataSource[position].cantidad.toString()
+        setImage(holder, position)
     }
 
-    @SuppressLint("ViewHolder")
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-        binding = DataBindingUtil.inflate(
-            inflater, R.layout.carrito_producto_item, parent, false
-        )
+    private fun setImage(holder: ProductoCarritoViewHolder, position: Int) {
+        dataSource[position].producto.getBitmapImage().addOnSuccessListener {
+            holder.imagenProducto.setImageBitmap(
+                BitmapFactory.decodeByteArray(it, 0, it.size)
+            )
+        }.addOnFailureListener {
+            val default = dataSource[position].producto.getDefaultImage()
+            holder.imagenProducto.setImageBitmap(
+                BitmapFactory.decodeByteArray(default, 0, default.size)
+            )
+        }
+    }
 
-        val productoCarrito = getItem(position)
-        binding.producto = productoCarrito
-        binding.imagenProducto.setImageBitmap(productoCarrito.getBitmapImage())
+    private fun setAgregarAlCarritoListener(holder: ProductoCarritoViewHolder, position: Int) {
+        holder.agregarStock.setOnClickListener {
+            cargandoStock(holder, true)
 
-        return binding.root
+            dataSource[position].producto.decrementarStock()
+
+            dataSource[position].producto.guardar()
+                .addOnSuccessListener {
+                    ClientesApplication.carrito!!.agregarAlCarrito(dataSource[position].producto)
+
+                    guardarCarrito(holder)
+                }
+                .addOnFailureListener {
+                    cargandoStock(holder, false)
+                    // TODO: Mostrar error
+                }
+        }
+    }
+
+    private fun setQuitarDelCarritoListener(holder: ProductoCarritoViewHolder, position: Int) {
+        holder.quitarStock.setOnClickListener {
+            cargandoStock(holder, true)
+
+            if (holder.stockProducto.text.toString().toInt() == 0) {
+                return@setOnClickListener
+            }
+
+            dataSource[position].producto.incrementarStock()
+            dataSource[position].producto.guardar()
+                .addOnSuccessListener {
+                    try {
+                        ClientesApplication.carrito!!.quitarDelCarrito(dataSource[position].producto)
+
+                        guardarCarrito(holder)
+                    } catch (e: IndexOutOfBoundsException) {
+                        cargandoStock(holder, false)
+                    }  // TODO: Carga de cantidad al modificarla
+                }
+                .addOnFailureListener {
+                    cargandoStock(holder, false)
+                    // TODO: Mostrar error
+                }
+        }
+    }
+
+    private fun guardarCarrito(holder: ProductoCarritoViewHolder) {
+        if (ClientesApplication.carrito!!.estaGuardado()) {
+            ClientesApplication.carrito!!.actualizar(actualizadoListener(holder))
+        } else {
+            ClientesApplication.carrito!!.guardar(guardadoListener(holder))
+        }
+    }
+
+    private fun actualizadoListener(holder: ProductoCarritoViewHolder): OnCompleteListener<Void> {
+        return OnCompleteListener {
+            if (it.isSuccessful) {
+                callbackAgregar()
+                cargandoStock(holder, false)
+            } else {
+                cargandoStock(holder, false)
+                // TODO: Restaurar stock al producto
+                // TODO: Mostrar error
+            }
+        }
+    }
+
+    private fun guardadoListener(holder: ProductoCarritoViewHolder): OnCompleteListener<DocumentReference> {
+        return OnCompleteListener {
+            if (it.isSuccessful) {
+                ClientesApplication.carrito!!.id = it.result.id
+                callbackAgregar()
+                cargandoStock(holder, false)
+            } else {
+                cargandoStock(holder, false)
+                // TODO: Restaurar stock al producto
+                // TODO: Mostrar error
+            }
+        }
+    }
+
+    private fun cargandoStock(holder: ProductoCarritoViewHolder, cargando: Boolean) {
+        if (cargando) {
+            holder.controlesStock.visibility = View.GONE
+            holder.cargando.visibility = View.VISIBLE
+        } else {
+            holder.cargando.visibility = View.GONE
+            holder.controlesStock.visibility = View.VISIBLE
+        }
+    }
+
+    class ProductoCarritoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
+        val imagenProducto: ImageView = itemView.findViewById(R.id.imagen_producto)
+        val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto)
+        val descripcionProducto: TextView = itemView.findViewById(R.id.descripcion_producto)
+        val categoriaProducto: TextView = itemView.findViewById(R.id.categoria_producto)
+        val stockProducto: TextView = itemView.findViewById(R.id.stock)
+        val precioProducto: TextView = itemView.findViewById(R.id.precio_producto)
+        val agregarStock: TextView = itemView.findViewById(R.id.agregar_stock)
+        val quitarStock: TextView = itemView.findViewById(R.id.quitar_stock)
+        val controlesStock: ConstraintLayout = itemView.findViewById(R.id.controles_stock)
+        val cargando: ConstraintLayout = itemView.findViewById(R.id.loading)
     }
 }

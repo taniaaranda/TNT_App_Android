@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_home"
+            android:icon="@drawable/home_icon_filled"
+            android:title="@string/inicio" />
+        <item
+            android:id="@+id/nav_addresses"
+            android:icon="@drawable/map_icon_filled"
+            android:title="@string/mis_direcciones" />
+        <item
+            android:id="@+id/nav_stores"
+            android:icon="@drawable/store_icon_filled"
+            android:title="@string/tiendas" />
+        <item
+            android:id="@+id/nav_orders"
+            android:icon="@drawable/list_icon_filled"
+            android:title="@string/pedidos" />
+        <item
+            android:id="@+id/nav_logout"
+            android:icon="@drawable/logout_icon_filled"
+            android:title="@string/cerrar_sesion" />
+    </group>
+</menu>

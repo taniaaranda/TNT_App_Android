@@ -1,37 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-
+        <import type="java.util.ArrayList"/>
+        <import type="unpsjb.ing.tnt.clientes.data.model.Rubro"/>
+        <variable
+            name="rubros"
+            type="ArrayList&lt;Rubro&gt;"/>
     </data>
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="match_parent">
 
         <ImageView
-            android:id="@+id/imageView"
+            android:id="@+id/header_image"
+            android:layout_width="wrap_content"
+            android:layout_height="80dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/covi_pedidos_logo_pequenio"
+            android:contentDescription="@string/covi_pedidos" />
+
+        <View
+            android:id="@+id/separator_1"
             android:layout_width="match_parent"
-            android:layout_height="72dp"
-            app:srcCompat="@drawable/covi_pedidos_logo_pequenio" />
-        <TextView
-            android:id="@+id/textView3"
+            android:layout_height="1dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:background="@android:color/darker_gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/header_image" />
+
+        <RelativeLayout
+            android:id="@+id/busqueda"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/separator_1">
+
+            <EditText
+                android:id="@+id/busqueda_rubro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/icon"
+                android:layout_toRightOf="@+id/icon"
+                android:autofillHints="rubro"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:hint="@string/buscar_una_categoria"
+                android:inputType="text"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:paddingStart="17dp"
+                android:paddingLeft="17dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="12sp"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/icon"
+                android:layout_width="14.7dp"
+                android:layout_height="10.3dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginLeft="17dp"
+                android:contentDescription="@string/busqueda"
+                android:src="@drawable/search_icon_filled" />
+        </RelativeLayout>
+
+        <ListView
+            android:id="@+id/rubros"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/tiendas_label"
-            android:textColor="@color/black"
-            android:textSize="24sp"
-            android:textStyle="bold" />
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            android:divider="@android:color/transparent"
+            android:dividerHeight="8dp"
+            android:orientation="vertical"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/busqueda"
+            tools:ignore="NestedScrolling" />
 
-        <Button
-            android:id="@+id/btn_listado_tiendas"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Lista de tiendas" />
-    </LinearLayout>
-
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

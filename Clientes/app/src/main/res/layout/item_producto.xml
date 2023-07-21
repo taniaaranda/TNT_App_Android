@@ -10,66 +10,135 @@
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_card_height"
-        android:layout_marginTop="@dimen/common_padding_min"
-        android:layout_marginHorizontal="@dimen/common_padding_min">
+        android:layout_marginHorizontal="@dimen/common_padding_min"
+        android:layout_marginTop="@dimen/common_padding_min">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imgFoto"
+                android:id="@+id/imagen_producto"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:contentDescription="@string/descripcion_img_foto"
                 android:background="@android:color/darker_gray"
-                app:layout_constraintStart_toStartOf="parent"
+                android:contentDescription="@string/descripcion_img_foto"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
+                app:layout_constraintVertical_bias="0.0" />
 
             <TextView
-                android:id="@+id/TvName"
+                android:id="@+id/nombre_producto"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/color_white"
-                android:textAppearance="?attr/textAppearanceBody2"
-                android:maxLines="1"
                 android:ellipsize="end"
+                android:maxLines="1"
                 android:padding="@dimen/common_padding_min"
-                tools:text="Nombre del Producto"
                 android:text="@{producto.nombre}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent" />
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:id="@+id/cbFaborito"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:button="@drawable/estado_cb_favorito"
-                android:buttonTint="@color/color_white"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/agregar_al_carrito"
-                android:layout_width="305dp"
-                android:layout_height="wrap_content"
-                android:baselineAlignBottom="false"
-                android:clickable="true"
-                android:contentDescription="@string/agregar_al_carrito"
-                android:focusable="true"
-                app:backgroundTint="#4E4E4E"
+                android:textAppearance="?attr/textAppearanceBody2"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="@+id/TvName"
-                app:layout_constraintHorizontal_bias="0.902"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintVertical_bias="0.694"
-                app:rippleColor="#FFFFFF"
-                app:srcCompat="@drawable/ic_add"
-                tools:ignore="MissingConstraints,VectorDrawableCompat" />
+                tools:text="Nombre del Producto" />
+
+            <RelativeLayout
+                android:layout_width="88dp"
+                android:layout_height="22dp"
+                android:layout_marginBottom="16dp"
+                android:background="@drawable/rounded_corners_lightgray"
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toTopOf="@+id/nombre_producto"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/controles_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/quitar_producto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="1dp"
+                        android:layout_marginLeft="1dp"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:paddingStart="4dp"
+                        android:paddingLeft="4dp"
+                        app:drawableLeftCompat="@drawable/sub_icon_filled"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        tools:ignore="RtlSymmetry" />
+
+                    <TextView
+                        android:id="@+id/cuenta_productos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="1dp"
+                        android:layout_marginBottom="1dp"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="@string/no_product_count"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toStartOf="@+id/agregar_producto"
+                        app:layout_constraintStart_toEndOf="@+id/quitar_producto"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <TextView
+                        android:id="@+id/agregar_producto"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:paddingEnd="4dp"
+                        android:paddingRight="4dp"
+                        app:drawableRightCompat="@drawable/add_icon_filled"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        tools:ignore="RtlSymmetry"
+                        tools:layout_editor_absoluteY="1dp" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+                <TextView
+                    android:id="@+id/sin_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/sin_stock"
+                    android:textColor="@color/quantum_googred"
+                    android:gravity="center_horizontal"
+                    android:visibility="gone" />
+
+                <RelativeLayout
+                    android:id="@+id/loading_stock"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="1dp"
+                    android:layout_marginLeft="1dp"
+                    android:layout_marginTop="1dp"
+                    android:layout_marginEnd="1dp"
+                    android:layout_marginRight="1dp"
+                    android:layout_marginBottom="1dp"
+                    android:gravity="center"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintHorizontal_bias="1.0"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:visibility="gone">
+
+                    <ProgressBar
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:indeterminate="true" />
+                </RelativeLayout>
+            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>

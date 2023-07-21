@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/ver_carrito"
+        android:orderInCategory="100"
+        android:title="@string/ver_carrito"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/vaciar_carrito"
+        android:orderInCategory="100"
+        android:title="@string/vaciar_carrito"
+        app:showAsAction="never" />
+</menu>

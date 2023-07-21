@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/imageView7"
+            android:layout_width="409dp"
+            android:layout_height="200dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:contentDescription="@string/covi_pedidos" />
+
+        <TextView
+            android:id="@+id/textView6"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/nueva_cuenta"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView7" />
+
+        <ScrollView
+            android:id="@+id/scrollview"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginRight="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView6">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
+
+                    <EditText
+                        android:id="@+id/nombre"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autofillHints="nombre"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/nom_bre"
+                        android:inputType="text|textPersonName"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
+
+                    <EditText
+                        android:id="@+id/email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/username_icon"
+                        android:layout_toRightOf="@+id/username_icon"
+                        android:autofillHints="email"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/username_icon"
+                        android:layout_width="14.7dp"
+                        android:layout_height="10.3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:contentDescription="@string/email_icon_description"
+                        android:src="@drawable/email" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
+
+                    <EditText
+                        android:id="@+id/clave"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon"
+                        android:layout_toRightOf="@+id/icon"
+                        android:autofillHints="clave"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:hint="@string/contrase_a"
+                        android:inputType="textPassword"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        tools:ignore="RtlSymmetry" />
+
+                    <ImageView
+                        android:id="@+id/icon"
+                        android:layout_width="14.7dp"
+                        android:layout_height="10.3dp"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:contentDescription="@string/clave_description"
+                        android:src="@drawable/password" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/relativeLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="109dp"
+                    android:layout_marginStart="32dp"
+                    android:layout_marginLeft="32dp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginEnd="32dp"
+                    android:layout_marginRight="32dp"
+                    android:background="@drawable/blue_border_rounded_cornwe">
+
+                    <TextView
+                        android:id="@+id/direccion"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_toEndOf="@+id/icon1"
+                        android:layout_toRightOf="@+id/icon1"
+                        android:background="@android:color/transparent"
+                        android:fontFamily="@font/poppins_regular"
+                        android:maxLength="10"
+                        android:maxLines="1"
+                        android:paddingStart="17dp"
+                        android:paddingLeft="17dp"
+                        android:paddingTop="15dp"
+                        android:paddingBottom="15dp"
+                        android:text="@string/direccion_label"
+                        android:textCursorDrawable="@drawable/cursor_color"
+                        android:textSize="12sp"
+                        app:errorEnabled="true"
+                        tools:ignore="RtlSymmetry" />
+                    <!-- ICON -->
+
+                    <ImageView
+                        android:id="@+id/icon1"
+                        android:layout_width="25.7dp"
+                        android:layout_height="20.3dp"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="17dp"
+                        android:layout_marginLeft="17dp"
+                        android:layout_marginBottom="74dp"
+                        android:contentDescription="@string/icono_direccion_description"
+                        android:src="@drawable/dir" />
+
+                    <androidx.fragment.app.FragmentContainerView
+                        android:id="@+id/ubicacion"
+                        android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="44dp"
+                        android:layout_below="@+id/direccion"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="11dp" />
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <Button
+            android:id="@+id/boton_registro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginStart="32dp"
+            android:layout_marginLeft="32dp"
+            android:layout_marginTop="24dp"
+            android:layout_marginEnd="32dp"
+            android:layout_marginRight="32dp"
+            android:background="@drawable/blue_fill__rounded_color"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:paddingTop="14dp"
+            android:paddingBottom="14dp"
+            android:text="@string/registrarse"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/scrollview" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
