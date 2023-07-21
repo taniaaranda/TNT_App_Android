@@ -21,11 +21,13 @@ class ClientesApplication: Application() {
             usuario = Usuario(
                 firebaseUser.uid,
                 firebaseUser.displayName.toString(),
-                firebaseUser.email.toString(),
-                arrayListOf()
+                firebaseUser.email.toString()
             )
+        }
 
-            usuario!!.cargarDirecciones()
+        fun reiniciarPedido() {
+            carrito = null
+            pedido = null
         }
     }
 }

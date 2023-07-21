@@ -17,12 +17,8 @@ class Pedido(
     var direccion: String,
     var metodoDePago: MetodoDePago,
     var estampaDeTiempo: Timestamp,
-    var productos: ArrayList<Producto>,
+    var productos: ArrayList<ProductoCarrito>,
 ) {
-    fun valido(): Boolean {
-        return true
-    }
-
     fun guardar(): Task<DocumentReference> {
         return FirebaseFirestore.getInstance().collection("pedidos")
             .add(this.getToSave())
@@ -44,10 +40,30 @@ class Pedido(
         )
     }
 
+    fun valido(): Boolean {
+        if (
+            tienda.isEmpty() ||
+            estado.isEmpty() ||
+            usuario.isEmpty() ||
+            total == 0.0 ||
+            envio == 0.0 ||
+            propina == 0.0 ||
+            comision == 0.0 ||
+            direccion.isEmpty() ||
+            !metodoDePago.esValido() ||
+            (metodoDePago.tipo == MetodoDePago.TIPO_TARJETA && !metodoDePago.datos.containsKey("cuotas")) ||
+            productos.isEmpty()
+        ) {
+            return false
+        }
+
+        return true
+    }
+
     companion object {
         fun new(
             tienda: String = "",
-            estado: String = "",
+            estado: String = "PENDIENTE",
             usuario: String = "",
             total: Double = 0.0,
             envio: Double = 0.0,
@@ -55,7 +71,7 @@ class Pedido(
             comision: Double = 0.0,
             direccion: String = "",
             metodoDePago: MetodoDePago = MetodoDePago.new(),
-            productos: ArrayList<Producto> = arrayListOf()
+            productos: ArrayList<ProductoCarrito> = arrayListOf()
         ): Pedido {
             return Pedido(
                 "",

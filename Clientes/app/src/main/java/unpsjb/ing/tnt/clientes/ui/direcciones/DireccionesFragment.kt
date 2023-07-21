@@ -9,6 +9,8 @@ import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.DireccionesAdapter
@@ -20,7 +22,7 @@ class DireccionesFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentDireccionesBinding
     private lateinit var direccionesView: View
 
-    private lateinit var direcciones: ArrayList<Direccion>
+    private var direcciones: ArrayList<Direccion> = arrayListOf()
     private lateinit var recyclerView: RecyclerView
     private lateinit var direccionesAdapter: DireccionesAdapter
 
@@ -36,6 +38,7 @@ class DireccionesFragment : AuthorizedFragment() {
         direccionesView = binding.root
 
         setRecyclerView()
+        setDireccionesListener()
         setNuevaDireccionListener()
 
         return direccionesView
@@ -50,12 +53,33 @@ class DireccionesFragment : AuthorizedFragment() {
     }
 
     private fun setRecyclerView() {
-        direcciones = ClientesApplication.usuario!!.direcciones
-
         recyclerView = direccionesView.findViewById(R.id.listado_direcciones)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
         direccionesAdapter = DireccionesAdapter(requireContext(), direcciones)
         recyclerView.adapter = direccionesAdapter
+    }
+
+    private fun setDireccionesListener() {
+        FirebaseFirestore.getInstance().collection("direcciones")
+            .whereEqualTo("usuario", FirebaseAuth.getInstance().currentUser!!.uid)
+            .addSnapshotListener { value, error ->
+                if (error == null && value != null) {
+                    for (document in value.documents) {
+                        if (direcciones.find { it.id == document.id } == null) {
+                            direcciones.add(
+                                Direccion(
+                                    document.id,
+                                    document.get("calle").toString(),
+                                    document.get("ubicacion") as HashMap<String, Double>,
+                                    document.get("usuario").toString()
+                                )
+                            )
+                        }
+                    }
+
+                    direccionesAdapter.notifyDataSetChanged()
+                }
+            }
     }
 }

@@ -15,8 +15,10 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 import unpsjb.ing.tnt.clientes.ClientesApplication
+import unpsjb.ing.tnt.clientes.HomeActivity
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Direccion
 import unpsjb.ing.tnt.clientes.databinding.FragmentDireccionBinding
@@ -54,9 +56,20 @@ class DireccionFragment : AuthorizedFragment() {
         val direccionUsuario = requireArguments().getString("direccion")
 
         if (direccionUsuario != null) {
-            direccion = ClientesApplication.usuario!!.direcciones.find {
-                it.id == direccionUsuario
-            }
+            FirebaseFirestore.getInstance().collection("direcciones")
+                .document(direccionUsuario)
+                .get()
+                .addOnSuccessListener {
+                    direccion = Direccion(
+                        it.id,
+                        it.get("calle").toString(),
+                        it.get("ubicacion") as HashMap<String, Double>,
+                        it.get("usuario").toString()
+                    )
+                }
+                .addOnFailureListener {
+                    Toast.makeText(context, "No se pudo obtener la dirección", Toast.LENGTH_SHORT).show()
+                }
         }
     }
 
@@ -133,7 +146,8 @@ class DireccionFragment : AuthorizedFragment() {
                 direccion!!.guardar()
                     .addOnSuccessListener {
                         Toast.makeText(context, "¡Guardado!", Toast.LENGTH_SHORT).show()
-                        direccionView.findNavController().navigate(R.id.nav_addresses)
+                        (activity as HomeActivity).onBackPressed()
+                        //direccionView.findNavController().navigate(R.id.nav_addresses)
                     }
                     .addOnFailureListener {
                         Toast.makeText(context, "¡No se pudo guardar!", Toast.LENGTH_SHORT).show()

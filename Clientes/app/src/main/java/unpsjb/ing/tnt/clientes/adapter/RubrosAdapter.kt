@@ -2,12 +2,10 @@ package unpsjb.ing.tnt.clientes.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -15,7 +13,10 @@ import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Rubro
 import unpsjb.ing.tnt.clientes.databinding.FragmentRubroBinding
 
-class RubrosAdapter(private val context: Context, private val dataSource: ArrayList<Rubro>): BaseAdapter() {
+class RubrosAdapter(
+    private val context: Context,
+    private val dataSource: ArrayList<Rubro>
+): BaseAdapter() {
     private lateinit var binding: FragmentRubroBinding
     private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
 

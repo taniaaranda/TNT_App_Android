@@ -6,7 +6,9 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import org.json.JSONObject
+import unpsjb.ing.tnt.clientes.ClientesApplication
 import java.io.IOException
+import java.math.RoundingMode
 import kotlin.math.min
 
 class MetodoDePago(
@@ -21,7 +23,7 @@ class MetodoDePago(
         }
     }
 
-    fun getTarjetaOfuscada(): String {
+    fun obtenerTarjetaOfuscada(): String {
         if (datos.containsKey("tarjeta")) {
             val tarjeta = datos["tarjeta"].toString().filterNot { it.isWhitespace() }
 
@@ -31,7 +33,7 @@ class MetodoDePago(
         return ""
     }
 
-    fun getPagaCon(): String {
+    fun obtenerPagaCon(): String {
         if (datos.containsKey("pagaCon")) {
             return datos["pagaCon"].toString().toBigDecimal().toString()
         }
@@ -39,7 +41,7 @@ class MetodoDePago(
         return ""
     }
 
-    fun getCuotas(): List<HashMap<String, Double>> {
+    fun obtenerCuotas(): List<HashMap<String, Double>> {
         if (tipo == TIPO_TARJETA && datos.containsKey("tipo")) {
             return if (datos["tipo"] == "credit") {
                 listOf(
@@ -57,6 +59,19 @@ class MetodoDePago(
         }
 
         return listOf()
+    }
+
+    fun obtenerCuotasParseadas(): List<String> {
+        return obtenerCuotas().map {
+            it["numero"].toString().toDouble().toInt().toString() +
+                    " cuota/s de " +
+                    (
+                            (ClientesApplication.pedido!!.total +
+                                    (it["cft"].toString().toDouble() / 100 * ClientesApplication.pedido!!.total)) /
+                                    it["numero"].toString().toDouble().toInt()
+                            ).toBigDecimal().setScale(2, RoundingMode.FLOOR).toString() +
+                    " (CFT: " + it["cft"].toString() + "%)"
+        }
     }
 
     private fun validaEfectivo(): Boolean {

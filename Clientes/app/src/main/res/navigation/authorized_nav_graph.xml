@@ -81,7 +81,7 @@
     <fragment
         android:id="@+id/nav_addresses_checkout"
         android:name="unpsjb.ing.tnt.clientes.ui.checkout.DireccionCheckoutFragment"
-        android:label="Direcci{on de Envío"
+        android:label="Dirección de Envío"
         tools:layout="@layout/fragment_direccion_checkout" >
         <action
             android:id="@+id/action_nav_addresses_checkout_to_nav_checkout"

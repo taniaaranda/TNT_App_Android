@@ -10,14 +10,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.common.api.Api.Client
-import kotlinx.coroutines.Runnable
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.HomeActivity
 import unpsjb.ing.tnt.clientes.R
-import unpsjb.ing.tnt.clientes.adapter.CuotasAdapter
 import unpsjb.ing.tnt.clientes.data.model.MetodoDePago
 import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.databinding.FragmentFormaDePagoCheckoutBinding
@@ -28,11 +23,6 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentFormaDePagoCheckoutBinding
     private lateinit var formaDePagoView: View
     private var pedido: Pedido = ClientesApplication.pedido!!
-    private var formaDePagoData: HashMap<String, Any> = hashMapOf()
-
-    private lateinit var cuotasList: List<HashMap<String, Double>>
-    private lateinit var cuotasAdapter: CuotasAdapter
-    private lateinit var recyclerView: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,7 +35,7 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
 
         formaDePagoView = binding.root
 
-        setCuotasAdapter()
+        setViewData()
         setCheckboxes()
         setEfectivoFormListeners()
         setTarjetaFormListeners()
@@ -54,17 +44,8 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
         return formaDePagoView
     }
 
-    private fun setCuotasAdapter() {
-        recyclerView = formaDePagoView.findViewById(R.id.cuotas)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-
-        cuotasAdapter = CuotasAdapter(
-            requireContext(),
-            ClientesApplication.pedido!!.total,
-            listOf(),
-        )
-
-        recyclerView.adapter = cuotasAdapter
+    private fun setViewData() {
+        binding.totalAPagar.text = ClientesApplication.pedido!!.total.toString()
     }
 
     @SuppressLint("SetTextI18n")
@@ -152,7 +133,10 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
         val metodoDePago = ClientesApplication.pedido!!.metodoDePago
 
         if (binding.checkboxTarjeta.isChecked) {
-            metodoDePago.datos["tarjeta"] = binding.numeroTarjeta.text.toString()
+            val partesTarjeta = binding.numeroTarjeta.text.toString().split(" ")
+
+            metodoDePago.datos["tarjeta"] =
+                partesTarjeta[0] + " " + partesTarjeta[1].substring(0, 2) + "XX XXXX " + partesTarjeta[3]
             metodoDePago.datos["nombre"] = binding.nombreTh.text.toString()
             metodoDePago.datos["dni"] = binding.dniTh.text.toString()
             metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
@@ -165,11 +149,62 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
         binding.aceptar.setOnClickListener {
             completarFormaDePagoData()
 
-            if (ClientesApplication.pedido!!.metodoDePago.esValido()) {
+            if (metodoDePagoValido()) {
                 (activity as HomeActivity).onBackPressed()
-            } else {
-                Toast.makeText(context, "Por favor revise los datos ingresados", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun metodoDePagoValido(): Boolean {
+        return if (binding.checkboxTarjeta.isChecked) {
+            tarjetaValida()
+        } else {
+            efectivoValido()
+        }
+    }
+
+    private fun tarjetaValida(): Boolean {
+        val tarjeta = binding.numeroTarjeta.text.toString().filterNot { it.isWhitespace() }
+        val vencimiento = binding.vencimientoTarjeta.text.toString().filterNot { it == '/' }
+        val cvv = binding.cvvTarjeta.text.toString()
+        val nombre = binding.nombreTh.text.toString()
+        val dni = binding.dniTh.text.toString()
+        val camposConError = arrayListOf<String>()
+
+        if (tarjeta.length < 15) {
+            camposConError.add("Tarjeta")
+        }
+
+        if (vencimiento.length < 4) {
+            camposConError.add("Vencimiento")
+        }
+
+        if (cvv.length < 3) {
+            camposConError.add("CVV")
+        }
+
+        if (nombre.isEmpty()) {
+            camposConError.add("Nombre")
+        }
+
+        if (dni.isEmpty()) {
+            camposConError.add("DNI")
+        }
+
+        if (camposConError.isNotEmpty()) {
+            Toast.makeText(context, "Los siguientes campos no estan correctos: "  + camposConError.joinToString { it }, Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
+    }
+
+    private fun efectivoValido(): Boolean {
+        if (binding.montoPago.text.toString().isEmpty()) {
+            Toast.makeText(context, "Tenes que aclarar con cuanto lo pagas cuando llegue", Toast.LENGTH_SHORT).show()
+            return false
+        }
+
+        return true
     }
 }
