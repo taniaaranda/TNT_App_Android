@@ -31,7 +31,11 @@
         android:id="@+id/nav_orders"
         android:name="unpsjb.ing.tnt.clientes.ui.pedidos.PedidosFragment"
         android:label="@string/pedidos"
-        tools:layout="@layout/fragment_pedidos" />
+        tools:layout="@layout/fragment_pedidos" >
+        <action
+            android:id="@+id/action_nav_orders_to_pedidoFragment"
+            app:destination="@id/nav_order" />
+    </fragment>
     <fragment
         android:id="@+id/nav_logout"
         android:name="unpsjb.ing.tnt.clientes.ui.auth.CerrarSesionFragment"
@@ -87,4 +91,9 @@
             android:id="@+id/action_nav_addresses_checkout_to_nav_checkout"
             app:destination="@id/nav_checkout" />
     </fragment>
+    <fragment
+        android:id="@+id/nav_order"
+        android:name="unpsjb.ing.tnt.clientes.ui.pedidos.PedidoFragment"
+        android:label="Pedido"
+        tools:layout="@layout/fragment_pedido" />
 </navigation>
