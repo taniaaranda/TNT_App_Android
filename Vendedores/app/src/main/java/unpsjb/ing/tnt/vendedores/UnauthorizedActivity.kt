@@ -51,9 +51,10 @@ class UnauthorizedActivity : AppCompatActivity() {
             .signInWithEmailAndPassword(email, clave)
             .addOnCompleteListener {
                 if (it.isSuccessful) {
+                    _user = FirebaseAuth.getInstance().currentUser
                     checkUser()
                 } else {
-                    Toast.makeText(applicationContext, "¡Usuario o clave inválidos!", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(baseContext, "¡Usuario o clave inválidos!", Toast.LENGTH_SHORT).show()
                 }
             }
     }

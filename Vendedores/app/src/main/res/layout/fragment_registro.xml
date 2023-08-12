@@ -2,7 +2,7 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.auth.IniciarSesionFragment">
+    tools:context=".ui.auth.RegistroFragment">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -20,7 +20,7 @@
             android:contentDescription="@string/covi_pedidos" />
 
         <RelativeLayout
-            android:id="@+id/relativeLayout3"
+            android:id="@+id/relativeLayout"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -65,7 +65,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:id="@+id/relativeLayout4"
+            android:id="@+id/relativeLayout2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
@@ -76,7 +76,7 @@
             android:background="@drawable/blue_border_rounded_cornwe"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout3">
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
 
             <EditText
                 android:id="@+id/clave"
@@ -111,7 +111,7 @@
         </RelativeLayout>
 
         <Button
-            android:id="@+id/iniciar_sesion"
+            android:id="@+id/registrarse"
             android:layout_width="285dp"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
@@ -125,54 +125,24 @@
             android:gravity="center"
             android:paddingTop="14dp"
             android:paddingBottom="14dp"
-            android:text="@string/iniciar_sesion"
+            android:text="@string/registrarse"
             android:textColor="#ffffff"
             android:textSize="12sp"
             app:backgroundTint="@color/quantum_googred700"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/relativeLayout4" />
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout2" />
 
         <TextView
-            android:id="@+id/olvido_clave"
+            android:id="@+id/volver"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/olvido_la_contrase_a"
-            android:textColor="#1566e0"
-            android:textSize="10.5sp"
+            android:layout_marginBottom="24dp"
+            android:text="@string/volver"
+            android:textSize="18sp"
+            app:drawableLeftCompat="@drawable/quantum_ic_arrow_back_grey600_24"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/iniciar_sesion"
-            tools:ignore="SmallSp" />
-
-        <TextView
-            android:id="@+id/textView3"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="24dp"
-            android:fontFamily="@font/poppins_medium"
-            android:text="@string/aun_no_esta_registrado"
-            android:textSize="10.5sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/olvido_clave"
-            tools:ignore="SmallSp" />
-
-        <Button
-            android:id="@+id/registro"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:foregroundTint="@color/white"
-            android:text="@string/registrarse"
-            app:backgroundTint="@color/quantum_vanillared900"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3" />
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

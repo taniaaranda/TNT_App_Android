@@ -192,4 +192,14 @@
     <string name="label_sacar_foto">Sacar Foto</string>
     <string name="label_subir_foto">Subir Foto</string>
     <string name="label_informaci_n_b_sica">Información básica</string>
+    <string name="covi_pedidos">Covi-Pedidos</string>
+    <string name="email">Email</string>
+    <string name="email_icon">Email Icon</string>
+    <string name="clave">Clave</string>
+    <string name="clave_icon">Clave icon</string>
+    <string name="registrarse">Registrarse</string>
+    <string name="volver">Volver</string>
+    <string name="iniciar_sesion">Iniciar sesion</string>
+    <string name="olvido_la_contrase_a">Olvido la contraseña?</string>
+    <string name="aun_no_esta_registrado">Aun no esta registrado?</string>
 </resources>
