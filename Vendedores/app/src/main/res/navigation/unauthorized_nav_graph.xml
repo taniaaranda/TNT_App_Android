@@ -17,7 +17,7 @@
 
     <fragment
         android:id="@+id/registroVendedorFragment"
-        android:name="unpsjb.ing.tnt.vendedores.ui.vendedores.RegistroVendedorFragment"
+        android:name="unpsjb.ing.tnt.vendedores.ui.auth.RegistroFragment"
         android:label="fragment_registrovendedor"
-        tools:layout="@layout/fragment_registrovendedor" />
+        tools:layout="@layout/fragment_registro" />
 </navigation>

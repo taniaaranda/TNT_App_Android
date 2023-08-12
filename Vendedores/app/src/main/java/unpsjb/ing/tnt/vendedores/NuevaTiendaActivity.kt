@@ -12,19 +12,16 @@ import android.widget.Spinner
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.lifecycleScope
 import com.google.android.gms.common.api.Status
 import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-
 
 class NuevaTiendaActivity : AppCompatActivity() {
     private var db: FirebaseFirestore = Firebase.firestore
@@ -82,7 +79,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             }
 
         val horarios = ArrayList<String>()
-        horarios.add("Elija un horario")
+        horarios.add("Elegir horario")
         for (hora in 0..23) {
             for (minuto in 0..59 step 15) {
                 horarios.add(hora.toString().padStart(2, '0') + ":" + minuto.toString().padStart(2, '0'))
@@ -93,7 +90,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             R.layout.support_simple_spinner_dropdown_item, horarios
         )
 
-        val horarioAperturaView = findViewById<Spinner>(R.id.hora_apertura_list)  // TODO Transformar en fragment
+        val horarioAperturaView = findViewById<Spinner>(R.id.horarios_apertura_list)  // TODO Transformar en fragment
         horarioAperturaView.adapter = horarioAperturaAdapter
 
         val horarioCierreAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -101,7 +98,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             R.layout.support_simple_spinner_dropdown_item, horarios
         )
 
-        val horarioCierreView = findViewById<Spinner>(R.id.hora_cierre_list)  // TODO Transformar en fragment
+        val horarioCierreView = findViewById<Spinner>(R.id.horarios_cierre_list)  // TODO Transformar en fragment
         horarioCierreView.adapter = horarioCierreAdapter
     }
 
@@ -161,14 +158,16 @@ class NuevaTiendaActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.btn_cancelar).setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
             finish()
+            startActivity(Intent(this, UnauthorizedActivity::class.java))
         }
     }
 
     private fun formValido(): Boolean {
         var valido = true
 
-        val nombre = findViewById<EditText>(R.id.txt_nombre).text.toString()
+        val nombre = findViewById<EditText>(R.id.nombre).text.toString()
         if (nombre.isEmpty()) {
             valido = false
         }
@@ -186,12 +185,12 @@ class NuevaTiendaActivity : AppCompatActivity() {
             valido = false
         }
 
-        val horarioApertura = findViewById<Spinner>(R.id.hora_apertura_list).selectedItem.toString()
+        val horarioApertura = findViewById<Spinner>(R.id.horarios_apertura_list).selectedItem.toString()
         if (horarioApertura == "Elija un horario") {
             valido = false
         }
 
-        val horarioCierre = findViewById<Spinner>(R.id.hora_cierre_list).selectedItem.toString()
+        val horarioCierre = findViewById<Spinner>(R.id.horarios_cierre_list).selectedItem.toString()
         if (horarioCierre == "Elija un horario") {
             valido = false
         }
@@ -216,7 +215,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
     }
 
     private fun getNombre(): String {
-        return findViewById<EditText>(R.id.txt_nombre).text.toString()
+        return findViewById<EditText>(R.id.nombre).text.toString()
     }
 
     private fun getUbicacionLatLong(): Any {
@@ -251,8 +250,8 @@ class NuevaTiendaActivity : AppCompatActivity() {
     private fun getHorariosDeAtencion(): HashMap<String, String> {
         val horarios = hashMapOf<String, String>()
 
-        horarios["apertura"] = findViewById<Spinner>(R.id.hora_apertura_list).selectedItem.toString()
-        horarios["cierre"] = findViewById<Spinner>(R.id.hora_cierre_list).selectedItem.toString()
+        horarios["apertura"] = findViewById<Spinner>(R.id.horarios_apertura_list).selectedItem.toString()
+        horarios["cierre"] = findViewById<Spinner>(R.id.horarios_cierre_list).selectedItem.toString()
 
         return horarios
     }
