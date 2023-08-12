@@ -202,4 +202,7 @@
     <string name="iniciar_sesion">Iniciar sesion</string>
     <string name="olvido_la_contrase_a">Olvido la contraseña?</string>
     <string name="aun_no_esta_registrado">Aun no esta registrado?</string>
+    <string name="label_nueva_tienda">Nueva Tienda</string>
+    <string name="horarios_label">Horarios</string>
+    <string name="informacion_basica_label">Información Básica</string>
 </resources>

@@ -79,7 +79,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             }
 
         val horarios = ArrayList<String>()
-        horarios.add("Elija un horario")
+        horarios.add("Elegir horario")
         for (hora in 0..23) {
             for (minuto in 0..59 step 15) {
                 horarios.add(hora.toString().padStart(2, '0') + ":" + minuto.toString().padStart(2, '0'))
@@ -90,7 +90,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             R.layout.support_simple_spinner_dropdown_item, horarios
         )
 
-        val horarioAperturaView = findViewById<Spinner>(R.id.hora_apertura_list)  // TODO Transformar en fragment
+        val horarioAperturaView = findViewById<Spinner>(R.id.horarios_apertura_list)  // TODO Transformar en fragment
         horarioAperturaView.adapter = horarioAperturaAdapter
 
         val horarioCierreAdapter: ArrayAdapter<String> = ArrayAdapter<String>(
@@ -98,7 +98,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
             R.layout.support_simple_spinner_dropdown_item, horarios
         )
 
-        val horarioCierreView = findViewById<Spinner>(R.id.hora_cierre_list)  // TODO Transformar en fragment
+        val horarioCierreView = findViewById<Spinner>(R.id.horarios_cierre_list)  // TODO Transformar en fragment
         horarioCierreView.adapter = horarioCierreAdapter
     }
 
@@ -167,7 +167,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
     private fun formValido(): Boolean {
         var valido = true
 
-        val nombre = findViewById<EditText>(R.id.txt_nombre).text.toString()
+        val nombre = findViewById<EditText>(R.id.nombre).text.toString()
         if (nombre.isEmpty()) {
             valido = false
         }
@@ -185,12 +185,12 @@ class NuevaTiendaActivity : AppCompatActivity() {
             valido = false
         }
 
-        val horarioApertura = findViewById<Spinner>(R.id.hora_apertura_list).selectedItem.toString()
+        val horarioApertura = findViewById<Spinner>(R.id.horarios_apertura_list).selectedItem.toString()
         if (horarioApertura == "Elija un horario") {
             valido = false
         }
 
-        val horarioCierre = findViewById<Spinner>(R.id.hora_cierre_list).selectedItem.toString()
+        val horarioCierre = findViewById<Spinner>(R.id.horarios_cierre_list).selectedItem.toString()
         if (horarioCierre == "Elija un horario") {
             valido = false
         }
@@ -215,7 +215,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
     }
 
     private fun getNombre(): String {
-        return findViewById<EditText>(R.id.txt_nombre).text.toString()
+        return findViewById<EditText>(R.id.nombre).text.toString()
     }
 
     private fun getUbicacionLatLong(): Any {
@@ -250,8 +250,8 @@ class NuevaTiendaActivity : AppCompatActivity() {
     private fun getHorariosDeAtencion(): HashMap<String, String> {
         val horarios = hashMapOf<String, String>()
 
-        horarios["apertura"] = findViewById<Spinner>(R.id.hora_apertura_list).selectedItem.toString()
-        horarios["cierre"] = findViewById<Spinner>(R.id.hora_cierre_list).selectedItem.toString()
+        horarios["apertura"] = findViewById<Spinner>(R.id.horarios_apertura_list).selectedItem.toString()
+        horarios["cierre"] = findViewById<Spinner>(R.id.horarios_cierre_list).selectedItem.toString()
 
         return horarios
     }
