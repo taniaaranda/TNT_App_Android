@@ -1,6 +1,8 @@
 package unpsjb.ing.tnt.vendedores.ui.productos
 
+import android.content.Intent
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -80,11 +82,16 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     private fun setHandlers() {
         botonSacarFoto.setOnClickListener {
             Toast.makeText(context, "Sacar foto", Toast.LENGTH_SHORT).show()
-        }
+            /*val fototomada = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
+            startActivity(fototomada)*/
+            }
 
         botonSubirFoto.setOnClickListener {
-            Toast.makeText(context, "Subir foto", Toast.LENGTH_SHORT).show()
-        }
+            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
+            startActivity(gallery)
+            // Toast.makeText(context, "Subir foto", Toast.LENGTH_SHORT).show()
+            }
+
 
         botonCrear.setOnClickListener {
                 if (formValido()) {

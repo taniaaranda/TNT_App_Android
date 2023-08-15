@@ -57,14 +57,12 @@ class NuevaTiendaActivity : AppCompatActivity() {
         db.collection("rubros").get()  // TODO Transformar en fragment
             .addOnSuccessListener {
                 rubros.clear()
-                val nombresRubros = ArrayList<String>()
+                //val nombresRubros = ArrayList<String>()
                 rubros.put("-", "Elija un rubro")
-                nombresRubros.add("Elija un rubro")
-
-                for (document in it.documents.iterator()) {
-                    rubros[document.id] = document.get("nombre").toString()
-                    nombresRubros.add(document.get("nombre").toString())
-                }
+                val textView = findViewById<TextView>(R.id.textView)
+                textView.text = "Seleccione un Rubro:"
+                //nombresRubros.add("Elija un rubro")
+                val nombresRubros = arrayOf("Despensa", "Ferreteria", "Mercería","Heladería", "Rotiseria")
 
                 val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
                     this,
@@ -80,7 +78,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
 
         val horarios = ArrayList<String>()
         horarios.add("Elegir horario")
-        for (hora in 0..23) {
+        for (hora in 7..21) {
             for (minuto in 0..59 step 15) {
                 horarios.add(hora.toString().padStart(2, '0') + ":" + minuto.toString().padStart(2, '0'))
             }
@@ -262,9 +260,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
 
     private fun getRubro(): String {
         val nombreRubro = findViewById<Spinner>(R.id.rubros_list).selectedItem.toString()
+        return nombreRubro
 
-        val rubro = rubros.filter { it.value == nombreRubro }
-
-        return rubro.keys.first().toString()
     }
 }

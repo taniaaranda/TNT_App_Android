@@ -6,10 +6,6 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_orders"
-            android:icon="@drawable/cart_icon_filled"
-            android:title="@string/menu_orders" />
-        <item
             android:id="@+id/nav_products"
             android:icon="@drawable/list_icon_filled"
             android:title="@string/menu_products" />
