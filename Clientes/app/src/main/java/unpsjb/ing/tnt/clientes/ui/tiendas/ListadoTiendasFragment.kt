@@ -2,7 +2,7 @@ package unpsjb.ing.tnt.clientes.ui.tiendas
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -11,8 +11,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
-import android.widget.CompoundButton
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
@@ -36,9 +36,10 @@ class ListadoTiendasFragment : AuthorizedFragment() {
     private var tiendasSnapshotListener: ListenerRegistration? = null
 
     private var filtroRubro: String = "Todos"
-    private var filtroCercanas: Boolean = false
+    private var filtroTiendasAbiertas: Boolean = true
     private var filtroNombre: String? = null
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -74,6 +75,7 @@ class ListadoTiendasFragment : AuthorizedFragment() {
                 Toast.makeText(fragmentContext, "Debes seleccionar algún filtro", Toast.LENGTH_SHORT).show()
             }
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 filtroRubro = binding.filtroRubros.selectedItem.toString()
                 registerTiendasSnapshotListener()
@@ -86,6 +88,7 @@ class ListadoTiendasFragment : AuthorizedFragment() {
             override fun afterTextChanged(s: Editable?) {}
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
+            @RequiresApi(Build.VERSION_CODES.O)
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 filtroNombre = if (s == "") {
                     null
@@ -98,13 +101,16 @@ class ListadoTiendasFragment : AuthorizedFragment() {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun setSwitchUbicaciones() {
-        binding.switchUbicacion.setOnCheckedChangeListener(CompoundButton.OnCheckedChangeListener { _, isChecked ->
-            filtroCercanas = isChecked
-            registerTiendasSnapshotListener()
-        })
+        binding.switchTiendasAbiertas
+            .setOnCheckedChangeListener { _, isChecked ->
+                filtroTiendasAbiertas = isChecked
+                registerTiendasSnapshotListener()
+            }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     private fun registerTiendasSnapshotListener() {
         tiendasSnapshotListener?.remove()
 
@@ -124,23 +130,14 @@ class ListadoTiendasFragment : AuthorizedFragment() {
             }
     }
 
+    @RequiresApi(Build.VERSION_CODES.O)
     @Suppress("UNCHECKED_CAST")
     private fun filterTiendas(snapshots: QuerySnapshot?): List<Tienda> {
         val tiendas: ArrayList<Tienda> = arrayListOf()
 
         if (snapshots != null) {
             for (document in snapshots.documents) {
-                if (filtroNombre != null && !document.get("nombre").toString().contains(filtroNombre.toString())) {
-                    continue
-                }
-
-                if (filtroRubro != "Todos" && document.get("rubro") != filtroRubro) {
-                    continue
-                }
-
-                // Filtrar cercanos
-
-                tiendas.add(Tienda(
+                val tienda = Tienda(
                     document.id,
                     document.get("nombre").toString(),
                     document.get("rubro").toString(),
@@ -148,7 +145,21 @@ class ListadoTiendasFragment : AuthorizedFragment() {
                     document.get("ubicacionLatLong") as HashMap<String, Double>,
                     document.get("horario_de_atencion") as HashMap<String, String>,
                     document.get("metodos_de_pago") as ArrayList<String>
-                ))
+                )
+
+                if (filtroNombre != null && !tienda.nombre.contains(filtroNombre.toString())) {
+                    continue
+                }
+
+                if (filtroRubro != "Todos" && tienda.rubro != filtroRubro) {
+                    continue
+                }
+
+                if (filtroTiendasAbiertas && !tienda.estaAbierto()) {
+                    continue
+                }
+
+                tiendas.add(tienda)
             }
         }
 

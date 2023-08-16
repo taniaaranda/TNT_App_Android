@@ -126,26 +126,29 @@
                 android:background="@android:color/darker_gray" />
 
             <Switch
-                android:id="@+id/switch_ubicacion"
+                android:id="@+id/switch_tiendas_abiertas"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:padding="8dp"
-                android:text="@string/solo_cercanas"
+                android:checked="true"
+                android:text="@string/abiertas"
                 tools:ignore="UseSwitchCompatOrMaterialXml" />
         </LinearLayout>
 
         <ListView
             android:id="@+id/listado_tiendas"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
+            android:layout_marginBottom="8dp"
             android:divider="@android:color/transparent"
             android:dividerHeight="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout"

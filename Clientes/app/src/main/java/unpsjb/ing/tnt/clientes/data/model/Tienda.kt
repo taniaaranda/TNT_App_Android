@@ -1,5 +1,10 @@
 package unpsjb.ing.tnt.clientes.data.model
 
+import android.os.Build
+import androidx.annotation.RequiresApi
+import java.time.Instant
+import java.time.ZoneId
+
 class Tienda(
     val id: String,
     val nombre: String,
@@ -11,6 +16,19 @@ class Tienda(
 ) {
     fun getFormattedHorario(): String {
         return "${horarioDeAtencion["apertura"]}hs"+" - "+"${horarioDeAtencion["cierre"]}hs"
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    fun estaAbierto(): Boolean {
+        val fechaHoraActual = Instant.now().atZone(ZoneId.systemDefault())
+        val horarioApertura = Instant.parse(
+            fechaHoraActual.toLocalDate().toString() + "T" + horarioDeAtencion["apertura"] + ":00.000Z"
+        ).atZone(ZoneId.systemDefault()).toLocalTime()
+        val horarioCierre = Instant.parse(
+            fechaHoraActual.toLocalDate().toString() + "T" + horarioDeAtencion["cierre"] + ":00.000Z"
+        ).atZone(ZoneId.systemDefault()).toLocalTime()
+
+        return fechaHoraActual.toLocalTime() in horarioApertura..horarioCierre
     }
 
     companion object {

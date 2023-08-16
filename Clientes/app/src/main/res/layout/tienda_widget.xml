@@ -103,7 +103,7 @@
             app:srcCompat="@drawable/clock_icon_filled" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/horario_cierre"
             android:layout_width="136dp"
             android:layout_height="20dp"
             android:layout_marginStart="8dp"

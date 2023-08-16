@@ -1,21 +1,18 @@
 package unpsjb.ing.tnt.clientes.adapter
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.util.Log
+import android.os.Build
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
-import androidx.core.os.bundleOf
+import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.databinding.DataBindingUtil
-import androidx.navigation.findNavController
 import unpsjb.ing.tnt.clientes.data.model.Tienda
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.databinding.TiendaWidgetBinding
-import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 
 class TiendasAdapter (
     private val context: Context,
@@ -51,19 +48,38 @@ class TiendasAdapter (
         return position.toLong()
     }
 
-    @SuppressLint("ViewHolder")
+    @RequiresApi(Build.VERSION_CODES.O)
     override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
         binding = DataBindingUtil.inflate(
-                inflater, R.layout.tienda_widget, parent, false
+            inflater, R.layout.tienda_widget, parent, false
         )
 
         val tienda = getCastedItem(position)
         binding.tienda = tienda
 
-        binding.tiendaContainer.setOnClickListener {
-            callbackVerTienda(tienda.id)
-        }
+        setCerrado(parent, context, tienda)
 
         return binding.root
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    @SuppressLint("ViewHolder", "UseCompatLoadingForDrawables")
+    private fun setCerrado(parent: ViewGroup?, context: Context, tienda: Tienda) {
+        if (tienda.estaAbierto()) {
+            binding.tiendaContainer.background =
+                context.getDrawable(R.drawable.rounded_corners_lightgray)
+
+            binding.tiendaContainer.setOnClickListener {
+                callbackVerTienda(tienda.id)
+            }
+        } else {
+            binding.tiendaContainer.background =
+                context.getDrawable(R.drawable.rounded_corners_darkgray)
+            binding.horarioCierre.setTextColor(parent!!.resources.getColor(R.color.quantum_googred700))
+
+            binding.tiendaContainer.setOnClickListener {
+                Toast.makeText(context, "El local esta cerrado!", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
 }
