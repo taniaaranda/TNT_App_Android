@@ -109,7 +109,7 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
     private fun setTarjetaFormListeners() {
         binding.numeroTarjeta.addTextChangedListener(MaskWatcher("#### #### #### ####"))
         binding.numeroTarjeta.setOnFocusChangeListener { _, b ->
-            if (!b) {
+            if (!b && binding.numeroTarjeta.text.length >= 6) {
                 MetodoDePago.checkTarjeta(
                     binding.numeroTarjeta.text.toString().filterNot { it.isWhitespace() },
                     callbackError = {
