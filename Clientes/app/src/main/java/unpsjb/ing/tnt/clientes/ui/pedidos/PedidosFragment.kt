@@ -71,7 +71,6 @@ class PedidosFragment : AuthorizedFragment() {
         }
     }
 
-    @SuppressLint("NotifyDataSetChanged")
     private fun setPedidosListener() {
         pedidosSnapshotListener?.remove()
 

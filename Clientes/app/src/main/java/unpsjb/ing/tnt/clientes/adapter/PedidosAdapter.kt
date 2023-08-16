@@ -1,9 +1,6 @@
 package unpsjb.ing.tnt.clientes.adapter
 
-import android.annotation.SuppressLint
 import android.content.Context
-import android.text.format.DateFormat
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,9 +8,11 @@ import android.widget.BaseAdapter
 import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Pedido
+import unpsjb.ing.tnt.clientes.data.model.Tienda
 import unpsjb.ing.tnt.clientes.databinding.FragmentPedidoItemBinding
 
 class PedidosAdapter(
@@ -35,30 +34,12 @@ class PedidosAdapter(
         return position.toLong()
     }
 
-    @SuppressLint("ViewHolder")
     override fun getView(position: Int, view: View?, parent: ViewGroup?): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_pedido_item, parent, false
         )
 
-        FirebaseFirestore.getInstance().collection("tiendas")
-            .document(dataSource[position].tienda)
-            .get()
-            .addOnSuccessListener {
-                binding.errorLayout.visibility = View.GONE
-                binding.pedidoItemLayout.visibility = View.VISIBLE
-                binding.nombreTienda.text = it.get("nombre").toString()
-                binding.estadoPedido.text = dataSource[position].estado
-                binding.fechaCreacion.text = DateFormat.format("dd/MM/yyyy hh:mm:ss", dataSource[position].estampaDeTiempo.toDate())
-                binding.cantidadProductos.text = dataSource[position].productos.sumOf { productoCarrito ->
-                    productoCarrito.cantidad
-                }.toString()
-                binding.precio.text = dataSource[position].total.toString()
-            }
-            .addOnFailureListener {
-                binding.pedidoItemLayout.visibility = View.GONE
-                binding.errorLayout.visibility = View.VISIBLE
-            }
+        binding.pedido = getItem(position)
 
         binding.pedidoItemLayout.setOnClickListener {
             parent!!.findNavController().navigate(R.id.nav_order, bundleOf(
@@ -67,5 +48,17 @@ class PedidosAdapter(
         }
 
         return binding.root
+    }
+
+    private fun getCastedTienda(documentSnapshot: DocumentSnapshot): Tienda {
+        return Tienda(
+            documentSnapshot.id,
+            documentSnapshot.get("nombre") as String,
+            documentSnapshot.get("rubro") as String,
+            documentSnapshot.get("calle") as String,
+            documentSnapshot.get("ubicacionLatLong") as HashMap<String, Double>,
+            documentSnapshot.get("horario_de_atencion") as HashMap<String, String>,
+            documentSnapshot.get("metodos_de_pago") as ArrayList<String>
+        )
     }
 }

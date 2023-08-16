@@ -1,9 +1,12 @@
 package unpsjb.ing.tnt.clientes.data.model
 
+import android.text.format.DateFormat
 import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.ktx.Firebase
 
 class Pedido(
     var id: String,
@@ -58,6 +61,24 @@ class Pedido(
         }
 
         return true
+    }
+
+    fun nombreTienda(): String {
+        return FirebaseFirestore.getInstance().collection("tiendas")
+            .document(tienda)
+            .get().result.get("nombre").toString()
+    }
+
+    fun fechaCreacionForView(): CharSequence? {
+        return DateFormat.format("dd/MM/yyyy hh:mm:ss", estampaDeTiempo.toDate())
+    }
+
+    fun cantidadProductosForView(): String {
+        return productos.sumOf { it.cantidad }.toInt().toString()
+    }
+
+    fun totalForView(): String {
+        return total.toString()
     }
 
     companion object {

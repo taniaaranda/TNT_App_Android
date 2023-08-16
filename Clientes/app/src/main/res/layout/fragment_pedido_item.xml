@@ -4,7 +4,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <data />
+    <data>
+        <variable
+            name="tienda"
+            type="unpsjb.ing.tnt.clientes.data.model.Tienda"/>
+        <variable
+            name="pedido"
+            type="unpsjb.ing.tnt.clientes.data.model.Pedido"/>
+    </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -27,7 +34,7 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
-                android:id="@+id/nombre_tienda"
+                android:id="@+id/id_pedido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -36,9 +43,10 @@
                 android:textColor="@color/black"
                 android:textSize="16sp"
                 android:textStyle="bold"
+                android:text="@{pedido.id}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="El Nombre de la Tienda" />
+                tools:text="Pedido ID: tX4IloCRC4l1kj6Dbg1o" />
 
             <TextView
                 android:id="@+id/estado_pedido"
@@ -48,6 +56,7 @@
                 android:layout_marginEnd="8dp"
                 android:layout_marginRight="8dp"
                 android:textColor="@color/black"
+                android:text="@{pedido.estado}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 tools:text="ESTADO" />
@@ -60,8 +69,9 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
+                android:text="@{pedido.fechaCreacionForView()}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/nombre_tienda"
+                app:layout_constraintTop_toBottomOf="@+id/id_pedido"
                 tools:text="XX/XX/XXXX XX:XX:XX" />
 
             <TextView
@@ -85,6 +95,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:text="@{pedido.cantidadProductosForView()}"
                 app:layout_constraintStart_toEndOf="@+id/textView18"
                 app:layout_constraintTop_toBottomOf="@+id/fecha_creacion"
                 tools:text="XXXX" />
@@ -106,6 +117,7 @@
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
                 android:textStyle="bold"
+                android:text="@{pedido.totalForView()}"
                 app:layout_constraintStart_toEndOf="@+id/textView20"
                 app:layout_constraintTop_toBottomOf="@+id/fecha_creacion"
                 tools:text="XXXXXXX.XX" />
