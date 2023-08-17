@@ -1,5 +1,6 @@
 package unpsjb.ing.tnt.clientes.data.model
 
+import kotlinx.coroutines.runBlocking
 import okhttp3.Call
 import okhttp3.Callback
 import okhttp3.OkHttpClient
@@ -9,6 +10,8 @@ import org.json.JSONObject
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import java.io.IOException
 import java.math.RoundingMode
+import kotlin.coroutines.resume
+import kotlin.coroutines.suspendCoroutine
 import kotlin.math.min
 
 class MetodoDePago(
@@ -74,6 +77,29 @@ class MetodoDePago(
         }
     }
 
+    fun esCredito(): Boolean {
+        return tipo == TIPO_TARJETA && datos.containsKey("tipo") && datos["tipo"] == "credit"
+    }
+
+    fun esDebito(): Boolean {
+        return tipo == TIPO_TARJETA && datos.containsKey("tipo") && datos["tipo"] == "debit"
+    }
+
+    fun esEfectivo(): Boolean {
+        return tipo == TIPO_EFECTIVO
+    }
+
+    fun chequearBin() = runBlocking {
+        if (datos.containsKey("tarjeta") && datos["tarjeta"].toString().length >= 6) {
+            val datosTarjeta = checkTarjeta(datos["tarjeta"].toString())
+
+            if (datosTarjeta["red"] != "" && datosTarjeta["tipo"] != "") {
+                datos["red"] = datosTarjeta["red"].toString()
+                datos["tipo"] = datosTarjeta["tipo"].toString()
+            }
+        }
+    }
+
     private fun validaEfectivo(): Boolean {
         if (!datos.containsKey("pagaCon")) {
             return false
@@ -105,22 +131,33 @@ class MetodoDePago(
             return MetodoDePago(tipo, datos)
         }
 
-        fun checkTarjeta(tarjeta: String, callbackSuccess: (tipo: String, red: String) -> Unit, callbackError: () -> Unit) {
-            val request = Request.Builder()
-                .url("https://lookup.binlist.net/" + tarjeta.substring(0, min(tarjeta.length, 6)))
-                .build()
+        fun checkTarjetaAsync(tarjeta: String, callback: (tipo: String, red: String) -> Unit) {
+            Thread().run {
+                val request = Request.Builder()
+                    .url("https://lookup.binlist.net/" + tarjeta.substring(0, min(tarjeta.length, 6)))
+                    .build()
 
-            client.newCall(request).enqueue(object : Callback {
-                override fun onFailure(call: Call, e: IOException) { callbackError() }
-                override fun onResponse(call: Call, response: Response) {
-                    if (response.isSuccessful) {
-                        val jsonResponse = JSONObject(response.body()!!.string())
-                        callbackSuccess(jsonResponse["type"].toString(), jsonResponse["scheme"].toString())
-                    } else {
-                        callbackError()
+                client.newCall(request).enqueue(object : Callback {
+                    override fun onFailure(call: Call, e: IOException) { callback("", "") }
+                    override fun onResponse(call: Call, response: Response) {
+                        if (response.isSuccessful) {
+                            val jsonResponse = JSONObject(response.body()!!.string())
+                            callback(jsonResponse["type"].toString(), jsonResponse["scheme"].toString())
+                        } else {
+                            callback("", "")
+                        }
                     }
-                }
-            })
+                })
+            }
+        }
+
+        suspend fun checkTarjeta(tarjeta: String): HashMap<String, String> = suspendCoroutine {
+            result -> checkTarjetaAsync(tarjeta) { tipo, red ->
+                result.resume(hashMapOf(
+                    "red" to red,
+                    "tipo" to tipo
+                ))
+            }
         }
     }
 }

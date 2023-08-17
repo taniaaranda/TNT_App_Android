@@ -13,21 +13,27 @@ import android.widget.AdapterView.OnItemSelectedListener
 import android.widget.ArrayAdapter
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.os.bundleOf
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.findNavController
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.databinding.FragmentCheckoutBinding
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.pedido
+import unpsjb.ing.tnt.clientes.HomeActivity
 import unpsjb.ing.tnt.clientes.data.model.MetodoDePago
 import unpsjb.ing.tnt.clientes.data.model.Pedido
+import unpsjb.ing.tnt.clientes.data.model.Tienda
 import java.math.RoundingMode
 
 class CheckoutFragment : Fragment() {
     private lateinit var binding: FragmentCheckoutBinding
     private lateinit var checkoutView: View
+
+    private lateinit var tienda: Tienda
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -39,6 +45,7 @@ class CheckoutFragment : Fragment() {
 
         checkoutView = binding.root
 
+        setTienda()
         crearPedido()
         setViewData()
         setBotonCambiarDireccion()
@@ -46,6 +53,27 @@ class CheckoutFragment : Fragment() {
         setBotonHacerPedido()
 
         return checkoutView
+    }
+
+    private fun setTienda() {
+        FirebaseFirestore.getInstance().collection("tiendas")
+            .document(carrito!!.tienda)
+            .get()
+            .addOnSuccessListener {
+                tienda = Tienda(
+                    it.id,
+                    it.get("nombre") as String,
+                    it.get("rubro") as String,
+                    it.get("calle") as String,
+                    it.get("ubicacionLatLong") as HashMap<String, Double>,
+                    it.get("horario_de_atencion") as HashMap<String, String>,
+                    it.get("metodos_de_pago") as ArrayList<String>
+                )
+            }
+            .addOnFailureListener {
+                Toast.makeText(context, "Ocurrió un error", Toast.LENGTH_SHORT).show()
+                (activity as HomeActivity).onBackPressed()
+            }
     }
 
     private fun crearPedido() {
@@ -217,7 +245,14 @@ class CheckoutFragment : Fragment() {
 
     private fun setBotonCambiarFormaDePago() {
         binding.elegirFormaDePago.setOnClickListener {
-            checkoutView.findNavController().navigate(R.id.nav_payment_method)
+            checkoutView.findNavController().navigate(
+                R.id.nav_payment_method,
+                bundleOf(
+                    "aceptaDebito" to tienda.aceptaDebito(),
+                    "aceptaCredito" to tienda.aceptaCredito(),
+                    "aceptaEfectivo" to tienda.aceptaEfectivo()
+                )
+            )
         }
     }
 

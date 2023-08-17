@@ -10,6 +10,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import kotlinx.coroutines.runBlocking
+import okhttp3.Call
+import okhttp3.Callback
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.Response
+import org.json.JSONObject
 import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.HomeActivity
 import unpsjb.ing.tnt.clientes.R
@@ -18,17 +25,19 @@ import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.databinding.FragmentFormaDePagoCheckoutBinding
 import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
 import unpsjb.ing.tnt.clientes.ui.utils.MaskWatcher
+import java.io.IOException
+import kotlin.math.min
 
 class FormaDePagoCheckoutFragment : AuthorizedFragment() {
     private lateinit var binding: FragmentFormaDePagoCheckoutBinding
     private lateinit var formaDePagoView: View
     private var pedido: Pedido = ClientesApplication.pedido!!
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
+    private var aceptaEfectivo: Boolean = false
+    private var aceptaDebito: Boolean = false
+    private var aceptaCredito: Boolean = false
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
         binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_forma_de_pago_checkout, container, false
         )
@@ -46,11 +55,52 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
 
     private fun setViewData() {
         binding.totalAPagar.text = ClientesApplication.pedido!!.total.toString()
+        aceptaDebito = requireArguments().getBoolean("aceptaDebito")
+        aceptaCredito = requireArguments().getBoolean("aceptaCredito")
+        aceptaEfectivo = requireArguments().getBoolean("aceptaEfectivo")
     }
 
     @SuppressLint("SetTextI18n")
     private fun setCheckboxes() {
+        if ((aceptaCredito || aceptaDebito) && !aceptaEfectivo) {
+            binding.checkboxEfectivo.visibility = View.GONE
+            binding.checkboxTarjeta.visibility = View.GONE
+
+            binding.efectivoLayout.visibility = View.GONE
+            binding.tarjetaLayout.visibility = View.VISIBLE
+
+            binding.checkboxEfectivo.isChecked = false
+            binding.checkboxTarjeta.isChecked = true
+            limpiarEfectivoLayout()
+            pedido.metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
+            pedido.metodoDePago.datos = hashMapOf()
+
+            binding.formaDePagoTitulo.text = "Pago con tarjeta"
+            binding.aceptar.text = "Pagar $${ClientesApplication.pedido!!.total} con tarjeta"
+        } else if (aceptaEfectivo && !aceptaCredito && !aceptaDebito) {
+            binding.checkboxEfectivo.visibility = View.GONE
+            binding.checkboxTarjeta.visibility = View.GONE
+
+            binding.efectivoLayout.visibility = View.VISIBLE
+            binding.tarjetaLayout.visibility = View.GONE
+
+            binding.checkboxTarjeta.isChecked = false
+            binding.checkboxEfectivo.isChecked = true
+            limpiarTarjetaLayout()
+            pedido.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
+            pedido.metodoDePago.datos = hashMapOf()
+
+            binding.formaDePagoTitulo.text = "Pago en efectivo"
+            binding.aceptar.text = "Pagar $${ClientesApplication.pedido!!.total} en efectivo"
+        } else {
+            setEfectivoCheckbox()
+            setTarjetaCheckbox()
+        }
+    }
+
+    private fun setEfectivoCheckbox() {
         binding.checkboxEfectivo.setOnClickListener {
+            binding.error.text = ""
             binding.checkboxTarjeta.isChecked = false
             binding.totalAPagar.text = ClientesApplication.pedido!!.total.toString()
             binding.aceptar.text = "Pagar $${ClientesApplication.pedido!!.total} en efectivo"
@@ -60,8 +110,11 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
             pedido.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
             pedido.metodoDePago.datos = hashMapOf()
         }
+    }
 
+    private fun setTarjetaCheckbox() {
         binding.checkboxTarjeta.setOnClickListener {
+            binding.error.text = ""
             binding.checkboxEfectivo.isChecked = false
             binding.aceptar.text = "Pagar $${ClientesApplication.pedido!!.total} con tarjeta"
             binding.efectivoLayout.visibility = View.GONE
@@ -109,61 +162,55 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
     private fun setTarjetaFormListeners() {
         binding.numeroTarjeta.addTextChangedListener(MaskWatcher("#### #### #### ####"))
         binding.numeroTarjeta.setOnFocusChangeListener { _, b ->
-            if (!b && binding.numeroTarjeta.text.length >= 6) {
-                MetodoDePago.checkTarjeta(
-                    binding.numeroTarjeta.text.toString().filterNot { it.isWhitespace() },
-                    callbackError = {
-                        Log.d("TARJETA", "Error")
-                        // TODO: Mostrar el error
-                        pedido.metodoDePago.datos = hashMapOf()
-                    },
-                    callbackSuccess = { tipo, red ->
-                        pedido.metodoDePago.datos = hashMapOf(
-                            "tipo" to tipo,
-                            "red" to red
-                        )
-                    }
-                )
-            }
+            pedido.metodoDePago.datos["tarjeta"] = binding.numeroTarjeta.text.filterNot { it.isWhitespace() }
+            pedido.metodoDePago.chequearBin()
         }
         binding.vencimientoTarjeta.addTextChangedListener(MaskWatcher("##/##"))
     }
 
-    private fun completarFormaDePagoData() {
-        val metodoDePago = ClientesApplication.pedido!!.metodoDePago
-
-        if (binding.checkboxTarjeta.isChecked) {
-            val partesTarjeta = binding.numeroTarjeta.text.toString().split(" ")
-
-            metodoDePago.datos["tarjeta"] =
-                partesTarjeta[0] + " " + partesTarjeta[1].substring(0, 2) + "XX XXXX " + partesTarjeta[3]
-            metodoDePago.datos["nombre"] = binding.nombreTh.text.toString()
-            metodoDePago.datos["dni"] = binding.dniTh.text.toString()
-            metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
-        } else {
-            metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
-        }
-    }
-
     private fun setBotonAceptarListener() {
         binding.aceptar.setOnClickListener {
-            completarFormaDePagoData()
+            if (binding.checkboxEfectivo.isChecked) {
+                val pagaCon = binding.montoPago.text
 
-            if (metodoDePagoValido()) {
-                (activity as HomeActivity).onBackPressed()
+                if (pagaCon.isNotEmpty()) {
+                    if (pagaCon.toString().toDouble() < pedido.total) {
+                        binding.error.text = "El monto del pago debe ser igual o superior al total"
+                    } else {
+                        binding.error.text = ""
+                        pedido.metodoDePago.datos["pagaCon"] = pagaCon.toString()
+                        pedido.metodoDePago.tipo = MetodoDePago.TIPO_EFECTIVO
+                        (activity as HomeActivity).onBackPressed()
+                    }
+                }
+            } else {
+                binding.numeroTarjeta.clearFocus()
+
+                if (formTarjetaEsValido()) {
+                    val partesTarjeta = binding.numeroTarjeta.text.toString().split(" ")
+
+                    pedido.metodoDePago.datos["tarjeta"] =
+                        partesTarjeta[0] + " " + partesTarjeta[1].substring(0, 2) + "XX XXXX " + partesTarjeta[3]
+                    pedido.metodoDePago.datos["nombre"] = binding.nombreTh.text.toString()
+                    pedido.metodoDePago.datos["dni"] = binding.dniTh.text.toString()
+                    pedido.metodoDePago.tipo = MetodoDePago.TIPO_TARJETA
+
+                    if (!pedido.metodoDePago.datos.containsKey("tipo") || !pedido.metodoDePago.datos.containsKey("red")) {
+                        binding.error.text = "La tarjeta ingresada no es valida"
+                    } else if (pedido.metodoDePago.datos["tipo"] == "debit" && !aceptaDebito) {
+                        binding.error.text = "El local no acepta debito"
+                    } else if (pedido.metodoDePago.datos["tipo"] == "credit" && !aceptaCredito) {
+                        binding.error.text = "El local no acepta credito"
+                    } else {
+                        binding.error.text = ""
+                        (activity as HomeActivity).onBackPressed()
+                    }
+                }
             }
         }
     }
 
-    private fun metodoDePagoValido(): Boolean {
-        return if (binding.checkboxTarjeta.isChecked) {
-            tarjetaValida()
-        } else {
-            efectivoValido()
-        }
-    }
-
-    private fun tarjetaValida(): Boolean {
+    fun formTarjetaEsValido(): Boolean {
         val tarjeta = binding.numeroTarjeta.text.toString().filterNot { it.isWhitespace() }
         val vencimiento = binding.vencimientoTarjeta.text.toString().filterNot { it == '/' }
         val cvv = binding.cvvTarjeta.text.toString()
@@ -193,15 +240,6 @@ class FormaDePagoCheckoutFragment : AuthorizedFragment() {
 
         if (camposConError.isNotEmpty()) {
             Toast.makeText(context, "Los siguientes campos no estan correctos: "  + camposConError.joinToString { it }, Toast.LENGTH_SHORT).show()
-            return false
-        }
-
-        return true
-    }
-
-    private fun efectivoValido(): Boolean {
-        if (binding.montoPago.text.toString().isEmpty()) {
-            Toast.makeText(context, "Tenes que aclarar con cuanto lo pagas cuando llegue", Toast.LENGTH_SHORT).show()
             return false
         }
 

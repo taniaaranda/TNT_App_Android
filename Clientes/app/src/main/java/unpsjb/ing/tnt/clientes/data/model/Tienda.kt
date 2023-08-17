@@ -31,6 +31,18 @@ class Tienda(
         return fechaHoraActual.toLocalTime() in horarioApertura..horarioCierre
     }
 
+    fun aceptaDebito(): Boolean {
+        return metodosDePago.contains("Débito")
+    }
+
+    fun aceptaCredito(): Boolean {
+        return metodosDePago.contains("Crédito")
+    }
+
+    fun aceptaEfectivo(): Boolean {
+        return metodosDePago.contains("Efectivo")
+    }
+
     companion object {
         private val RUBROS = arrayListOf(
             Rubro("Todos"),
