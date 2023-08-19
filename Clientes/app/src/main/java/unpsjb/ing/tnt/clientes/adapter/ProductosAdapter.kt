@@ -2,6 +2,7 @@ package unpsjb.ing.tnt.clientes.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -34,6 +35,7 @@ class ProductosAdapter(
         productoViewHolder = holder
 
         holder.nombreProducto.text = productos[position].nombre
+        holder.precioProducto.text = productos[position].precioForView()
 
         cargarCantidad(holder, position)
 
@@ -50,9 +52,42 @@ class ProductosAdapter(
 
         hayStock(holder, (productos[position].stock.toString().toInt() != 0))
 
+        setExcesos(holder, productos[position])
         setAgregarAlCarritoListener(holder, position)
         setQuitarDelCarritoListener(holder, position)
         cargandoStock(cargandoStock)
+    }
+
+    private fun setExcesos(holder: ProductoViewHolder, producto: Producto) {
+        holder.excesoAzucares.visibility = if (producto.excesoAzucar) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        holder.excesoSodio.visibility = if (producto.excesoSodio) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        holder.excesoCalorias.visibility = if (producto.excesoCalorias) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        holder.excesoGrasasTotales.visibility = if (producto.excesoGrasasTot) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
+
+        holder.excesoGrasasSaturadas.visibility = if (producto.excesoGrasasSat) {
+            View.VISIBLE
+        } else {
+            View.GONE
+        }
     }
 
     private fun cargarCantidad(holder: ProductoViewHolder, position: Int) {
@@ -156,10 +191,17 @@ class ProductosAdapter(
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto)
+        val precioProducto: TextView = itemView.findViewById(R.id.precio_producto_item)
         val fotoProducto: ImageView = itemView.findViewById(R.id.imagen_producto)
         val botonAgregar: TextView = itemView.findViewById(R.id.agregar_producto)
         val botonQuitar: TextView = itemView.findViewById(R.id.quitar_producto)
         val cantidadAgregada: TextView = itemView.findViewById(R.id.cuenta_productos)
+
+        val excesoAzucares: ImageView = itemView.findViewById(R.id.exceso_azucares)
+        val excesoSodio: ImageView = itemView.findViewById(R.id.exceso_sodio)
+        val excesoCalorias: ImageView = itemView.findViewById(R.id.exceso_calorias)
+        val excesoGrasasTotales: ImageView = itemView.findViewById(R.id.exceso_grasas_totales)
+        val excesoGrasasSaturadas: ImageView = itemView.findViewById(R.id.exceso_grasas_saturadas)
 
         val controlStock: View = itemView.findViewById(R.id.controles_stock)
         val cargandoStock: View = itemView.findViewById(R.id.loading_stock)

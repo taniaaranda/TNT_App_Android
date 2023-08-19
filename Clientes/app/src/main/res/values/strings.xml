@@ -118,4 +118,9 @@
     <string name="cft">(CFT:</string>
     <string name="parentesis_cerrando">)</string>
     <string name="abiertas">Abiertas</string>
+    <string name="exceso_calorias">Exceso calorias</string>
+    <string name="exceso_sodio">Exceso sodio</string>
+    <string name="exceso_grasas_saturadas">Exceso grasas saturadas</string>
+    <string name="exceso_grasas_totales">Exceso grasas totales</string>
+    <string name="exceso_azucares">Exceso azucares</string>
 </resources>
