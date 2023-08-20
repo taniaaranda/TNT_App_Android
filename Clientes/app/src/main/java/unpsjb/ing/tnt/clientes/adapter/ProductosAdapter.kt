@@ -2,12 +2,14 @@ package unpsjb.ing.tnt.clientes.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.card.MaterialCardView
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
@@ -51,6 +53,8 @@ class ProductosAdapter(
         hayStock(holder, (productos[position].stock.toString().toInt() != 0))
 
         setExcesos(holder, productos[position])
+
+        setVerProductoListener(holder, position)
         setAgregarAlCarritoListener(holder, position)
         setQuitarDelCarritoListener(holder, position)
         cargandoStock(cargandoStock)
@@ -85,6 +89,12 @@ class ProductosAdapter(
             View.VISIBLE
         } else {
             View.GONE
+        }
+    }
+
+    private fun setVerProductoListener(holder: ProductoViewHolder, position: Int) {
+        holder.productoCard.setOnClickListener {
+            Log.d("ProductosAdapter", "asdasdasd")
         }
     }
 
@@ -177,6 +187,8 @@ class ProductosAdapter(
     }
 
     class ProductoViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+        val productoCard: MaterialCardView = itemView.findViewById(R.id.producto_card)
+
         val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto)
         val precioProducto: TextView = itemView.findViewById(R.id.precio_producto_item)
         val fotoProducto: ImageView = itemView.findViewById(R.id.imagen_producto)
