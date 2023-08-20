@@ -2,7 +2,6 @@ package unpsjb.ing.tnt.clientes.adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,13 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.data.model.Producto
-import unpsjb.ing.tnt.clientes.data.model.ProductoCarrito
+import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.cargandoStock
 
 class ProductosAdapter(
     private val context: Context,
     private val productos: List<Producto>,
-    private val productosCarrito: List<ProductoCarrito>,
     private val callbackAgregar: (producto: Producto) -> Unit,
     private val callbackQuitar: (producto: Producto) -> Unit
 ): RecyclerView.Adapter<ProductosAdapter.ProductoViewHolder>() {
@@ -91,13 +89,16 @@ class ProductosAdapter(
     }
 
     private fun cargarCantidad(holder: ProductoViewHolder, position: Int) {
-        if (productosCarrito.isNotEmpty()) {
-            try {
-                val producto = productosCarrito.first { it.producto.id == productos[position].id }
+        if (!carrito!!.estaVacio()) {
+            val producto = carrito!!.buscarProducto(productos[position].id)
+
+            if (producto != null) {
                 holder.cantidadAgregada.text = producto.cantidad.toString()
-            } catch (e: NoSuchElementException) {
+            } else {
                 holder.cantidadAgregada.text = "0"
             }
+        } else {
+            holder.cantidadAgregada.text = "0"
         }
     }
 
@@ -125,7 +126,7 @@ class ProductosAdapter(
         holder.botonQuitar.setOnClickListener {
             cargandoStock = true
 
-            val productoCarrito = carritoTieneProducto(position)
+            val productoCarrito = carrito!!.buscarProducto(productos[position].id)
 
             if (productoCarrito == null || productoCarrito.cantidad <= 0) {
                 cargandoStock = false
@@ -136,26 +137,12 @@ class ProductosAdapter(
         }
     }
 
-    private fun carritoTieneProducto(position: Int): ProductoCarrito? {
-        return productosCarrito
-            .firstOrNull { it.producto.id == productos[position].id }
-    }
-
     private fun decrementarCantidad(producto: Producto) {
         producto.incrementarStock()
-
-        val cantidadActual = productoViewHolder.cantidadAgregada.text.toString().toInt()
-
-        if (cantidadActual == 0) {
-            cargandoStock = false
-            return
-        }
 
         producto.guardar()
             .addOnSuccessListener {
                 callbackQuitar(producto)
-                productoViewHolder.cantidadAgregada.text =
-                    productoViewHolder.cantidadAgregada.text.toString().toInt().dec().toString()
                 cargandoStock = false
             }
             .addOnFailureListener {

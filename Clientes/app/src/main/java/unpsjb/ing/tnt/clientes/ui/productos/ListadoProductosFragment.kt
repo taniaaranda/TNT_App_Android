@@ -89,7 +89,6 @@ class ListadoProductosFragment : AuthorizedFragment() {
         productosAdapter = ProductosAdapter(
             requireContext(),
             productos,
-            carrito!!.productos,
             callbackAgregar = { agregarAlCarrito(it) },
             callbackQuitar = {  quitarDelCarrito(it) }
         )

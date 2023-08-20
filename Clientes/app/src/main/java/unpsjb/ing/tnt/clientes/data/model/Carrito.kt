@@ -107,6 +107,14 @@ class Carrito(
         )
     }
 
+    fun buscarProducto(id: String): ProductoCarrito? {
+        return try {
+            productos.first { it.producto.id == id }
+        } catch (e: NoSuchElementException) {
+            null
+        }
+    }
+
     companion object {
         const val COLLECTION_NAME = "carritos"
 
