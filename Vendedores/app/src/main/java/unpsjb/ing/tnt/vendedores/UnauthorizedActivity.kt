@@ -1,6 +1,5 @@
 package unpsjb.ing.tnt.vendedores
 
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -11,6 +10,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import unpsjb.ing.tnt.vendedores.data.model.Tienda
 
 
 class UnauthorizedActivity : AppCompatActivity() {
@@ -36,6 +36,18 @@ class UnauthorizedActivity : AppCompatActivity() {
                         startActivity(Intent(this@UnauthorizedActivity, NuevaTiendaActivity::class.java))
                     } else {
                         Log.d("UnauthorizedActivity", "Usuario logueado y con una tienda creada, redireccionando...")
+                        val tienda = it.first()
+
+                        VendedoresApplication.tienda = Tienda(
+                            tienda.id,
+                            tienda.get("nombre").toString(),
+                            tienda.get("rubro").toString(),
+                            tienda.get("calle").toString(),
+                            tienda.get("ubicacionLatLong") as HashMap<String, Double>,
+                            tienda.get("horario_de_atencion") as HashMap<String, String>,
+                            tienda.get("metodos_de_pago") as ArrayList<String>
+                        )
+
                         finish()
                         startActivity(Intent(this@UnauthorizedActivity, HomeActivity::class.java))
                     }

@@ -22,6 +22,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import unpsjb.ing.tnt.vendedores.data.model.Tienda
 
 class NuevaTiendaActivity : AppCompatActivity() {
     private var db: FirebaseFirestore = Firebase.firestore
@@ -143,6 +144,17 @@ class NuevaTiendaActivity : AppCompatActivity() {
                     .addOnSuccessListener {
                         Log.d("NuevaTiendaActivity", "Tienda creada con éxito")
                         Toast.makeText(applicationContext, "¡La tienda se ha creado con éxito!", Toast.LENGTH_SHORT).show()
+
+                        VendedoresApplication.tienda = Tienda(
+                            it.id,
+                            payload["nombre"].toString(),
+                            payload["rubro"].toString(),
+                            payload["calle"].toString(),
+                            payload["ubicacionLatLong"] as HashMap<String, Double>,
+                            payload["horario_de_atencion"] as HashMap<String, String>,
+                            payload["metodos_de_pago"] as ArrayList<String>
+                        )
+
                         finish()
                         startActivity(Intent(this@NuevaTiendaActivity, HomeActivity::class.java))
                     }

@@ -15,6 +15,7 @@ import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
+import unpsjb.ing.tnt.vendedores.VendedoresApplication
 import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
 import unpsjb.ing.tnt.vendedores.databinding.FragmentHomeBinding
@@ -74,6 +75,7 @@ class HomeFragment : FirebaseConnectedFragment() {
         }
 
         pedidosSnapshotListener = getDbReference().collection(PEDIDOS_COLLECTION_NAME)
+            .whereEqualTo("tienda", VendedoresApplication.tienda!!.id)
             .addSnapshotListener { snapshots, e ->
                 if (e != null) {
                     Log.e("ListadoPedidos", e.message.toString())
@@ -102,12 +104,11 @@ class HomeFragment : FirebaseConnectedFragment() {
 
                 pedidos.add(
                     Pedido(
-                    document.get("id") as String,
+                    document.id,
                     document.get("productos") as ArrayList<String>,
                     Pedido.getStateByKey(document.get("estado") as String),
                     document.get("estampaDeTiempo") as Timestamp
-                )
-                )
+                ))
             }
         }
 

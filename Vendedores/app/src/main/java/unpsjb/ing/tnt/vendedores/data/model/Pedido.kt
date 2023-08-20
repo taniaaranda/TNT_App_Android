@@ -9,10 +9,10 @@ import kotlin.collections.ArrayList
 
 val STATES = mapOf(
     "todos" to "Todos",
-    "creado" to "Creado",
-    "en-curso" to "En Curso",
-    "preparado" to "Preparado",
-    "entregado" to "Entregado"
+    "PENDIENTE" to "Pendiente",
+    "EN_PREPARACION" to "En Preparación",
+    "COMPLETADO" to "Completado",
+    "CANCELADO" to "Cancelado"
 )
 
 class Pedido (val id: String, val productos: ArrayList<String>, val estado: String, val estampaDeTiempo: Timestamp) {
@@ -54,11 +54,6 @@ class Pedido (val id: String, val productos: ArrayList<String>, val estado: Stri
 
             if (document !== null) {
                 valid = true
-
-                if (!document.contains("id")) {
-                    Log.e("ValidacionPedido", "El campo 'id' no esta presente")
-                    valid = false
-                }
 
                 if (!document.contains("productos")) {
                     Log.e("ValidacionPedido", "El campo 'productos' no esta presente")
