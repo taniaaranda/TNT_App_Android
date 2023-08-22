@@ -13,9 +13,9 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import unpsjb.ing.tnt.clientes.data.model.Carrito
 import unpsjb.ing.tnt.clientes.databinding.ActivityHomeBinding
 
 class HomeActivity : AppCompatActivity() {
@@ -48,6 +48,9 @@ class HomeActivity : AppCompatActivity() {
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }
+
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         findViewById<TextView>(R.id.user_name).text = currentUser?.displayName

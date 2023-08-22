@@ -21,6 +21,10 @@
             android:icon="@drawable/list_icon_filled"
             android:title="@string/pedidos" />
         <item
+            android:id="@+id/mapasActivity"
+            android:icon="@drawable/list_icon_filled"
+            android:title="VerMapa" />
+        <item
             android:id="@+id/nav_logout"
             android:icon="@drawable/logout_icon_filled"
             android:title="@string/cerrar_sesion" />
