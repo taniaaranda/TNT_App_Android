@@ -54,13 +54,7 @@ class RegistroFragment : FirebaseConnectedFragment() {
                     .createUserWithEmailAndPassword(emailView.text.toString(), claveView.text.toString())
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
-                            FirebaseAuth.getInstance().currentUser!!
-                                .updateProfile(userProfileChangeRequest {
-                                    displayName = nombreView.text.toString()
-                                })
-                                .addOnSuccessListener {
-                                    guardarDireccion()
-                                }
+                            ejecutarAccionesPostRegistro()
                         }
                     }
                     .addOnFailureListener {
@@ -76,6 +70,16 @@ class RegistroFragment : FirebaseConnectedFragment() {
                 Toast.makeText(context, "Verifique los datos ingresados", Toast.LENGTH_SHORT).show()
             }
         }
+    }
+
+    private fun ejecutarAccionesPostRegistro() {
+        FirebaseAuth.getInstance().currentUser!!
+            .updateProfile(userProfileChangeRequest {
+                displayName = nombreView.text.toString()
+            })
+            .addOnSuccessListener {
+                guardarDireccion()
+            }
     }
 
     private fun guardarDireccion() {

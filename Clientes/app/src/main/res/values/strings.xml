@@ -123,4 +123,6 @@
     <string name="exceso_grasas_saturadas">Exceso grasas saturadas</string>
     <string name="exceso_grasas_totales">Exceso grasas totales</string>
     <string name="exceso_azucares">Exceso azucares</string>
+    <string name="channel_name">Notificaciones</string>
+    <string name="channel_description">Canal para notificaciones</string>
 </resources>
