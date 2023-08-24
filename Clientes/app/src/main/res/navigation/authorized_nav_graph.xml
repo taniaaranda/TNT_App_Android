@@ -96,4 +96,9 @@
         android:name="unpsjb.ing.tnt.clientes.ui.pedidos.PedidoFragment"
         android:label="Pedido"
         tools:layout="@layout/fragment_pedido" />
+    <activity
+        android:id="@+id/mapasActivity"
+        android:name="unpsjb.ing.tnt.clientes.MapasActivity"
+        android:label="mapas"
+        tools:layout="@layout/mapas" />
 </navigation>
