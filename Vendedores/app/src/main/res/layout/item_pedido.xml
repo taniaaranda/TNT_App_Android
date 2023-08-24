@@ -50,7 +50,16 @@
                 app:layout_constraintTop_toBottomOf="@+id/pedido_numero"
                 tools:text="Fecha: 2021-06-19 19:10" />
 
-            <TextView
+            <Spinner
+                android:id="@+id/spinner_estado"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:elevation="8dp"
+                android:padding="1dp" />
+            <!--<TextView
                 android:id="@+id/estado_pedido"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -61,10 +70,10 @@
                 android:textColor="@color/black"
                 android:textSize="12sp"
                 android:textStyle="bold"
-                android:text="@{pedido.estado}"
+                    android:text="@{pedido.estado}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="Creado" />
+                tools:text="Creado" />-->
         </androidx.constraintlayout.widget.ConstraintLayout>
     </com.google.android.material.card.MaterialCardView>
 </layout>
