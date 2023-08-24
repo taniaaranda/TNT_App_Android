@@ -10,6 +10,7 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.BaseAdapter
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
@@ -17,6 +18,7 @@ import com.google.firebase.ktx.Firebase
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
 import unpsjb.ing.tnt.vendedores.databinding.ItemPedidoBinding
+import androidx.navigation.fragment.findNavController
 
 class PedidosAdapter(private val context: Context, private val dataSource: List<Pedido>): BaseAdapter() {
     private lateinit var binding: ItemPedidoBinding
@@ -66,22 +68,25 @@ class PedidosAdapter(private val context: Context, private val dataSource: List<
 
         estadoSpinner.setSelection(estadosAdapter.getPosition(pedido.estado))
         estadoSpinner.tag = pedido.id
-        Log.i("tag",estadoSpinner.tag.toString())
         estadoSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-                // Obtiene el nuevo estado seleccionado del Spinner
                 val dbReference: FirebaseFirestore = Firebase.firestore
                 val pedidoId = parent?.tag
                 val newState = Pedido.getKeyByState(estadosAdapter.getItem(position))
                 if(pedidoId != null){
                     val pedidoRef = dbReference.collection("pedidos").document(pedidoId as String)
                     pedidoRef.update(mapOf("estado" to newState))
-                }
+                        .addOnSuccessListener {
+                            Toast.makeText(context, "¡Estado actualizado!", Toast.LENGTH_SHORT).show()
+                        }
+                        .addOnFailureListener {
+                            Toast.makeText(context, "No se pudo actualizar el estado", Toast.LENGTH_SHORT).show()
+                        }
 
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {
-                // No es necesario realizar ninguna acción en este caso.
             }
         }
 
