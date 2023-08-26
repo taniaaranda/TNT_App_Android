@@ -2,6 +2,8 @@ package unpsjb.ing.tnt.vendedores.adapter
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.graphics.BitmapFactory
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,34 +15,16 @@ import unpsjb.ing.tnt.vendedores.databinding.ItemProductoBinding
 
 class ProductoAdapter(private val context: Context, private val dataSource: List<Producto>): BaseAdapter() {
     private lateinit var binding: ItemProductoBinding
-    private val inflater: LayoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+    private val inflater: LayoutInflater =
+        context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+
 
     override fun getCount(): Int {
         return dataSource.size
     }
 
-    override fun getItem(position: Int): Any {
+    override fun getItem(position: Int): Producto {
         return dataSource[position]
-    }
-
-    private fun getCastedItem(position: Int): Producto {
-        val item = getItem(position) as Producto
-
-        return Producto(
-            item.id,
-            item.nombre,
-            item.observaciones,
-            item.precio,
-            item.stock,
-            item.foto,
-            item.categoria,
-            item.excesoDeAzucar,
-            item.excesoDeSodio,
-            item.excesoDeGrasasSaturadas,
-            item.excesoDeGrasasTotales,
-            item.excesoDeCalorias,
-            item.tienda
-        )
     }
 
     override fun getItemId(position: Int): Long {
@@ -53,11 +37,20 @@ class ProductoAdapter(private val context: Context, private val dataSource: List
             inflater, R.layout.item_producto, parent, false
         )
 
-        val producto = getCastedItem(position)
-        binding.producto = producto
-        binding.imgFoto.setImageBitmap(producto.getBitmapImage())
+        binding.producto = dataSource[position]
+        Log.i("position", position.toString())
+
+        dataSource[position].getBitmapImage().addOnSuccessListener {
+            binding.imgFoto.setImageBitmap(
+                BitmapFactory.decodeByteArray(it, 0, it.size)
+            )
+        }.addOnFailureListener {
+            val default = dataSource[position].getDefaultImage()
+            binding.imgFoto.setImageBitmap(
+                BitmapFactory.decodeByteArray(default, 0, default.size)
+            )
+        }
 
         return binding.root
     }
-
 }
