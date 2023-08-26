@@ -4,6 +4,7 @@ import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.util.Log
 import android.view.Menu
 import android.widget.TextView
@@ -18,7 +19,6 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,9 +58,6 @@ class HomeActivity : AppCompatActivity() {
         askNotificationPermission()
     }
 
-
-
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         findViewById<TextView>(R.id.user_name).text = currentUser?.displayName
         findViewById<TextView>(R.id.user_email).text = currentUser?.email
@@ -77,16 +74,24 @@ class HomeActivity : AppCompatActivity() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            FirebaseFirestore.getInstance().collection("notificaciones")
-                .add(hashMapOf(
-                    "usuario" to FirebaseAuth.getInstance().currentUser!!.uid,
-                    "token" to FirebaseMessaging.getInstance().token
-                ))
-                .addOnCompleteListener {
-                    if (!it.isSuccessful) {
-                        Toast.makeText(applicationContext, "No se pudieron configurar las notificaciones", Toast.LENGTH_SHORT).show()
+            Handler().postDelayed({
+                FirebaseFirestore.getInstance().collection("notificaciones")
+                    .add(
+                        hashMapOf(
+                            "usuario" to FirebaseAuth.getInstance().currentUser!!.uid,
+                            "token" to FirebaseMessaging.getInstance().token
+                        )
+                    )
+                    .addOnCompleteListener {
+                        if (!it.isSuccessful) {
+                            Toast.makeText(
+                                applicationContext,
+                                "No se pudieron configurar las notificaciones",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
                     }
-                }
+            }, 500)
         }
     }
 
