@@ -63,7 +63,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
                 val textView = findViewById<TextView>(R.id.textView)
                 textView.text = "Seleccione un Rubro:"
                 //nombresRubros.add("Elija un rubro")
-                val nombresRubros = arrayOf("Despensa", "Ferreteria", "Mercería","Heladería", "Rotiseria")
+                val nombresRubros = arrayOf("Despensa", "Ferretería", "Mercería","Heladería", "Rotisería")
 
                 val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
                     this,
@@ -79,7 +79,7 @@ class NuevaTiendaActivity : AppCompatActivity() {
 
         val horarios = ArrayList<String>()
         horarios.add("Elegir horario")
-        for (hora in 7..21) {
+        for (hora in 0..23) {
             for (minuto in 0..59 step 15) {
                 horarios.add(hora.toString().padStart(2, '0') + ":" + minuto.toString().padStart(2, '0'))
             }
