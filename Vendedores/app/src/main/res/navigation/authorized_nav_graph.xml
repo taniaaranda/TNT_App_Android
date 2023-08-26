@@ -9,7 +9,11 @@
         android:id="@+id/nav_orders"
         android:name="unpsjb.ing.tnt.vendedores.ui.home.HomeFragment"
         android:label="@string/menu_orders"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_nav_orders_to_nav_order"
+            app:destination="@id/nav_order" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_products"
@@ -35,4 +39,9 @@
         android:name="unpsjb.ing.tnt.vendedores.ui.tienda.TiendaFragment"
         android:label="@string/label_tienda"
         tools:layout="@layout/fragment_tienda" />
+    <fragment
+        android:id="@+id/nav_order"
+        android:name="unpsjb.ing.tnt.vendedores.ui.pedidos.PedidoFragment"
+        android:label="Pedido"
+        tools:layout="@layout/fragment_pedido" />
 </navigation>

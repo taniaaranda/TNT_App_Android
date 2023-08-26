@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.Timestamp
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
 import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
@@ -24,18 +23,17 @@ import java.util.ArrayList
 private const val PEDIDOS_COLLECTION_NAME = "pedidos"
 
 class HomeFragment : FirebaseConnectedFragment() {
-    private var _binding: FragmentHomeBinding? = null
+    private lateinit var binding: FragmentHomeBinding
     private lateinit var listView: View
     private lateinit var fragmentContext: Context
     private var pedidosSnapshotListener: ListenerRegistration? = null
-    private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = DataBindingUtil.inflate(
+        binding = DataBindingUtil.inflate(
             inflater, R.layout.fragment_home, container, false
         )
 
@@ -82,7 +80,7 @@ class HomeFragment : FirebaseConnectedFragment() {
                     return@addSnapshotListener
                 }
 
-                val adapter = PedidosAdapter(this.requireContext(), parsePedidos(snapshots, selectedFilter as String))
+                val adapter = PedidosAdapter(requireContext(), parsePedidos(snapshots, selectedFilter as String))
                 binding.listadoPedidos.adapter = adapter
             }
     }
@@ -102,21 +100,10 @@ class HomeFragment : FirebaseConnectedFragment() {
                     continue
                 }
 
-                pedidos.add(
-                    Pedido(
-                    document.id,
-                    document.get("productos") as ArrayList<String>,
-                    Pedido.getStateByKey(document.get("estado") as String),
-                    document.get("estampaDeTiempo") as Timestamp
-                ))
+                pedidos.add(Pedido.hidratar(document))
             }
         }
 
         return pedidos.sortedWith(compareBy { it.id })
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 }

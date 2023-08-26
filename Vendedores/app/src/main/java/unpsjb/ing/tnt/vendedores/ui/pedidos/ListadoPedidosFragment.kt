@@ -10,7 +10,6 @@ import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
-import com.google.firebase.Timestamp
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.ListenerRegistration
@@ -21,7 +20,6 @@ import unpsjb.ing.tnt.vendedores.adapter.PedidosAdapter
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
 import unpsjb.ing.tnt.vendedores.databinding.FragmentListadoPedidosBinding
 import java.util.*
-
 
 private const val PEDIDOS_COLLECTION_NAME = "pedidos"
 
@@ -111,12 +109,7 @@ class ListadoPedidosFragment : FirebaseConnectedFragment() {
                     continue
                 }
 
-                pedidos.add(Pedido(
-                        document.get("id") as String,
-                        document.get("productos") as ArrayList<String>,
-                        Pedido.getStateByKey(document.get("estado") as String),
-                        document.get("estampaDeTiempo") as Timestamp
-                ))
+                pedidos.add(Pedido.hidratar(document))
             }
         }
 

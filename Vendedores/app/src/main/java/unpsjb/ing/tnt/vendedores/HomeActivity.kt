@@ -1,9 +1,12 @@
 package unpsjb.ing.tnt.vendedores
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.AttributeSet
 import android.util.Log
 import android.view.Menu
+import android.view.View
 import android.widget.TextView
 import com.google.android.material.navigation.NavigationView
 import androidx.navigation.findNavController
@@ -33,7 +36,6 @@ class HomeActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         checkLogIn()
-        loadTienda()
 
         binding = ActivityHomeBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -52,6 +54,8 @@ class HomeActivity : AppCompatActivity() {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        loadTienda()
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -87,8 +91,8 @@ class HomeActivity : AppCompatActivity() {
                 tienda?.set("id", it.documents.first().id)
 
                 if (!tienda.isNullOrEmpty()) {
-                    findViewById<TextView>(R.id.store_id).text = tienda!!.get("id").toString()
-                    findViewById<TextView>(R.id.store_email).text = tienda!!.get("nombre").toString()
+                    findViewById<TextView>(R.id.store_id).text = tienda!!["id"].toString()
+                    findViewById<TextView>(R.id.store_email).text = tienda!!["nombre"].toString()
                 } else {
                     Log.d("HomeActivity", "No se cargó la información de la tienda")
                 }

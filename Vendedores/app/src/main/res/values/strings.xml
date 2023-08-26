@@ -213,4 +213,26 @@
     <string name="label_imagen_producto">Imagen Producto</string>
     <string name="label_crear_producto">Crear Producto</string>
     <string name="icono_direccion_description">Direccion</string>
+    <string name="productos">Productos</string>
+    <string name="metodo_de_pago">Metodo De Pago</string>
+    <string name="pagas_en_efectivo_con">Pagas en efectivo con: $</string>
+    <string name="pago_con_tarjeta">Pago con Tarjeta</string>
+    <string name="parentesis_abriendo">(</string>
+    <string name="espacio" />
+    <string name="parentesis_cerrando">)</string>
+    <string name="pagaste_en">Pagaste en</string>
+    <string name="parentesis_dni_dos_puntos_espacio">(DNI:</string>
+    <string name="detalles">Detalles</string>
+    <string name="total_de_productos_dos_puntos_espacio_pesos">Total de productos: $</string>
+    <string name="envio_dos_puntos_espacio_pesos">Envío: $</string>
+    <string name="propina_dos_puntos_espacio_pesos">Propina: $</string>
+    <string name="comision_dos_puntos_espacio_pesos">Comisión: $</string>
+    <string name="total_final_dos_puntos_espacio_pesos">Total Final: $</string>
+    <string name="tu_pedido">Tu Pedido</string>
+    <string name="ultima_actualizacion_dos_puntos_espacio">(Ultima actualización:</string>
+    <string name="pedido_el">Pedido el:</string>
+    <string name="pedido">Pedido</string>
+    <string name="acciones">Acciones</string>
+    <string name="estado">Estado</string>
+    <string name="cancelar_pedido">Cancelar Pedido</string>
 </resources>
