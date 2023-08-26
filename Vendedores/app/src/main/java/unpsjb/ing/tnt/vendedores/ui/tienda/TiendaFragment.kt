@@ -62,7 +62,7 @@ class TiendaFragment : FirebaseConnectedFragment() {
         efectivoView = listView.findViewById(R.id.efectivo);
         debitoView = listView.findViewById(R.id.debito);
         creditoView = listView.findViewById(R.id.credito);
-        editarButton = listView.findViewById(R.id.editar);
+        //editarButton = listView.findViewById(R.id.editar);
     }
 
     private fun getTienda() {

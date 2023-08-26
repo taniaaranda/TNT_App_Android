@@ -1,6 +1,9 @@
 package unpsjb.ing.tnt.vendedores.ui.productos
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
@@ -10,10 +13,15 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
+import com.google.firebase.storage.FirebaseStorage
 import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.databinding.FragmentNuevoProductoBinding
+private var selectedImageUri: Uri? = null
+private val file = 1
+private var URLimage: String? = null
 
+@Suppress("DEPRECATION")
 class NuevoProductoFragment : FirebaseConnectedFragment() {
     private lateinit var binding: FragmentNuevoProductoBinding
     private lateinit var altaProductosView: View
@@ -54,6 +62,17 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
 
         return altaProductosView
     }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == file && resultCode == Activity.RESULT_OK && data != null) {
+            val imageUri: Uri? = data.data
+            if (imageUri != null) {
+                selectedImageUri = imageUri
+            } else {
+                Toast.makeText(context, "Error al obtener la imagen", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
     private fun setViews() {
         nombreView = altaProductosView.findViewById(R.id.nombre_producto)
@@ -66,7 +85,6 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
         excesoGrasasSatView = altaProductosView.findViewById(R.id.check_box_exceso_grasas_saturadas)
         excesiGrasasTotView = altaProductosView.findViewById(R.id.check_box_exceso_grasas_totales)
         excesoCaloriasView = altaProductosView.findViewById(R.id.check_box_exceso_calorias)
-        botonSacarFoto = altaProductosView.findViewById(R.id.btn_sacar_foto)
         botonSubirFoto = altaProductosView.findViewById(R.id.btn_subir_foto)
         botonCrear = altaProductosView.findViewById(R.id.btn_crear)
     }
@@ -80,17 +98,12 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     }
 
     private fun setHandlers() {
-        botonSacarFoto.setOnClickListener {
-            Toast.makeText(context, "Sacar foto", Toast.LENGTH_SHORT).show()
-            /*val fototomada = Intent(Intent(MediaStore.ACTION_IMAGE_CAPTURE))
-            startActivity(fototomada)*/
-            }
-
         botonSubirFoto.setOnClickListener {
-            val gallery = Intent(Intent.ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI)
-            startActivity(gallery)
-            // Toast.makeText(context, "Subir foto", Toast.LENGTH_SHORT).show()
-            }
+            val intent = Intent(Intent.ACTION_GET_CONTENT)
+            intent.type = "*/*"
+            //intent.type = "image/*" // Filtrar solo imágenes
+            startActivityForResult(intent, file) // Llamada a startActivityForResult
+        }
 
 
         botonCrear.setOnClickListener {
@@ -140,12 +153,13 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     }
 
     private fun getProductoPayload(): HashMap<String, Any> {
+        URLimage = uploadImageAndSaveToFirestore()
         return  hashMapOf(
             "nombre" to nombreView.text.toString(),
             "observaciones" to descripcionView.text.toString(),
             "precio" to precioView.text.toString().toLong(),
             "stock" to stockView.text.toString().toInt(),
-            "foto" to "",
+            "foto" to URLimage.toString(),
             "categoria" to categoriaView.selectedItem.toString(),
             "exceso_azucar" to excesoAzucaresView.isChecked,
             "exceso_sodio" to excesoSodioView.isChecked,
@@ -155,4 +169,49 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
             "tienda" to arguments?.getString("tienda").toString()
         )
     }
+
+    private fun uploadImageAndSaveToFirestore(): String {
+        var URLimage = ""
+        if (selectedImageUri != null) {
+            val storageRef = FirebaseStorage.getInstance().reference
+            //val imageRef = storageRef.child("images/${selectedImageUri?.lastPathSegment}")
+            //val imageRef = storageRef.child("${selectedImageUri?.lastPathSegment}")
+            //val imageName = "img.jpg" // Cambia el nombre y la extensión según tus necesidades
+            val imageName = "img${currentNumber()}.jpg"
+            val imageRef = storageRef.child(imageName)
+            val uploadTask = imageRef.putFile(selectedImageUri!!)
+            if (imageRef.toString() != "") {
+                uploadTask.addOnSuccessListener {
+                    imageRef.downloadUrl.addOnSuccessListener { uri ->
+                        val imageURL = uri.toString()
+                        URLimage = imageURL
+                    }.addOnFailureListener {
+                        Toast.makeText(
+                            context,
+                            "Error al obtener la URL de la imagen",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }.addOnFailureListener {
+                    Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
+                }
+            }
+            URLimage = imageRef.toString()
+            return URLimage
+        }
+        return URLimage
+    }
+
+    private fun currentNumber(): Int? {
+        val sharedPreferences = context?.getSharedPreferences("image_prefs", Context.MODE_PRIVATE)
+        val currentNumber = sharedPreferences?.getInt("image_number", 1)
+        // Incrementar el número y guardar en SharedPreferences
+        val newNumber = currentNumber?.plus(1)
+        if (newNumber != null) {
+            sharedPreferences?.edit()?.putInt("image_number", newNumber)?.apply()
+        }
+
+        return currentNumber
+    }
+
 }

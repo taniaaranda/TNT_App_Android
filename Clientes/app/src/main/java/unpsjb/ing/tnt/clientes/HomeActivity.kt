@@ -18,6 +18,7 @@ import androidx.drawerlayout.widget.DrawerLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
@@ -56,6 +57,9 @@ class HomeActivity : AppCompatActivity() {
 
         askNotificationPermission()
     }
+
+
+
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         findViewById<TextView>(R.id.user_name).text = currentUser?.displayName

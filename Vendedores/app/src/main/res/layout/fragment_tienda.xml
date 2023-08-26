@@ -312,7 +312,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/direccion" />
 
-        <Button
+       <!-- <Button
             android:id="@+id/editar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -324,7 +324,7 @@
             android:text="Editar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/credito" />
+            app:layout_constraintTop_toBottomOf="@+id/credito" />-->
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
