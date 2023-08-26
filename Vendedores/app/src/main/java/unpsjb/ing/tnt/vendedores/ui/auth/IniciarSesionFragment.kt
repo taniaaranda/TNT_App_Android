@@ -45,7 +45,7 @@ class IniciarSesionFragment : Fragment() {
         }
 
         binding.registro.setOnClickListener {
-            findNavController().navigate(R.id.registroVendedorFragment)
+            findNavController().navigate(R.id.nav_register)
         }
     }
 }

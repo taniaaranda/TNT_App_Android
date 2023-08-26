@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data />
@@ -8,21 +9,15 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <TextView
-            android:id="@+id/label_tu_tienda"
+        <ImageView
+            android:id="@+id/header_image"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:text="Tu Tienda"
-            android:textSize="30sp"
-            android:textStyle="bold"
+            android:layout_height="80dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/covi_pedidos_logo_pequenio"
+            android:contentDescription="@string/covi_pedidos" />
 
         <View
             android:id="@+id/separator_1"
@@ -30,302 +25,251 @@
             android:layout_height="1dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
             android:layout_marginRight="16dp"
             android:background="@android:color/darker_gray"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_tu_tienda" />
+            app:layout_constraintTop_toBottomOf="@+id/header_image" />
 
         <TextView
-            android:id="@+id/label_informacion_general"
-            android:layout_width="0dp"
+            android:id="@+id/informacion_basica_label"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Información General"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginTop="16dp"
+            android:text="@string/informacion_basica_label"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/separator_1" />
 
+        <RelativeLayout
+            android:id="@+id/nombre_layout"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/informacion_basica_label">
+
+            <TextView
+                android:id="@+id/nombre_label"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="17dp"
+                android:gravity="center_vertical"
+                android:text="Nombre:" />
+
+            <EditText
+                android:id="@+id/nombre_tienda"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/nombre_label"
+                android:autofillHints="nombre del producto"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:inputType="text"
+                android:maxLines="1"
+                android:paddingStart="17dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="12sp"
+                tools:ignore="LabelFor,RtlSymmetry" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rubro_layout"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/nombre_layout">
+
+            <TextView
+                android:id="@+id/rubro_label"
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="17dp"
+                android:gravity="center_vertical"
+                android:text="Rubro:" />
+
+            <Spinner
+                android:id="@+id/rubro"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@id/rubro_label"
+                android:padding="16dp" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/direccion_layout"
+            android:layout_width="0dp"
+            android:layout_height="109dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="16dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rubro_layout">
+
+            <TextView
+                android:id="@+id/direccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_toEndOf="@+id/icon1"
+                android:background="@android:color/transparent"
+                android:fontFamily="@font/poppins_regular"
+                android:maxLength="10"
+                android:maxLines="1"
+                android:paddingStart="17dp"
+                android:paddingTop="15dp"
+                android:paddingBottom="15dp"
+                android:text="@string/direccion_label"
+                android:textCursorDrawable="@drawable/cursor_color"
+                android:textSize="12sp"
+                app:errorEnabled="true"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageView
+                android:id="@+id/icon1"
+                android:layout_width="25.7dp"
+                android:layout_height="20.3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_marginStart="17dp"
+                android:layout_marginBottom="74dp"
+                android:contentDescription="@string/icono_direccion_description"
+                android:src="@drawable/dir" />
+
+            <androidx.fragment.app.FragmentContainerView
+                android:id="@+id/ubicacion"
+                android:name="com.google.android.libraries.places.widget.AutocompleteSupportFragment"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                android:layout_below="@+id/direccion"
+                android:layout_alignParentBottom="true"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="11dp" />
+        </RelativeLayout>
+
         <TextView
-            android:id="@+id/label_nombre_tienda"
+            android:id="@+id/horarios_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text="Nombre:"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:text="@string/horarios_label"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_informacion_general" />
+            app:layout_constraintTop_toBottomOf="@+id/direccion_layout" />
 
-        <TextView
-            android:id="@+id/nombre_tienda"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="TextView"
-            android:textSize="16sp"
+        <LinearLayout
+            android:id="@+id/horarios_apertura_layout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:orientation="horizontal"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/horarios_label">
+
+            <Spinner
+                android:id="@+id/horarios_apertura_list"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="16dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/horarios_cierre_layout"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="32dp"
+            android:background="@drawable/blue_border_rounded_cornwe"
+            android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/label_nombre_tienda"
-            app:layout_constraintTop_toBottomOf="@+id/label_informacion_general" />
+            app:layout_constraintTop_toBottomOf="@+id/horarios_label">
+
+            <Spinner
+                android:id="@+id/horarios_cierre_list"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:padding="16dp" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/label_rubro"
+            android:id="@+id/metodos_de_pago_label"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Rubro:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_nombre_tienda" />
-
-        <TextView
-            android:id="@+id/rubro"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/label_rubro"
-            app:layout_constraintTop_toBottomOf="@+id/nombre_tienda" />
-
-        <TextView
-            android:id="@+id/label_direccion"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Dirección:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_rubro" />
-
-        <TextView
-            android:id="@+id/direccion"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/label_direccion"
-            app:layout_constraintTop_toBottomOf="@+id/rubro" />
-
-        <View
-            android:id="@+id/separator_2"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="1.0"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/mapa" />
-
-        <TextView
-            android:id="@+id/label_informacion_horarios"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Horarios"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separator_2" />
-
-        <TextView
-            android:id="@+id/label_horario_apertura"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
             android:layout_marginTop="16dp"
-            android:text="Tu comercio abre a las:"
-            android:textSize="16sp"
-            android:textStyle="bold"
+            android:text="@string/label_metodos_de_pago"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_informacion_horarios" />
-
-        <TextView
-            android:id="@+id/horario_apertura"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/label_horario_apertura"
-            app:layout_constraintTop_toBottomOf="@+id/label_informacion_horarios" />
-
-        <TextView
-            android:id="@+id/label_horario_cierre"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:text="Y cierra a las:"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_horario_apertura" />
-
-        <TextView
-            android:id="@+id/horario_cierre"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="TextView"
-            android:textSize="16sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/label_horario_cierre"
-            app:layout_constraintTop_toBottomOf="@+id/horario_apertura" />
-
-        <View
-            android:id="@+id/separator_3"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:background="@android:color/darker_gray"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_horario_cierre" />
-
-        <TextView
-            android:id="@+id/label_metodos_de_pago"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Métodos de Pago"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/separator_3" />
+            app:layout_constraintTop_toBottomOf="@+id/horarios_apertura_layout" />
 
         <CheckBox
-            android:id="@+id/efectivo"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:text="Efectivo"
-            app:layout_constraintEnd_toEndOf="parent"
+            android:id="@+id/check_box_efectivo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="8dp"
+            android:text="@string/label_efectivo"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/label_metodos_de_pago" />
+            app:layout_constraintTop_toBottomOf="@+id/metodos_de_pago_label" />
 
         <CheckBox
-            android:id="@+id/debito"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:id="@+id/check_box_debito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:text="Debito"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/efectivo" />
+            android:text="@string/label_debito"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toStartOf="@+id/check_box_credito"
+            app:layout_constraintStart_toEndOf="@+id/check_box_efectivo"
+            app:layout_constraintTop_toBottomOf="@+id/metodos_de_pago_label" />
 
         <CheckBox
-            android:id="@+id/credito"
-            android:layout_width="0dp"
-            android:layout_height="32dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
+            android:id="@+id/check_box_credito"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:clickable="false"
-            android:focusable="false"
-            android:text="Credito"
+            android:layout_marginEnd="32dp"
+            android:text="@string/label_credito"
+            android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/debito" />
+            app:layout_constraintTop_toBottomOf="@+id/metodos_de_pago_label" />
 
-        <com.google.android.gms.maps.MapView
-            android:id="@+id/mapa"
-            android:layout_width="0dp"
-            android:layout_height="150dp"
-            android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/direccion" />
-
-       <!-- <Button
-            android:id="@+id/editar"
+        <Button
+            android:id="@+id/guardar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginTop="8dp"
             android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
-            android:text="Editar"
+            android:layout_marginBottom="16dp"
+            android:text="@string/label_guardar"
+            android:textColor="#FFFFFF"
+            android:textColorHint="#FFFFFF"
+            app:backgroundTint="@color/quantum_googred700"
+            app:iconTint="#FFFFFF"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/credito" />-->
-
+            app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </layout>

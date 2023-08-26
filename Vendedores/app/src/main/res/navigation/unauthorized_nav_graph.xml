@@ -3,21 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/unauthorized_nav_graph"
-    app:startDestination="@id/loginVendedorFragment">
+    app:startDestination="@id/nav_login">
 
     <fragment
-        android:id="@+id/loginVendedorFragment"
+        android:id="@+id/nav_login"
         android:name="unpsjb.ing.tnt.vendedores.ui.auth.IniciarSesionFragment"
-        android:label="fragment_loginvendedor"
-        tools:layout="@layout/fragment_login" >
+        android:label="Iniciar Sesión"
+        tools:layout="@layout/fragment_login">
         <action
             android:id="@+id/action_loginvendedorFragment_to_registrovendedorFragment"
-            app:destination="@id/registroVendedorFragment" />
+            app:destination="@id/nav_register" />
     </fragment>
 
     <fragment
-        android:id="@+id/registroVendedorFragment"
+        android:id="@+id/nav_register"
         android:name="unpsjb.ing.tnt.vendedores.ui.auth.RegistroFragment"
-        android:label="fragment_registrovendedor"
+        android:label="Registro"
         tools:layout="@layout/fragment_registro" />
 </navigation>

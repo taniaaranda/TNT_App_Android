@@ -1,5 +1,7 @@
 package unpsjb.ing.tnt.vendedores.data.model
 
+import java.io.Serializable
+
 class Tienda(
     val id: String,
     val nombre: String,

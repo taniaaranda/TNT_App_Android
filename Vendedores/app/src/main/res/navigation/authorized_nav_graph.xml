@@ -29,7 +29,7 @@
     <fragment
         android:id="@+id/product_new"
         android:name="unpsjb.ing.tnt.vendedores.ui.productos.NuevoProductoFragment"
-        android:label="AltaProductosFragment" />
+        android:label="Nuevo Producto" />
     <fragment
         android:id="@+id/nav_store"
         android:name="unpsjb.ing.tnt.vendedores.ui.tienda.TiendaFragment"

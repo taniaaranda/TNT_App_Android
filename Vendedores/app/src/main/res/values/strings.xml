@@ -24,7 +24,7 @@
         <item>Verdulería</item>
         <item>Rotisería</item>
     </string-array>
-    <string name="direccion_label">Dirección</string>
+    <string name="direccion_label">Dirección:</string>
     <string-array name="categorias">
         <item>Morfi</item>
         <item>Herramientas</item>
@@ -205,4 +205,12 @@
     <string name="label_nueva_tienda">Nueva Tienda</string>
     <string name="horarios_label">Horarios</string>
     <string name="informacion_basica_label">Información Básica</string>
+    <string name="buscar_pedido">Búsqueda:</string>
+    <string name="busqueda">Busqueda</string>
+    <string name="buscar_un_producto">Nombre:</string>
+    <string name="label_guardar">Guardar</string>
+    <string name="label_informaci_n_nutricional">Información Nutricional</string>
+    <string name="label_imagen_producto">Imagen Producto</string>
+    <string name="label_crear_producto">Crear Producto</string>
+    <string name="icono_direccion_description">Direccion</string>
 </resources>

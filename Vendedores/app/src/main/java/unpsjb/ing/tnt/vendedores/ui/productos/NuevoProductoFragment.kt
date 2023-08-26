@@ -77,9 +77,9 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     private fun setViews() {
         nombreView = altaProductosView.findViewById(R.id.nombre_producto)
         descripcionView = altaProductosView.findViewById(R.id.descripcion_producto)
-        precioView = altaProductosView.findViewById(R.id.producto_precio)
+        precioView = altaProductosView.findViewById(R.id.precio)
         stockView = altaProductosView.findViewById(R.id.stock)
-        categoriaView = altaProductosView.findViewById(R.id.categoria_list)
+        categoriaView = altaProductosView.findViewById(R.id.categorias_list)
         excesoAzucaresView = altaProductosView.findViewById(R.id.check_box_exceso_azucares)
         excesoSodioView = altaProductosView.findViewById(R.id.check_box_exceso_sodio)
         excesoGrasasSatView = altaProductosView.findViewById(R.id.check_box_exceso_grasas_saturadas)
@@ -94,7 +94,7 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
             this.requireContext(),
             android.R.layout.simple_spinner_item, categorias
         )
-        binding.categoriaList.adapter = categoriasAdapter
+        binding.categoriasList.adapter = categoriasAdapter
     }
 
     private fun setHandlers() {

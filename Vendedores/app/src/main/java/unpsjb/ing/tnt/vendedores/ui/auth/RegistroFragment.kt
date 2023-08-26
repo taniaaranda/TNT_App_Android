@@ -58,7 +58,7 @@ class RegistroFragment : Fragment() {
         }
 
         binding.volver.setOnClickListener {
-            findNavController().navigate(R.id.loginVendedorFragment)
+            findNavController().navigate(R.id.nav_login)
         }
     }
 }
