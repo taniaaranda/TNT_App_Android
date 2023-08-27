@@ -13,7 +13,10 @@ import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.data.model.Producto
 import unpsjb.ing.tnt.vendedores.databinding.ItemProductoBinding
 
-class ProductoAdapter(private val context: Context, private val dataSource: List<Producto>): BaseAdapter() {
+class ProductoAdapter(
+    private val context: Context,
+    private val dataSource: List<Producto>
+): BaseAdapter() {
     private lateinit var binding: ItemProductoBinding
     private val inflater: LayoutInflater =
         context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater

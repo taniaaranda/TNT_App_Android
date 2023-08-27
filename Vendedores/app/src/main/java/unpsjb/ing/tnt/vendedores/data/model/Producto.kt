@@ -1,7 +1,5 @@
 package unpsjb.ing.tnt.vendedores.data.model
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
 import android.util.Base64
 import android.util.Log
 import com.google.android.gms.tasks.Task

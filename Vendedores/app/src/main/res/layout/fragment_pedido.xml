@@ -69,12 +69,12 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
-                        app:drawableLeftCompat="@drawable/store_icon_filled"
+                        app:drawableLeftCompat="@drawable/location_icon_filled"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
                     <TextView
-                        android:id="@+id/nombre_tienda"
+                        android:id="@+id/direccion_envio"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="8dp"
@@ -85,7 +85,7 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/tienda_icon"
                         app:layout_constraintTop_toTopOf="parent"
-                        tools:text="El nombre de una tienda muy largo" />
+                        tools:text="25 de Mayo 1234" />
 
                     <TextView
                         android:id="@+id/status_icon"
@@ -106,39 +106,8 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         app:layout_constraintStart_toEndOf="@+id/status_icon"
-                        app:layout_constraintTop_toBottomOf="@+id/nombre_tienda"
+                        app:layout_constraintTop_toBottomOf="@+id/direccion_envio"
                         tools:text="Pendiente" />
-
-                    <TextView
-                        android:id="@+id/ultima_actualización_label_1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="8dp"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/ultima_actualizacion_dos_puntos_espacio"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/estado"
-                        app:layout_constraintTop_toBottomOf="@+id/nombre_tienda" />
-
-                    <TextView
-                        android:id="@+id/ultima_actualizacion"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/ultima_actualización_label_1"
-                        app:layout_constraintTop_toBottomOf="@+id/nombre_tienda"
-                        tools:text="XX/XX/XXXX XX:XX:XX" />
-
-                    <TextView
-                        android:id="@+id/ultima_actualización_label_2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="12dp"
-                        android:text="@string/parentesis_cerrando"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/ultima_actualizacion"
-                        app:layout_constraintTop_toBottomOf="@+id/nombre_tienda" />
 
                     <TextView
                         android:id="@+id/fecha_pedido_icon"
@@ -212,8 +181,8 @@
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent" />
 
-                    <ListView
-                        android:id="@+id/productos"
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/listado_productos"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="24dp"
@@ -221,12 +190,12 @@
                         android:layout_marginTop="8dp"
                         android:layout_marginEnd="24dp"
                         android:layout_marginRight="24dp"
+                        android:scrollbars="vertical"
                         android:visibility="gone"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/productos_titulo"
-                        tools:ignore="NestedScrolling" />
+                        app:layout_constraintTop_toBottomOf="@+id/productos_titulo" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -706,7 +675,7 @@
                         android:textSize="12sp"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@+id/estado_titulo"
-                        tools:text="En Preparación" />
+                        tools:text="En Curso" />
 
                     <Button
                         android:id="@+id/cancelar"

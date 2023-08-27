@@ -1,5 +1,6 @@
 package unpsjb.ing.tnt.vendedores.data.model
 
+import com.google.firebase.firestore.DocumentSnapshot
 import java.io.Serializable
 
 class Tienda(
@@ -23,6 +24,18 @@ class Tienda(
 
         fun getRubrosValues(): ArrayList<Rubro> {
             return RUBROS
+        }
+
+        fun hidratar(documentSnapshot: DocumentSnapshot): Tienda {
+            return Tienda(
+                documentSnapshot.id,
+                documentSnapshot.get("nombre").toString(),
+                documentSnapshot.get("rubro").toString(),
+                documentSnapshot.get("calle").toString(),
+                documentSnapshot.get("ubicacion") as HashMap<String, Double>,
+                documentSnapshot.get("horario_de_atencion") as HashMap<String, String>,
+                documentSnapshot.get("metodos_de_pago") as ArrayList<String>,
+            )
         }
     }
 }

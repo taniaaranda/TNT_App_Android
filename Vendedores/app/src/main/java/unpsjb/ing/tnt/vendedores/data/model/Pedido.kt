@@ -41,6 +41,10 @@ class Pedido (
         return "$$total"
     }
 
+    fun totalProductos(): Double {
+        return productos.sumOf { it.producto.precio * it.cantidad }.toDouble()
+    }
+
     fun getFormattedTimestamp(): String {
         val milliseconds = estampaDeTiempo.seconds * 1000 + estampaDeTiempo.nanoseconds / 1000000
         val sdf = SimpleDateFormat("dd/MM/yyyy hh:mm:ss")

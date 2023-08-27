@@ -8,13 +8,19 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.Recycler
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import unpsjb.ing.tnt.vendedores.HomeActivity
 import unpsjb.ing.tnt.vendedores.R
+import unpsjb.ing.tnt.vendedores.adapter.ProductosPedidoAdapter
 import unpsjb.ing.tnt.vendedores.data.model.MetodoDePago
 import unpsjb.ing.tnt.vendedores.data.model.Pedido
+import unpsjb.ing.tnt.vendedores.data.model.ProductoCarrito
+import unpsjb.ing.tnt.vendedores.data.model.Tienda
 import unpsjb.ing.tnt.vendedores.databinding.FragmentPedidoBinding
 import unpsjb.ing.tnt.vendedores.excepciones.TransicionPedidoInvalidException
 
@@ -22,7 +28,12 @@ class PedidoFragment : Fragment() {
     private lateinit var binding: FragmentPedidoBinding
     private lateinit var pedidoView: View
 
+    private lateinit var productos: ArrayList<ProductoCarrito>
+    private lateinit var productosPedidoAdapter: ProductosPedidoAdapter
+    private lateinit var recyclerView: RecyclerView
+
     private lateinit var pedido: Pedido
+    private lateinit var tienda: Tienda
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -35,6 +46,11 @@ class PedidoFragment : Fragment() {
 
         pedidoView = binding.root
 
+        recyclerView = pedidoView.findViewById(R.id.listado_productos)
+        recyclerView.layoutManager = LinearLayoutManager(
+            requireContext()
+        )
+
         getPedidoAndSetData()
 
         return pedidoView
@@ -42,12 +58,12 @@ class PedidoFragment : Fragment() {
 
     private fun setColapsos() {
         binding.colapsarProductos.setOnClickListener {
-            if (binding.productos.visibility == View.GONE) {
-                binding.productos.visibility = View.VISIBLE
+            if (binding.listadoProductos.visibility == View.GONE) {
+                binding.listadoProductos.visibility = View.VISIBLE
                 binding.colapsarProductos.background =
                     requireContext().getDrawable(R.drawable.arrow_up_filled)
             } else {
-                binding.productos.visibility = View.GONE
+                binding.listadoProductos.visibility = View.GONE
                 binding.colapsarProductos.background =
                     requireContext().getDrawable(R.drawable.arrow_down_filled)
             }
@@ -109,7 +125,7 @@ class PedidoFragment : Fragment() {
                     pedido = Pedido.hidratar(value)
                     setColapsos()
                     setBotones()
-                    setViewData(value)
+                    setViewData()
                     setBotonesListeners()
                 } else {
                     Toast.makeText(context, "Ocurrió un error obteniendo el pedido", Toast.LENGTH_SHORT).show()
@@ -118,45 +134,35 @@ class PedidoFragment : Fragment() {
             }
     }
 
-    private fun setViewData(pedidoDocument: DocumentSnapshot) {
-        FirebaseFirestore.getInstance().collection("tiendas")
-            .document(pedidoDocument.get("tienda").toString())
-            .get()
-            .addOnSuccessListener { tiendaDocument ->
-                binding.nombreTienda.text = tiendaDocument.get("nombre").toString()
-                binding.estado.text = pedidoDocument.get("estado").toString()
-                binding.fechaPedido.text = DateFormat.format("dd/MM/yyyy hh:mm:ss", (pedidoDocument.get("estampaDeTiempo") as Timestamp).toDate())
-                // TODO: Set de productos en el list con su adapter y blablabla
+    private fun setViewData() {
+        binding.direccionEnvio.text = pedido.direccion
+        binding.estado.text = pedido.estado
+        binding.fechaPedido.text =
+            DateFormat.format("dd/MM/yyyy hh:mm:ss", (pedido.estampaDeTiempo).toDate())
 
-                val metodoDePago = pedidoDocument.get("metodoDePago") as HashMap<String, Any>
-                if (metodoDePago["tipo"] == MetodoDePago.TIPO_TARJETA) {
-                    val metodoDePagoData = metodoDePago["datos"] as HashMap<String, String>
+        recyclerView.adapter = ProductosPedidoAdapter(requireContext(), pedido.productos)
 
-                    binding.tarjeta.text = metodoDePagoData["tarjeta"]
-                    binding.tipoPagoTarjeta.text =
-                        if (metodoDePagoData["tipo"] == "debit") {
-                            "Debito"
-                        } else {
-                            "Credito"
-                        }
-                    binding.redTarjeta.text = metodoDePagoData["red"]
-                    binding.cuotasTarjeta.text = metodoDePagoData["cuotas"]
-                    binding.thNombre.text = metodoDePagoData["nombre"]
-                    binding.thDni.text = metodoDePagoData["dni"]
+        if (pedido.metodoDePago.tipo == MetodoDePago.TIPO_TARJETA) {
+            binding.tarjeta.text = pedido.metodoDePago.datos["tarjeta"].toString()
+            binding.tipoPagoTarjeta.text =
+                if (pedido.metodoDePago.datos["tipo"] == "debit") {
+                    "Debito"
                 } else {
-                    binding.efectivoPagaCon.text = (metodoDePago["datos"] as HashMap<String, String>)["pagaCon"]
+                    "Credito"
                 }
+            binding.redTarjeta.text = pedido.metodoDePago.datos["red"].toString()
+            binding.cuotasTarjeta.text = pedido.metodoDePago.datos["cuotas"].toString()
+            binding.thNombre.text = pedido.metodoDePago.datos["nombre"].toString()
+            binding.thDni.text = pedido.metodoDePago.datos["dni"].toString()
+        } else {
+            binding.efectivoPagaCon.text = pedido.metodoDePago.datos["pagaCon"].toString()
+        }
 
-                binding.resumenPedidoTotalProductos.text = ""  // TODO: Sacar del listado de productos
-                binding.resumenPedidoTotalEnvio.text = pedidoDocument.get("envio").toString()
-                binding.resumenPedidoTotalPropina.text = pedidoDocument.get("propina").toString()
-                binding.resumenPedidoTotalComision.text = pedidoDocument.get("comision").toString()
-                binding.resumenPedidoTotalFinal.text = pedidoDocument.get("total").toString()
-            }
-            .addOnFailureListener {
-                Toast.makeText(context, "Ocurrió un error con la tienda", Toast.LENGTH_SHORT).show()
-                (activity as HomeActivity).onBackPressed()
-            }
+        binding.resumenPedidoTotalProductos.text = pedido.totalProductos().toString()
+        binding.resumenPedidoTotalEnvio.text = pedido.envio.toString()
+        binding.resumenPedidoTotalPropina.text = pedido.propina.toString()
+        binding.resumenPedidoTotalComision.text = pedido.comision.toString()
+        binding.resumenPedidoTotalFinal.text = pedido.total.toString()
     }
 
     private fun setBotones() {
