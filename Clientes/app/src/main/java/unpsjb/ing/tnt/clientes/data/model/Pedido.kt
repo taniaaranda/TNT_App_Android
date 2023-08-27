@@ -5,6 +5,7 @@ import com.google.android.gms.tasks.Task
 import com.google.android.gms.tasks.Tasks
 import com.google.firebase.Timestamp
 import com.google.firebase.firestore.DocumentReference
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.ktx.Firebase
 
@@ -82,6 +83,34 @@ class Pedido(
     }
 
     companion object {
+        const val ESTADO_PENDIENTE = "PENDIENTE"
+        const val ESTADO_EN_PREPARACION = "EN_PREPARACION"
+        const val ESTADO_COMPLETADO = "COMPLETADO"
+        const val ESTADO_CANCELADO = "CANCELADO"
+
+        private val STATES = mapOf(
+            ESTADO_PENDIENTE to "Pendiente",
+            ESTADO_EN_PREPARACION to "En Curso",
+            ESTADO_COMPLETADO to "Completado",
+            ESTADO_CANCELADO to "Cancelado"
+        )
+
+        fun getStateKeys(): Array<String> {
+            return STATES.keys.toTypedArray()
+        }
+
+        fun getStateValues(): Array<String> {
+            return STATES.values.toTypedArray()
+        }
+
+        fun getKeyByState(state: String): String {
+            return STATES.filter { state == it.value }.keys.first()
+        }
+
+        fun getStateByKey(key: String): String {
+            return STATES[key]!!
+        }
+
         fun new(
             tienda: String = "",
             estado: String = "PENDIENTE",
@@ -108,6 +137,51 @@ class Pedido(
                 Timestamp.now(),
                 productos
             )
+        }
+
+        fun hidratar(document: DocumentSnapshot) = Pedido(
+            document.id,
+            document.get("tienda").toString(),
+            document.get("estado").toString(),
+            document.get("usuario").toString(),
+            document.get("total").toString().toDouble(),
+            document.get("envio").toString().toDouble(),
+            document.get("propina").toString().toDouble(),
+            document.get("comision").toString().toDouble(),
+            document.get("direccion").toString(),
+            MetodoDePago(
+            (document.get("metodoDePago") as HashMap<String, Any>)["tipo"].toString(),
+            (document.get("metodoDePago") as HashMap<String, Any>)["datos"] as HashMap<String, Any>
+            ),
+            document.get("estampaDeTiempo") as Timestamp,
+            parseProductos(document.get("productos") as ArrayList<HashMap<String, Any>>)
+        )
+
+        fun parseProductos(productosCarrito: java.util.ArrayList<HashMap<String, Any>>): java.util.ArrayList<ProductoCarrito> {
+            val productos: ArrayList<ProductoCarrito> = arrayListOf()
+
+            for (producto in productosCarrito) {
+                productos.add(ProductoCarrito(
+                    Producto(
+                        (producto["producto"] as HashMap<String, Any>)["id"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["nombre"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["observaciones"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["stock"].toString().toLong(),
+                        (producto["producto"] as HashMap<String, Any>)["precio"].toString().toLong(),
+                        (producto["producto"] as HashMap<String, Any>)["categoria"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["foto"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["tienda"].toString(),
+                        (producto["producto"] as HashMap<String, Any>)["excesoSodio"].toString().toBoolean(),
+                        (producto["producto"] as HashMap<String, Any>)["excesoGrasasTot"].toString().toBoolean(),
+                        (producto["producto"] as HashMap<String, Any>)["excesoGrasasSat"].toString().toBoolean(),
+                        (producto["producto"] as HashMap<String, Any>)["excesoCalorias"].toString().toBoolean(),
+                        (producto["producto"] as HashMap<String, Any>)["excesoAzucar"].toString().toBoolean()
+                    ),
+                    producto["cantidad"].toString().toLong()
+                ))
+            }
+
+            return productos
         }
     }
 }

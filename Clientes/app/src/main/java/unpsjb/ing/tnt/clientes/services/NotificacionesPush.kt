@@ -65,7 +65,7 @@ class NotificacionesPush : FirebaseMessagingService() {
                 .setAutoCancel(true)
 
             val notificationManager = NotificationManagerCompat.from(this)
-            notificationManager.notify(1, notificationBuilder.build())
+            notificationManager.notify(Math.random().toInt(), notificationBuilder.build())
         }
     }
 }

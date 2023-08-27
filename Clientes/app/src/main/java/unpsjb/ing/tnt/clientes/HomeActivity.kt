@@ -21,6 +21,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.messaging.FirebaseMessaging
 import unpsjb.ing.tnt.clientes.databinding.ActivityHomeBinding
@@ -75,24 +76,66 @@ class HomeActivity : AppCompatActivity() {
 
         if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             Handler().postDelayed({
-                FirebaseFirestore.getInstance().collection("notificaciones")
-                    .add(
-                        hashMapOf(
-                            "usuario" to FirebaseAuth.getInstance().currentUser!!.uid,
-                            "token" to FirebaseMessaging.getInstance().token
-                        )
-                    )
-                    .addOnCompleteListener {
-                        if (!it.isSuccessful) {
-                            Toast.makeText(
-                                applicationContext,
-                                "No se pudieron configurar las notificaciones",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
+                FirebaseMessaging.getInstance().token
+                    .addOnSuccessListener {
+                        crearNotificacionesConfig(it)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(applicationContext, "No se pudo generar la configuracion de notificaciones", Toast.LENGTH_SHORT).show()
                     }
             }, 500)
         }
+    }
+
+    private fun crearNotificacionesConfig(token: String) {
+        val usuario = FirebaseAuth.getInstance().currentUser!!.uid
+
+        FirebaseFirestore.getInstance().collection("notificaciones")
+            .whereEqualTo("usuario", usuario)
+            .get()
+            .addOnSuccessListener {
+                if (it.documents.isNotEmpty()) {
+                    actualizarRegistracion(it.documents.first(), token)
+                } else {
+                    crearRegistracion(usuario, token)
+                }
+            }
+            .addOnFailureListener {
+                crearRegistracion(usuario, token)
+            }
+    }
+
+    private fun actualizarRegistracion(documentSnapshot: DocumentSnapshot, token: String) {
+        FirebaseFirestore.getInstance().collection("notificaciones")
+            .document(documentSnapshot.id)
+            .update("token", token)
+            .addOnSuccessListener {
+
+            }
+            .addOnFailureListener {
+                Toast.makeText(
+                    applicationContext,
+                    "No se pudo actualizar la configuracion de las notificaciones",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+    }
+
+    private fun crearRegistracion(usuario: String, token: String) {
+        FirebaseFirestore.getInstance().collection("notificaciones")
+            .add(hashMapOf(
+                "usuario" to usuario,
+                "token" to token
+            ))
+            .addOnCompleteListener {
+                if (!it.isSuccessful) {
+                    Toast.makeText(
+                        applicationContext,
+                        "No se pudo crear la configuracion de las notificaciones",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
     }
 
     private fun askNotificationPermission() {
