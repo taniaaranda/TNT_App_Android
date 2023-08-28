@@ -353,14 +353,15 @@
 
                 <ImageView
                     android:id="@+id/foto_producto"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="120dp"
+                    android:layout_height="120dp"
                     android:layout_marginStart="32dp"
                     android:layout_marginTop="8dp"
                     android:contentDescription="@string/hint_imagen_del_producto"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/label_foto"
-                    tools:srcCompat="@tools:sample/avatars" />
+                    tools:srcCompat="@tools:sample/avatars"
+                    android:scaleType="centerCrop" />
 
                 <Button
                     android:id="@+id/btn_subir_foto"

@@ -3,9 +3,9 @@ package unpsjb.ing.tnt.vendedores.ui.productos
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -14,10 +14,15 @@ import android.widget.*
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
-import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
+import unpsjb.ing.tnt.vendedores.HomeActivity
 import unpsjb.ing.tnt.vendedores.R
 import unpsjb.ing.tnt.vendedores.VendedoresApplication
 import unpsjb.ing.tnt.vendedores.databinding.FragmentNuevoProductoBinding
+import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
+import java.io.IOException
+import java.io.InputStream
+import java.util.UUID
+
 private var selectedImageUri: Uri? = null
 private val file = 1
 private var URLimage: String? = null
@@ -39,16 +44,12 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     private lateinit var excesoGrasasSatView: CheckBox
     private lateinit var excesiGrasasTotView: CheckBox
     private lateinit var excesoCaloriasView: CheckBox
-    private lateinit var botonSacarFoto: Button
     private lateinit var botonSubirFoto: Button
     private lateinit var botonCrear: Button
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(
@@ -60,18 +61,42 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
         setViews()
         setCategorias()
         setHandlers()
+        loadDefaultImage()
 
         return altaProductosView
     }
+
+    @Deprecated("Deprecated in Java")
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
+
         if (requestCode == file && resultCode == Activity.RESULT_OK && data != null) {
             val imageUri: Uri? = data.data
             if (imageUri != null) {
                 selectedImageUri = imageUri
+
+                loadImageThumbnail(imageUri)
             } else {
                 Toast.makeText(context, "Error al obtener la imagen", Toast.LENGTH_SHORT).show()
             }
+        }
+    }
+
+    private fun loadImageThumbnail(uri: Uri) {
+        try {
+            val inputStream: InputStream? = (activity as HomeActivity).contentResolver.openInputStream(uri)
+            if (inputStream != null) {
+                val bitmap = BitmapFactory.decodeStream(inputStream)
+                binding.fotoProducto.setImageBitmap(bitmap)
+                inputStream.close()
+            } else {
+                loadDefaultImage()
+                Toast.makeText(requireContext(), "No se pudo cargar la imagen para mostrar", Toast.LENGTH_SHORT).show()
+            }
+        } catch (e: IOException) {
+            loadDefaultImage()
+            Toast.makeText(requireContext(), "Ocurrió un error al cargar la imagen para mostrar", Toast.LENGTH_SHORT).show()
+            Log.d("LoadTumbnail", e.printStackTrace().toString())
         }
     }
 
@@ -106,22 +131,35 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
             startActivityForResult(intent, file) // Llamada a startActivityForResult
         }
 
-
         botonCrear.setOnClickListener {
-                if (formValido()) {
-                    getDbReference().collection("productos")
-                        .add(getProductoPayload())
-                        .addOnSuccessListener {
-                            Toast.makeText(context, "¡Guardado!", Toast.LENGTH_SHORT).show()
-                            findNavController().navigate(R.id.nav_products)
-                        }
-                        .addOnFailureListener {
-                            Toast.makeText(context, "No se pudo guardar", Toast.LENGTH_SHORT).show()
-                        }
-                } else {
-                    Toast.makeText(context, "Revise los datos ingresados", Toast.LENGTH_SHORT)
-                        .show()
-                }
+            if (formValido()) {
+                getDbReference().collection("productos")
+                    .add(getProductoPayload())
+                    .addOnSuccessListener {
+                        Toast.makeText(context, "¡Guardado!", Toast.LENGTH_SHORT).show()
+                        findNavController().navigate(R.id.nav_products)
+                    }
+                    .addOnFailureListener {
+                        Toast.makeText(context, "No se pudo guardar", Toast.LENGTH_SHORT).show()
+                    }
+            } else {
+                Toast.makeText(context, "Revise los datos ingresados", Toast.LENGTH_SHORT)
+                    .show()
+            }
+        }
+    }
+
+    private fun loadDefaultImage() {
+        FirebaseStorage.getInstance()
+            .getReferenceFromUrl("gs://tnt-app-android.appspot.com/camera.png")
+            .getBytes(5 * 1024 * 1024)
+            .addOnSuccessListener {
+                binding.fotoProducto.setImageBitmap(
+                    BitmapFactory.decodeByteArray(it, 0, it.size)
+                )
+            }
+            .addOnFailureListener {
+                Toast.makeText(requireContext(), "No se pudo cargar la imagen", Toast.LENGTH_SHORT).show()
             }
     }
 
@@ -155,6 +193,7 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
 
     private fun getProductoPayload(): HashMap<String, Any> {
         URLimage = uploadImageAndSaveToFirestore()
+
         return  hashMapOf(
             "nombre" to nombreView.text.toString(),
             "observaciones" to descripcionView.text.toString(),
@@ -172,7 +211,8 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     }
 
     private fun uploadImageAndSaveToFirestore(): String {
-        var URLimage = ""
+        var urlImage = ""
+
         if (selectedImageUri != null) {
             val storageRef = FirebaseStorage.getInstance().reference
             //val imageRef = storageRef.child("images/${selectedImageUri?.lastPathSegment}")
@@ -181,11 +221,12 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
             val imageName = "img${currentNumber()}.jpg"
             val imageRef = storageRef.child(imageName)
             val uploadTask = imageRef.putFile(selectedImageUri!!)
+
             if (imageRef.toString() != "") {
                 uploadTask.addOnSuccessListener {
                     imageRef.downloadUrl.addOnSuccessListener { uri ->
                         val imageURL = uri.toString()
-                        URLimage = imageURL
+                        urlImage = imageURL
                     }.addOnFailureListener {
                         Toast.makeText(
                             context,
@@ -197,10 +238,13 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
                     Toast.makeText(context, "Error al subir la imagen", Toast.LENGTH_SHORT).show()
                 }
             }
-            URLimage = imageRef.toString()
-            return URLimage
+
+            urlImage = imageRef.toString()
+
+            return urlImage
         }
-        return URLimage
+
+        return urlImage
     }
 
     private fun currentNumber(): Int? {

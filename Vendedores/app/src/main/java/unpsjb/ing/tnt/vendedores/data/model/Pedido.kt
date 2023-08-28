@@ -41,6 +41,10 @@ class Pedido (
         return "$$total"
     }
 
+    fun estadoForView(): String {
+        return Pedido.getStateByKey(estado)
+    }
+
     fun totalProductos(): Double {
         return productos.sumOf { it.producto.precio * it.cantidad }.toDouble()
     }

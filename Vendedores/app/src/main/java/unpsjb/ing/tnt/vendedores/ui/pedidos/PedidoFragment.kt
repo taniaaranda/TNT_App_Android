@@ -136,7 +136,7 @@ class PedidoFragment : Fragment() {
 
     private fun setViewData() {
         binding.direccionEnvio.text = pedido.direccion
-        binding.estado.text = pedido.estado
+        binding.estado.text = Pedido.getStateByKey(pedido.estado)
         binding.fechaPedido.text =
             DateFormat.format("dd/MM/yyyy hh:mm:ss", (pedido.estampaDeTiempo).toDate())
 
