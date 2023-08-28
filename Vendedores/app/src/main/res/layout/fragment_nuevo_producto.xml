@@ -86,7 +86,7 @@
                         android:text="Nombre:" />
 
                     <EditText
-                        android:id="@+id/nombre_producto"
+                        android:id="@+id/nombre_nuevo_producto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/nombre_label"
@@ -127,7 +127,7 @@
                         android:text="Descripción:" />
 
                     <EditText
-                        android:id="@+id/descripcion_producto"
+                        android:id="@+id/descripcion_nuevo_producto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/descripcion_label"
@@ -168,7 +168,7 @@
                         android:text="Precio:" />
 
                     <EditText
-                        android:id="@+id/precio"
+                        android:id="@+id/precio_nuevo_producto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/precio_label"
@@ -209,7 +209,7 @@
                         android:text="Stock:" />
 
                     <EditText
-                        android:id="@+id/stock"
+                        android:id="@+id/stock_nuevo_producto"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_toEndOf="@id/cantidad_label"

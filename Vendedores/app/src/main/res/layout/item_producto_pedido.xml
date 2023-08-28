@@ -6,7 +6,7 @@
     android:layout_height="100dp">
 
     <ImageView
-        android:id="@+id/imagen_producto"
+        android:id="@+id/imagen_producto_pedido"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginStart="8dp"
@@ -19,19 +19,19 @@
         android:contentDescription="@string/imagen_del_producto_del_pedido" />
 
     <TextView
-        android:id="@+id/nombre_producto"
+        android:id="@+id/nombre_producto_pedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:textSize="16sp"
         android:textStyle="bold"
-        app:layout_constraintStart_toEndOf="@+id/imagen_producto"
+        app:layout_constraintStart_toEndOf="@+id/imagen_producto_pedido"
         app:layout_constraintTop_toTopOf="parent"
         tools:text="Un nombre de producto medio largo" />
 
     <TextView
-        android:id="@+id/descripcion_producto"
+        android:id="@+id/descripcion_producto_pedido"
         android:layout_width="195dp"
         android:layout_height="0dp"
         android:layout_marginStart="16dp"
@@ -39,34 +39,34 @@
         android:layout_marginBottom="16dp"
         android:textSize="12sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/imagen_producto"
-        app:layout_constraintTop_toBottomOf="@+id/nombre_producto"
+        app:layout_constraintStart_toEndOf="@+id/imagen_producto_pedido"
+        app:layout_constraintTop_toBottomOf="@+id/nombre_producto_pedido"
         tools:text="Una descripción del producto aún más larga que el nombre en la que pueden ir los ingredientes" />
 
     <TextView
-        android:id="@+id/precio_producto"
+        android:id="@+id/precio_producto_pedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/nombre_producto"
+        app:layout_constraintTop_toBottomOf="@+id/nombre_producto_pedido"
         tools:text="$9999999.99" />
 
     <TextView
-        android:id="@+id/cantidad_producto"
+        android:id="@+id/cantidad_producto_pedido"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="2dp"
         android:layout_marginEnd="8dp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/precio_producto"
+        app:layout_constraintTop_toBottomOf="@+id/precio_producto_pedido"
         tools:text="x10" />
 
     <View
-        android:id="@+id/separator"
+        android:id="@+id/separator_producto_pedido"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_marginStart="16dp"

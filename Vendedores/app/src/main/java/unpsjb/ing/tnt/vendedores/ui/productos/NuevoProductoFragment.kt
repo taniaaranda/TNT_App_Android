@@ -16,6 +16,7 @@ import androidx.navigation.fragment.findNavController
 import com.google.firebase.storage.FirebaseStorage
 import unpsjb.ing.tnt.vendedores.ui.utils.FirebaseConnectedFragment
 import unpsjb.ing.tnt.vendedores.R
+import unpsjb.ing.tnt.vendedores.VendedoresApplication
 import unpsjb.ing.tnt.vendedores.databinding.FragmentNuevoProductoBinding
 private var selectedImageUri: Uri? = null
 private val file = 1
@@ -75,10 +76,10 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
     }
 
     private fun setViews() {
-        nombreView = altaProductosView.findViewById(R.id.nombre_producto)
-        descripcionView = altaProductosView.findViewById(R.id.descripcion_producto)
-        precioView = altaProductosView.findViewById(R.id.precio)
-        stockView = altaProductosView.findViewById(R.id.stock)
+        nombreView = altaProductosView.findViewById(R.id.nombre_nuevo_producto)
+        descripcionView = altaProductosView.findViewById(R.id.descripcion_nuevo_producto)
+        precioView = altaProductosView.findViewById(R.id.precio_nuevo_producto)
+        stockView = altaProductosView.findViewById(R.id.stock_nuevo_producto)
         categoriaView = altaProductosView.findViewById(R.id.categorias_list)
         excesoAzucaresView = altaProductosView.findViewById(R.id.check_box_exceso_azucares)
         excesoSodioView = altaProductosView.findViewById(R.id.check_box_exceso_sodio)
@@ -166,7 +167,7 @@ class NuevoProductoFragment : FirebaseConnectedFragment() {
             "exceso_grasas_sat" to excesoGrasasSatView.isChecked,
             "exceso_grasas_tot" to excesiGrasasTotView.isChecked,
             "exceso_calorias" to excesoCaloriasView.isChecked,
-            "tienda" to arguments?.getString("tienda").toString()
+            "tienda" to VendedoresApplication.tienda!!.id
         )
     }
 

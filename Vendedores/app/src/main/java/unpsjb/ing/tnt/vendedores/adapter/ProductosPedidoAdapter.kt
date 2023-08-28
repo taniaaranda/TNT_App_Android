@@ -48,10 +48,10 @@ class ProductosPedidoAdapter(
     }
 
     class ProductosPedidoViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
-        val imagenProducto: ImageView = itemView.findViewById(R.id.imagen_producto)
-        val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto)
-        val descripcionProducto: TextView = itemView.findViewById(R.id.descripcion_producto)
-        val precioProducto: TextView = itemView.findViewById(R.id.precio_producto)
-        val cantidadProducto: TextView = itemView.findViewById(R.id.cantidad_producto)
+        val imagenProducto: ImageView = itemView.findViewById(R.id.imagen_producto_pedido)
+        val nombreProducto: TextView = itemView.findViewById(R.id.nombre_producto_pedido)
+        val descripcionProducto: TextView = itemView.findViewById(R.id.descripcion_producto_pedido)
+        val precioProducto: TextView = itemView.findViewById(R.id.precio_producto_pedido)
+        val cantidadProducto: TextView = itemView.findViewById(R.id.cantidad_producto_pedido)
     }
 }
