@@ -1,6 +1,7 @@
 package unpsjb.ing.tnt.vendedores.ui.pedidos
 
 import android.os.Bundle
+import android.os.Handler
 import android.text.format.DateFormat
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -113,25 +114,27 @@ class PedidoFragment : Fragment() {
             (activity as HomeActivity).onBackPressed()
         }
 
-        FirebaseFirestore.getInstance().collection("pedidos")
-            .document(pedidoId)
-            .addSnapshotListener { value, error ->
-                if (error != null) {
-                    Toast.makeText(context, "Ocurrió un error obteniendo los datos del pedido", Toast.LENGTH_SHORT).show()
-                    (activity as HomeActivity).onBackPressed()
-                }
+        Handler().postDelayed({
+            FirebaseFirestore.getInstance().collection("pedidos")
+                .document(pedidoId)
+                .addSnapshotListener { value, error ->
+                    if (error != null) {
+                        Toast.makeText(context, "Ocurrió un error obteniendo los datos del pedido", Toast.LENGTH_SHORT).show()
+                        (activity as HomeActivity).onBackPressed()
+                    }
 
-                if (value != null) {
-                    pedido = Pedido.hidratar(value)
-                    setColapsos()
-                    setBotones()
-                    setViewData()
-                    setBotonesListeners()
-                } else {
-                    Toast.makeText(context, "Ocurrió un error obteniendo el pedido", Toast.LENGTH_SHORT).show()
-                    (activity as HomeActivity).onBackPressed()
+                    if (value != null) {
+                        pedido = Pedido.hidratar(value)
+                        setColapsos()
+                        setBotones()
+                        setViewData()
+                        setBotonesListeners()
+                    } else {
+                        Toast.makeText(context, "Ocurrió un error obteniendo el pedido", Toast.LENGTH_SHORT).show()
+                        (activity as HomeActivity).onBackPressed()
+                    }
                 }
-            }
+        }, 500)
     }
 
     private fun setViewData() {
@@ -169,6 +172,7 @@ class PedidoFragment : Fragment() {
         if (pedido.estaCancelado() || pedido.estaCompletado()) {
             binding.botoneraEstados.visibility = View.GONE
         } else {
+            binding.botoneraEstados.visibility = View.VISIBLE
             val estadoSiguiente = pedido.estadoSiguiente()
             val estadoAnterior = pedido.estadoAnterior()
 

@@ -626,6 +626,7 @@
                 <androidx.constraintlayout.widget.ConstraintLayout
                     android:id="@+id/botonera_estados"
                     android:layout_width="match_parent"
+                    android:visibility="gone"
                     android:layout_height="wrap_content">
 
                     <TextView

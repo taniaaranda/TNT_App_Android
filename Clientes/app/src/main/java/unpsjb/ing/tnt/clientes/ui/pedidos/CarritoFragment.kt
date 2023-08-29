@@ -32,7 +32,6 @@ class CarritoFragment : AuthorizedFragment() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var productosAdapter: ProductosCarritoAdapter
 
-    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

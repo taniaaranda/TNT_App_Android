@@ -1,9 +1,7 @@
 package unpsjb.ing.tnt.clientes.ui.productos
 
 import android.annotation.SuppressLint
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -20,16 +18,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ListenerRegistration
 import com.google.firebase.firestore.QuerySnapshot
-import unpsjb.ing.tnt.clientes.ClientesApplication
 import unpsjb.ing.tnt.clientes.ClientesApplication.Companion.carrito
 import unpsjb.ing.tnt.clientes.R
 import unpsjb.ing.tnt.clientes.adapter.ProductosAdapter
 import unpsjb.ing.tnt.clientes.data.model.Carrito
-import unpsjb.ing.tnt.clientes.data.model.Pedido
 import unpsjb.ing.tnt.clientes.data.model.Producto
 import unpsjb.ing.tnt.clientes.databinding.FragmentListadoProductosBinding
 import unpsjb.ing.tnt.clientes.ui.auth.AuthorizedFragment
